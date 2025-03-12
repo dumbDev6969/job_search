@@ -1,0 +1,20 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
+/* Add underline to the active nav link */
+.nav-link.active {
+    position: relative; /* Required for the pseudo-element */
+    color: var(--primary); /* Optional: Change color for active link */
+}
+
+.nav-link.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px; /* Adjust this value to position the underline */
+    width: 100%;
+    height: 2px; /* Thickness of the underline */
+    background-color: var(--primary); /* Color of the underline */
+    transform: scaleX(1); /* Initial state */
+    transition: transform 0.3s ease; /* Smooth transition */
+}
+
