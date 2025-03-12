@@ -1,0 +1,800 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Job Portal API",
+    "description": "API documentation for the Job Portal application. This includes the Philippine Standard Geographic Code (PSGC) API, which is a systematic classification and coding of geographic areas in the Philippines. Its units of classification are based on the four well-established levels of geographical-political subdivisions of the country, including the region, the province, the municipality/city, and the barangay.",
+    "version": "1.0.0"
+  },
+  "basePath": "/api",
+  "paths": {
+    "/regions": {
+      "get": {
+        "description": "get Regions",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Regions"
+        ],
+        "summary": "Show list of Regions",
+        "parameters": [
+          {
+            "type": "string",
+            "example": "keyword",
+            "description": "Keyword is used for filtering",
+            "name": "keyword",
+            "in": "query"
+          },
+          {
+            "minimum": 0,
+            "type": "integer",
+            "example": 1,
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "maximum": 1000,
+            "type": "integer",
+            "example": 1000,
+            "name": "per_page",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaginatedRegion"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/regions/{psgc_code}": {
+      "get": {
+        "description": "get Region by PsgcCode",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Regions"
+        ],
+        "summary": "Show a Region",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Region psgcCode",
+            "name": "psgc_code",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Region"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Item Not Found",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/provinces": {
+      "get": {
+        "description": "get Provinces",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Provinces"
+        ],
+        "summary": "Show list of Provinces",
+        "parameters": [
+          {
+            "type": "string",
+            "example": "keyword",
+            "description": "Keyword is used for filtering",
+            "name": "keyword",
+            "in": "query"
+          },
+          {
+            "minimum": 0,
+            "type": "integer",
+            "example": 1,
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "maximum": 1000,
+            "type": "integer",
+            "example": 1000,
+            "name": "per_page",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "Filter by region code",
+            "name": "region_code",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaginatedProvince"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/provinces/{psgc_code}": {
+      "get": {
+        "description": "get Province by PsgcCode",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Provinces"
+        ],
+        "summary": "Show a Province",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Province psgcCode",
+            "name": "psgc_code",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Province"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Item Not Found",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/citi_muni": {
+      "get": {
+        "description": "get Cities/Municipalities",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Cities/Municipalities"
+        ],
+        "summary": "Show list of Cities/Municipalities",
+        "parameters": [
+          {
+            "type": "string",
+            "example": "keyword",
+            "description": "Keyword is used for filtering",
+            "name": "keyword",
+            "in": "query"
+          },
+          {
+            "minimum": 0,
+            "type": "integer",
+            "example": 1,
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "maximum": 1000,
+            "type": "integer",
+            "example": 1000,
+            "name": "per_page",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "Filter by province code",
+            "name": "province_code",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "Filter by region code",
+            "name": "region_code",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaginatedCityMuni"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/citi_muni/{psgc_code}": {
+      "get": {
+        "description": "get City/Municipality by PsgcCode",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Cities/Municipalities"
+        ],
+        "summary": "Show a City/Municipality",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "City/Municipality psgcCode",
+            "name": "psgc_code",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CityMuni"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Item Not Found",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/barangays": {
+      "get": {
+        "description": "get Barangays",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Barangays"
+        ],
+        "summary": "Show list of Barangays",
+        "parameters": [
+          {
+            "type": "string",
+            "example": "keyword",
+            "description": "Keyword is used for filtering",
+            "name": "keyword",
+            "in": "query"
+          },
+          {
+            "minimum": 0,
+            "type": "integer",
+            "example": 1,
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "maximum": 1000,
+            "type": "integer",
+            "example": 1000,
+            "name": "per_page",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaginatedBarangay"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/barangays/{psgc_code}": {
+      "get": {
+        "description": "get Barangay by PsgcCode",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Barangays"
+        ],
+        "summary": "Show a Barangay",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Barangay psgcCode",
+            "name": "psgc_code",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Barangay"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Item Not Found",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Home Page",
+        "description": "Returns the home page",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/about": {
+      "get": {
+        "summary": "About Page",
+        "description": "Returns the about page",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/admin": {
+      "get": {
+        "summary": "Admin Page",
+        "description": "Returns the admin page",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/chat": {
+      "get": {
+        "summary": "Chat Page",
+        "description": "Returns the chat page",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/database": {
+      "get": {
+        "summary": "Database Page",
+        "description": "Returns the database page",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/employer": {
+      "get": {
+        "summary": "Employer Page",
+        "description": "Returns the employer page",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/geo": {
+      "get": {
+        "summary": "Geographical Information Page",
+        "description": "Returns the geographical information page",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/interest": {
+      "get": {
+        "summary": "Interest Page",
+        "description": "Returns the interest page",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/jobs": {
+      "get": {
+        "summary": "Jobs Page",
+        "description": "Returns the jobs page",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/jobseeker": {
+      "get": {
+        "summary": "Jobseeker Page",
+        "description": "Returns the jobseeker page",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/login": {
+      "get": {
+        "summary": "Login Page",
+        "description": "Returns the login page",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/signup": {
+      "get": {
+        "summary": "Signup Page",
+        "description": "Returns the signup page",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Region": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "example": "010000000"
+        },
+        "name": {
+          "type": "string",
+          "example": "Ilocos Region"
+        },
+        "regionName": {
+          "type": "string",
+          "example": "Region I"
+        },
+        "islandGroupCode": {
+          "type": "string",
+          "example": "luzon"
+        },
+        "psgc10DigitCode": {
+          "type": "string",
+          "example": "0100000000"
+        }
+      }
+    },
+    "PaginatedRegion": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Region"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/Meta"
+        }
+      }
+    },
+    "Province": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "example": "012800000"
+        },
+        "name": {
+          "type": "string",
+          "example": "Ilocos Norte"
+        },
+        "regionCode": {
+          "type": "string",
+          "example": "010000000"
+        },
+        "islandGroupCode": {
+          "type": "string",
+          "example": "luzon"
+        },
+        "psgc10DigitCode": {
+          "type": "string",
+          "example": "0102800000"
+        }
+      }
+    },
+    "PaginatedProvince": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Province"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/Meta"
+        }
+      }
+    },
+    "CityMuni": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "example": "012801000"
+        },
+        "name": {
+          "type": "string",
+          "example": "Adams"
+        },
+        "oldName": {
+          "type": "string",
+          "example": ""
+        },
+        "isCapital": {
+          "type": "boolean",
+          "example": false
+        },
+        "provinceCode": {
+          "type": "string",
+          "example": "012800000"
+        },
+        "districtCode": {
+          "type": "boolean",
+          "example": false
+        },
+        "regionCode": {
+          "type": "string",
+          "example": "010000000"
+        },
+        "islandGroupCode": {
+          "type": "string",
+          "example": "luzon"
+        },
+        "psgc10DigitCode": {
+          "type": "string",
+          "example": "0102801000"
+        }
+      }
+    },
+    "PaginatedCityMuni": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CityMuni"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/Meta"
+        }
+      }
+    },
+    "Barangay": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "example": "012801001"
+        },
+        "name": {
+          "type": "string",
+          "example": "Sample Barangay"
+        },
+        "cityMuniCode": {
+          "type": "string",
+          "example": "012801000"
+        },
+        "provinceCode": {
+          "type": "string",
+          "example": "012800000"
+        },
+        "regionCode": {
+          "type": "string",
+          "example": "010000000"
+        },
+        "islandGroupCode": {
+          "type": "string",
+          "example": "luzon"
+        },
+        "psgc10DigitCode": {
+          "type": "string",
+          "example": "0102801001"
+        }
+      }
+    },
+    "PaginatedBarangay": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Barangay"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/Meta"
+        }
+      }
+    },
+    "Meta": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "example": 1
+        },
+        "per_page": {
+          "type": "integer",
+          "example": 10
+        },
+        "page_count": {
+          "type": "integer",
+          "example": 10
+        },
+        "total_count": {
+          "type": "integer",
+          "example": 100
+        },
+        "total_pages": {
+          "type": "integer",
+          "example": 10
+        }
+      }
+    }
+  }
+}

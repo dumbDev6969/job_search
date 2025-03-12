@@ -1,0 +1,511 @@
+{
+  "metadata": {
+    "page": 1,
+    "total_pages": 421,
+    "per_page": 100,
+    "total_items": 42018,
+    "item_count": 100
+  },
+  "data": [
+    {
+      "psgc_code": "1004210051",
+      "city_muni_code": "1004210000",
+      "name": "50th District "
+    },
+    {
+      "psgc_code": "0802622001",
+      "city_muni_code": "0802622000",
+      "name": "A-et"
+    },
+    {
+      "psgc_code": "1600205003",
+      "city_muni_code": "1600205000",
+      "name": "A. Beltran"
+    },
+    {
+      "psgc_code": "0803735001",
+      "city_muni_code": "0803735000",
+      "name": "A. Bonifacio"
+    },
+    {
+      "psgc_code": "0506203001",
+      "city_muni_code": "0506203000",
+      "name": "A. Bonifacio"
+    },
+    {
+      "psgc_code": "0304915001",
+      "city_muni_code": "0304915000",
+      "name": "A. Bonifacio"
+    },
+    {
+      "psgc_code": "1430300125",
+      "city_muni_code": "1430300000",
+      "name": "A. Bonifacio-Caguioa-Rimando"
+    },
+    {
+      "psgc_code": "0402107001",
+      "city_muni_code": "0402107000",
+      "name": "A. Dalusag"
+    },
+    {
+      "psgc_code": "0405618001",
+      "city_muni_code": "0405618000",
+      "name": "A. Mabini"
+    },
+    {
+      "psgc_code": "1102315001",
+      "city_muni_code": "1102315000",
+      "name": "A. O. Floirendo"
+    },
+    {
+      "psgc_code": "0304926001",
+      "city_muni_code": "0304926000",
+      "name": "A. Pascual"
+    },
+    {
+      "psgc_code": "0300805001",
+      "city_muni_code": "0300805000",
+      "name": "A. Rivera "
+    },
+    {
+      "psgc_code": "0603029004",
+      "city_muni_code": "0603029000",
+      "name": "AGROCEL Pob."
+    },
+    {
+      "psgc_code": "0102818001",
+      "city_muni_code": "0102818000",
+      "name": "Ab-abut"
+    },
+    {
+      "psgc_code": "1403201001",
+      "city_muni_code": "1403201000",
+      "name": "Ababa-an"
+    },
+    {
+      "psgc_code": "0102804001",
+      "city_muni_code": "0102804000",
+      "name": "Abaca"
+    },
+    {
+      "psgc_code": "0603039001",
+      "city_muni_code": "0603039000",
+      "name": "Abaca"
+    },
+    {
+      "psgc_code": "0604507001",
+      "city_muni_code": "0604507000",
+      "name": "Abaca"
+    },
+    {
+      "psgc_code": "0205008001",
+      "city_muni_code": "0205008000",
+      "name": "Abaca"
+    },
+    {
+      "psgc_code": "0504105001",
+      "city_muni_code": "0504105000",
+      "name": "Abaca"
+    },
+    {
+      "psgc_code": "0701231001",
+      "city_muni_code": "0701231000",
+      "name": "Abaca"
+    },
+    {
+      "psgc_code": "0600607001",
+      "city_muni_code": "0600607000",
+      "name": "Abaca"
+    },
+    {
+      "psgc_code": "0803717001",
+      "city_muni_code": "0803717000",
+      "name": "Abaca"
+    },
+    {
+      "psgc_code": "0102929001",
+      "city_muni_code": "0102929000",
+      "name": "Abaccan"
+    },
+    {
+      "psgc_code": "0701240001",
+      "city_muni_code": "0701240000",
+      "name": "Abachanan"
+    },
+    {
+      "psgc_code": "0506203002",
+      "city_muni_code": "0506203000",
+      "name": "Abad Santos"
+    },
+    {
+      "psgc_code": "0701231002",
+      "city_muni_code": "0701231000",
+      "name": "Abad Santos"
+    },
+    {
+      "psgc_code": "1606721001",
+      "city_muni_code": "1606721000",
+      "name": "Abad Santos"
+    },
+    {
+      "psgc_code": "1003502001",
+      "city_muni_code": "1003502000",
+      "name": "Abaga"
+    },
+    {
+      "psgc_code": "1003509001",
+      "city_muni_code": "1003509000",
+      "name": "Abaga"
+    },
+    {
+      "psgc_code": "1003515001",
+      "city_muni_code": "1003515000",
+      "name": "Abaga"
+    },
+    {
+      "psgc_code": "1204705001",
+      "city_muni_code": "1204705000",
+      "name": "Abaga"
+    },
+    {
+      "psgc_code": "1903603001",
+      "city_muni_code": "1903603000",
+      "name": "Abaga"
+    },
+    {
+      "psgc_code": "1903613001",
+      "city_muni_code": "1903613000",
+      "name": "Abaga"
+    },
+    {
+      "psgc_code": "0201516001",
+      "city_muni_code": "0201516000",
+      "name": "Abagao"
+    },
+    {
+      "psgc_code": "0201510001",
+      "city_muni_code": "0201510000",
+      "name": "Abagao"
+    },
+    {
+      "psgc_code": "1705302007",
+      "city_muni_code": "1705302000",
+      "name": "Abagat "
+    },
+    {
+      "psgc_code": "0306906001",
+      "city_muni_code": "0306906000",
+      "name": "Abagon"
+    },
+    {
+      "psgc_code": "1430300129",
+      "city_muni_code": "1430300000",
+      "name": "Abanao-Zandueta-Kayong-Chugum-Otek"
+    },
+    {
+      "psgc_code": "0405623001",
+      "city_muni_code": "0405623000",
+      "name": "Abang"
+    },
+    {
+      "psgc_code": "1400103001",
+      "city_muni_code": "1400103000",
+      "name": "Abang"
+    },
+    {
+      "psgc_code": "0603002001",
+      "city_muni_code": "0603002000",
+      "name": "Abang-abang"
+    },
+    {
+      "psgc_code": "0301411001",
+      "city_muni_code": "0301411000",
+      "name": "Abangan Norte"
+    },
+    {
+      "psgc_code": "0301411002",
+      "city_muni_code": "0301411000",
+      "name": "Abangan Sur"
+    },
+    {
+      "psgc_code": "0603037001",
+      "city_muni_code": "0603037000",
+      "name": "Abangay"
+    },
+    {
+      "psgc_code": "0603023001",
+      "city_muni_code": "0603023000",
+      "name": "Abangay"
+    },
+    {
+      "psgc_code": "0601917001",
+      "city_muni_code": "0601917000",
+      "name": "Abangay"
+    },
+    {
+      "psgc_code": "0603016001",
+      "city_muni_code": "0603016000",
+      "name": "Abangay"
+    },
+    {
+      "psgc_code": "0803706001",
+      "city_muni_code": "0803706000",
+      "name": "Abango"
+    },
+    {
+      "psgc_code": "0803713001",
+      "city_muni_code": "0803713000",
+      "name": "Abanilla"
+    },
+    {
+      "psgc_code": "0105532001",
+      "city_muni_code": "0105532000",
+      "name": "Abanon"
+    },
+    {
+      "psgc_code": "0201518001",
+      "city_muni_code": "0201518000",
+      "name": "Abanqueruan"
+    },
+    {
+      "psgc_code": "0704616001",
+      "city_muni_code": "0704616000",
+      "name": "Abante"
+    },
+    {
+      "psgc_code": "1400106001",
+      "city_muni_code": "1400106000",
+      "name": "Abaquid"
+    },
+    {
+      "psgc_code": "0304926003",
+      "city_muni_code": "0304926000",
+      "name": "Abar 2nd"
+    },
+    {
+      "psgc_code": "0304926002",
+      "city_muni_code": "0304926000",
+      "name": "Abar Ist"
+    },
+    {
+      "psgc_code": "0201526001",
+      "city_muni_code": "0201526000",
+      "name": "Abariongan Ruar"
+    },
+    {
+      "psgc_code": "0201526002",
+      "city_muni_code": "0201526000",
+      "name": "Abariongan Uneg"
+    },
+    {
+      "psgc_code": "1705318001",
+      "city_muni_code": "1705318000",
+      "name": "Abaroan"
+    },
+    {
+      "psgc_code": "0506213001",
+      "city_muni_code": "0506213000",
+      "name": "Abas"
+    },
+    {
+      "psgc_code": "0603031001",
+      "city_muni_code": "0603031000",
+      "name": "Abat"
+    },
+    {
+      "psgc_code": "1404402001",
+      "city_muni_code": "1404402000",
+      "name": "Abatan"
+    },
+    {
+      "psgc_code": "1401105001",
+      "city_muni_code": "1401105000",
+      "name": "Abatan"
+    },
+    {
+      "psgc_code": "1402702001",
+      "city_muni_code": "1402702000",
+      "name": "Abatan"
+    },
+    {
+      "psgc_code": "0804808001",
+      "city_muni_code": "0804808000",
+      "name": "Abaton"
+    },
+    {
+      "psgc_code": "0603029001",
+      "city_muni_code": "0603029000",
+      "name": "Abay"
+    },
+    {
+      "psgc_code": "0102909001",
+      "city_muni_code": "0102909000",
+      "name": "Abaya"
+    },
+    {
+      "psgc_code": "0205704001",
+      "city_muni_code": "0205704000",
+      "name": "Abbag"
+    },
+    {
+      "psgc_code": "0201502001",
+      "city_muni_code": "0201502000",
+      "name": "Abbeg"
+    },
+    {
+      "psgc_code": "1903618001",
+      "city_muni_code": "1903618000",
+      "name": "Abdullah Buisan"
+    },
+    {
+      "psgc_code": "0701237002",
+      "city_muni_code": "0701237000",
+      "name": "Abehilan"
+    },
+    {
+      "psgc_code": "0802619001",
+      "city_muni_code": "0802619000",
+      "name": "Abejao"
+    },
+    {
+      "psgc_code": "0500508001",
+      "city_muni_code": "0500508000",
+      "name": "Abella"
+    },
+    {
+      "psgc_code": "0501724001",
+      "city_muni_code": "0501724000",
+      "name": "Abella"
+    },
+    {
+      "psgc_code": "0401025001",
+      "city_muni_code": "0401025000",
+      "name": "Abelo"
+    },
+    {
+      "psgc_code": "1705312018",
+      "city_muni_code": "1705312000",
+      "name": "Aberawan"
+    },
+    {
+      "psgc_code": "0631000178",
+      "city_muni_code": "0631000000",
+      "name": "Abeto Mirasol Taft South"
+    },
+    {
+      "psgc_code": "0806409001",
+      "city_muni_code": "0806409000",
+      "name": "Abgao"
+    },
+    {
+      "psgc_code": "0806407001",
+      "city_muni_code": "0806407000",
+      "name": "Abgao "
+    },
+    {
+      "psgc_code": "0401024001",
+      "city_muni_code": "0401024000",
+      "name": "Abiacao"
+    },
+    {
+      "psgc_code": "0205004001",
+      "city_muni_code": "0205004000",
+      "name": "Abian"
+    },
+    {
+      "psgc_code": "1401101001",
+      "city_muni_code": "1401101000",
+      "name": "Abiang"
+    },
+    {
+      "psgc_code": "0405620001",
+      "city_muni_code": "0405620000",
+      "name": "Abiawin"
+    },
+    {
+      "psgc_code": "0600615001",
+      "city_muni_code": "0600615000",
+      "name": "Abiera"
+    },
+    {
+      "psgc_code": "0502002001",
+      "city_muni_code": "0502002000",
+      "name": "Abihao"
+    },
+    {
+      "psgc_code": "0701220001",
+      "city_muni_code": "0701220000",
+      "name": "Abihid"
+    },
+    {
+      "psgc_code": "0701211001",
+      "city_muni_code": "0701211000",
+      "name": "Abihilan"
+    },
+    {
+      "psgc_code": "0803751001",
+      "city_muni_code": "0803751000",
+      "name": "Abijao"
+    },
+    {
+      "psgc_code": "0701222001",
+      "city_muni_code": "0701222000",
+      "name": "Abijilan"
+    },
+    {
+      "psgc_code": "1102505001",
+      "city_muni_code": "1102505000",
+      "name": "Abijod"
+    },
+    {
+      "psgc_code": "1600201001",
+      "city_muni_code": "1600201000",
+      "name": "Abilan"
+    },
+    {
+      "psgc_code": "0603029002",
+      "city_muni_code": "0603029000",
+      "name": "Abilay"
+    },
+    {
+      "psgc_code": "0603034001",
+      "city_muni_code": "0603034000",
+      "name": "Abilay Norte"
+    },
+    {
+      "psgc_code": "0603034002",
+      "city_muni_code": "0603034000",
+      "name": "Abilay Sur"
+    },
+    {
+      "psgc_code": "0205004002",
+      "city_muni_code": "0205004000",
+      "name": "Abinganan"
+    },
+    {
+      "psgc_code": "1402704001",
+      "city_muni_code": "1402704000",
+      "name": "Abinuan"
+    },
+    {
+      "psgc_code": "0704614001",
+      "city_muni_code": "0704614000",
+      "name": "Abis"
+    },
+    {
+      "psgc_code": "0102823001",
+      "city_muni_code": "0102823000",
+      "name": "Abkir"
+    },
+    {
+      "psgc_code": "0102805023",
+      "city_muni_code": "0102805000",
+      "name": "Ablan Pob."
+    },
+    {
+      "psgc_code": "0102806001",
+      "city_muni_code": "0102806000",
+      "name": "Ablan Sarat"
+    }
+  ]
+}
