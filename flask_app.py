@@ -14,6 +14,10 @@ from swagger import swagger_ui_blueprint, SWAGGER_URL
 
 app = Flask(__name__)
 
+# Configure session
+app.secret_key = 'your-secret-key-here'  # Replace with a secure secret key in production
+app.config['SESSION_TYPE'] = 'filesystem'
+
 # Register the Blueprints
 app.register_blueprint(main)
 app.register_blueprint(database)

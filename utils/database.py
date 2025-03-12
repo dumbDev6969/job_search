@@ -1,6 +1,16 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
+# Global database instance
+_db_instance = None
+
+def get_db():
+    """Get a database connection instance"""
+    global _db_instance
+    if _db_instance is None:
+        _db_instance = DatabaseManager('mysql', 'mysql+pymysql://root@localhost/job_portal_db')
+    return _db_instance
+
 class DatabaseManager:
     """
     A simple database manager for MySQL and SQLite3 using SQLAlchemy.
@@ -39,6 +49,16 @@ class DatabaseManager:
         try:
             with self.Session() as session:
                 result = session.execute(query, params if params else {})
+                # For INSERT, UPDATE, DELETE queries
+                if str(query).strip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
+                    session.commit()
+                    return {
+                        "success": True,
+                        "message": "Query executed successfully",
+                        "affected_rows": result.rowcount,
+                        "output": []
+                    }
+                # For SELECT queries
                 output = [dict(row._mapping) for row in result]
                 return {
                     "success": True,
@@ -63,10 +83,26 @@ def test_mysql():
     # Initialize the MySQL DatabaseManager
     mysql_db = DatabaseManager('mysql', 'mysql+pymysql://root@localhost/job_portal_db')
     
- 
-    # Query the table
-    results = mysql_db.execute_query("")
+    # Query the table with parameterized query
+    query = text("INSERT INTO `job_seekers` (`seeker_id`, `email`, `password_hash`, `created_at`, `last_login`, `first_name`, `last_name`, `phone`, `province`, `municipality`, `degree`, `portfolio_url`) VALUES (:seeker_id, :email, :password_hash, current_timestamp(), :last_login, :first_name, :last_name, :phone, :province, :municipality, :degree, :portfolio_url)")
+    
+    params = {
+        'seeker_id': '123',
+        'email': 'asd',
+        'password_hash': 'asd',
+        'last_login': 'asd',
+        'first_name': 'asd',
+        'last_name': 'asd',
+        'phone': 'asd',
+        'province': 'asd',
+        'municipality': 'asd',
+        'degree': 'asd',
+        'portfolio_url': 'asd'
+    }
+    
+    results = mysql_db.execute_query(query, params)
     print("MySQL Results:", results)
 
     # Close the MySQL connection
     mysql_db.close()
+

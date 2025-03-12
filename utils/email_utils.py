@@ -1,4 +1,4 @@
-from database import DatabaseManager
+from utils.database import DatabaseManager
 from sqlalchemy import text
 
 def check_email_exists(table_name: str, email_column: str, email: str) -> bool:

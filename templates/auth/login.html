@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechSprint</title>
-    <link rel="stylesheet" href="/assets/fonts.css">
-    <link rel="stylesheet" href="/assets/scheme.css">
+    <link rel="stylesheet" href="/static/assets/fonts.css">
+    <link rel="stylesheet" href="/static/assets/scheme.css">
     <!-- AOS CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 
@@ -18,7 +18,7 @@
     </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="/assets/general.css">
+    <link rel="stylesheet" href="/static/assets/general.css">
     <style>
         /* Custom styles for the carousel */
         .carousel-item {
@@ -87,15 +87,16 @@
     <div  class="container vh-100 d-flex justify-content-center align-items-center border">
         <div class="row d-flex  justify-content-center w-100">
             <div data-aos="fade-right" class="col-md-6 ">
-                <form action="#">
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div id="errorMessage" class="alert alert-danger d-none"></div>
                     <div class="mb-3">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" />
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" required />
                     </div>
                     <div class="mb-3">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" name="password"
-                            placeholder="Password" />
+                            placeholder="Password" required />
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
                         <div class="form-check">
@@ -104,7 +105,7 @@
                         </div>
                         <a class="" href="#">Forgot password?</a>
                     </div>
-                    <button class="w-100 mt-3" type="button">Login</button>
+                    <button class="w-100 mt-3" type="submit">Login</button>
                     
                 </form>
             </div>
@@ -164,7 +165,8 @@
     </footer>
     <!-- AOS JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script src="/assets/js/animation.js"></script>
+    <script src="/static/assets/js/animation.js"></script>
+    <script src="/static/javascript/login.js"></script>
     <script>
         AOS.init({
             duration: 1000, // Animation duration (1000ms = 1s)
