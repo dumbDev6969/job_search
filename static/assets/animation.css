@@ -1,0 +1,26 @@
+/* Define the fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px); /* Optional: Slide up effect */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Apply the animation to elements with the .fade-in class */
+.fade-in {
+    opacity: 0; /* Start invisible */
+    animation: fadeIn 1s ease-in-out forwards;
+}
+
+/* Delay the animation for staggered effects */
+.fade-in.delay-1 {
+    animation-delay: 0.5s;
+}
+
+.fade-in.delay-2 {
+    animation-delay: 1s;
+}

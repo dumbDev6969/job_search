@@ -29,7 +29,7 @@ class DatabaseManager:
         self.engine = create_engine(connection_string)
         self.Session = sessionmaker(bind=self.engine)
 
-    def execute_query(self, query):
+    def execute_query(self, query, params=None):
         """
         Executes a SQL query and returns the results.
         
@@ -38,8 +38,7 @@ class DatabaseManager:
         """
         try:
             with self.Session() as session:
-                result = session.execute(text(query))
-                # Convert result rows to dictionaries using proper column access
+                result = session.execute(query, params if params else {})
                 output = [dict(row._mapping) for row in result]
                 return {
                     "success": True,
@@ -71,4 +70,3 @@ def test_mysql():
 
     # Close the MySQL connection
     mysql_db.close()
-
