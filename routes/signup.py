@@ -29,7 +29,7 @@ def signup_employer():
         email = form.get('email')
         
         # Check if email already exists
-        if check_email_exists('employers', 'email', email):
+        if check_email_exists('employers', 'email', email) or check_email_exists('job_seekers', 'email', email):
             return jsonify({'error': 'Email already exists'}), 400
             
         password = form.get('password')
@@ -98,8 +98,8 @@ def signup_jobseeker():
             return jsonify({'success': False, 'error': 'Email is required'}), 400
         
         # Check if email already exists
-        if check_email_exists('job_seekers', 'email', email):
-            return jsonify({'success': False, 'error': 'Email already exists'}), 400
+        if check_email_exists('employers', 'email', email) or check_email_exists('job_seekers', 'email', email):
+            return jsonify({'error': 'Email already exists'}), 400
             
         password = data.get('password')
         if not password:

@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify,render_template
 import random
 import uuid
+from utils.database import get_db
+from utils.email_utils import check_email_exists
 
 # Global OTP store
 otp_store = {}
@@ -33,6 +35,7 @@ def verify() -> dict:
         # Get UUID and OTP from form data
         uuid = request.form.get('uuid')
         user_otp = request.form.get('otp')
+        email = request.form.get('email')
         print(f"UUID: {uuid}, OTP: {user_otp}")
         print(otp_store)
         
@@ -46,8 +49,17 @@ def verify() -> dict:
             return jsonify({'verified': False}), 200
             
         if stored_otp == user_otp:
+            # if check_email_exists('employers', 'email', email) or check_email_exists('job_seekers', 'email', email):
+            #     return jsonify({'error': 'Email already exists'}), 400
             # Remove the used OTP
             del otp_store[uuid]
+            db = get_db()
+            from sqlalchemy import text
+            query = text("INSERT INTO verified_users (email) VALUES (:email)")
+            result = db.execute_query(query, {'email': email})
+            if not result['success']:
+                return jsonify({'error': f'Failed to verify user: {result["message"]}'}), 500
+            print(f"Successfully verified user {email}")
             return jsonify({'verified': True}), 200
         
         return jsonify({'verified': False}), 200
@@ -64,7 +76,8 @@ def generate() -> dict:
         print(f"Form: {request.form}")
         if not email:
             return jsonify({'error': 'Email is required'}), 400
-            
+        # if check_email_exists('employers', 'email', email) or check_email_exists('job_seekers', 'email', email):
+        #     return jsonify({'error': 'Email already exists'}), 400
         # Generate 6 random numbers
         code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
         

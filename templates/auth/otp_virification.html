@@ -3,209 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>TechSprint - Email Verification</title>
     <link rel="stylesheet" href="/assets/fonts.css">
     <link rel="stylesheet" href="/assets/otp.css">
-    <!-- AOS CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/general.css">
-    <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .otp-container {
+            max-width: 500px;
+            padding: 2rem;
+            background: var(--background-light);
+            border-radius: 1rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        .otp-header {
+            margin-bottom: 2rem;
+        }
+        .otp-header img {
+            width: 120px;
+            margin-bottom: 1.5rem;
+        }
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            background: var(--background-dark);
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+        .otp-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.25);
+            outline: none;
+        }
+        .btn-verify {
+            height: 48px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-resend {
+            height: 48px;
+            background: var(--background-dark);
+            color: var(--text-light);
+            border: 2px solid var(--border-color);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-resend:hover {
+            background: var(--background-darker);
+            border-color: var(--primary);
+        }
+        .timer {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .otp-input.active {
+            animation: pulse 0.3s ease;
+        }
+    </style>
 </head>
 <body>
-    <!-- nav -->
     <input type="hidden" id="uuid">
-
     <input type="hidden" id="email" value="{{email}}">
 
-    <!-- content -->
     <div class="container vh-100 d-flex align-items-center justify-content-center">
-        <div class="text-center">
-            <h1>Lorem, ipsum.</h1>
-            <p>Please type the code we sent in in your registered email.</p>
+        <div class="otp-container" data-aos="fade-up">
+            <div class="otp-header text-center">
+                <img src="/assets/img/logo.svg" alt="TechSprint Logo" class="mb-4">
+                <h2 class="mb-3">Email Verification</h2>
+                <p class="text-muted">We've sent a verification code to<br><strong>{{email}}</strong></p>
+            </div>
+            
             <form id="otp-form">
-                <div class="d-flex gap-2 justify-content-center mb-5">
-                    <input type="text" class="form-control" maxlength="1" inputmode="numeric" autocomplete="one-time-code">
-                    <input type="text" class="form-control" maxlength="1" inputmode="numeric">
-                    <input type="text" class="form-control" maxlength="1" inputmode="numeric">
-                    <input type="text" class="form-control" maxlength="1" inputmode="numeric">
-                    <input type="text" class="form-control" maxlength="1" inputmode="numeric">
-                    <input type="text" class="form-control" maxlength="1" inputmode="numeric">
+                <div class="d-flex gap-2 justify-content-center mb-4">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
                 </div>
+                
                 <div class="row g-2">
                     <div class="col-md-8">
-                        <button type="submit" class="w-100" id="verify-btn">Verify</button>
+                        <button type="submit" class="btn-primary btn-verify w-100" id="verify-btn">
+                            <span class="default-text">Verify Code</span>
+                            <span class="loading-text d-none">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Verifying...
+                            </span>
+                        </button>
                     </div>
                     <div class="col-md-4">
-                        <button type="submit" class="w-100 btn-light">Resend</button>
+                        <button type="button" class="btn-resend w-100">Resend</button>
                     </div>
+                </div>
+                
+                <div class="timer text-center mt-3">
+                    Resend code in <span id="countdown">60</span>s
                 </div>
             </form>
         </div>
     </div>
 
-     <!-- footer -->
-     <!-- AOS JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-<script src="/assets/js/animation.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const email = document.getElementById('email').value;
-        const form = document.getElementById('otp-form');
-        const inputs = form.querySelectorAll('input[type="text"]');
-
-        // Initialize AOS animation
-        AOS.init({
-            duration: 1000,
-            once: true,
-        });
-
-        // Send initial OTP using form data
-        const formData = new FormData();
-        formData.append('email', email);
-
-        // Show loading animation before sending OTP
-        Swal.fire({
-            title: 'Sending OTP...',
-            text: 'Please wait while we send the verification code',
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            willOpen: () => {
-                Swal.showLoading();
-            }
-        });
-
-        fetch('/generate', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'OTP Sent!',
-                    text: 'OTP has been sent to your email!',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-                document.getElementById('uuid').value = data.uuid;
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: data.error || 'Failed to send OTP'
-                });
-            }
-        })
-        .catch(error => {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Error occurred while sending OTP: ' + error
-            });
-        });
-        
-        // Add input event listeners
-        inputs.forEach((input, index) => {
-            input.addEventListener('input', function() {
-                if (this.value.length === 1) {
-                    if (index < inputs.length - 1) {
-                        inputs[index + 1].focus();
-                    }
-                }
-            });
-            
-            input.addEventListener('keydown', function(e) {
-                if (e.key === 'Backspace' && !this.value && index > 0) {
-                    inputs[index - 1].focus();
-                }
-            });
-        });
-        
-        // Handle form submission
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const otp = Array.from(inputs).map(input => input.value).join('');
-            const uuid = document.getElementById('uuid').value;
-            const verifyBtn = document.getElementById('verify-btn');
-            
-            // Disable button and show loading state
-            verifyBtn.disabled = true;
-            verifyBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Verifying...';
-            
-            const formData = new FormData();
-            formData.append('uuid', uuid);
-            formData.append('otp', otp);
-
-            fetch('/verify', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.verified) {
-                    // Reset button state on success
-                    verifyBtn.disabled = false;
-                    verifyBtn.innerHTML = 'Verify';
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: 'OTP verified successfully!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        // Redirect or perform next action here
-                    });
-                } else {
-                    // Reset button state
-                    verifyBtn.disabled = false;
-                    verifyBtn.innerHTML = 'Verify';
-                    // Clear OTP inputs
-                    inputs.forEach(input => input.value = '');
-                    inputs[0].focus();
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Verification Failed',
-                        text: data.error || 'OTP verification failed!'
-                    });
-                }
-            })
-            .catch(error => {
-                // Reset button state on error
-                verifyBtn.disabled = false;
-                verifyBtn.innerHTML = 'Verify';
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Error occurred during verification: ' + error
-                });
-            });
-        });
-        
-        // Handle resend button click
-        document.querySelector('.btn-light').addEventListener('click', function(e) {
-            e.preventDefault();
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="/assets/js/animation.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
             const email = document.getElementById('email').value;
-            const resendBtn = this;
-            
-            // Disable button and show loading state
-            resendBtn.disabled = true;
-            resendBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Resending...';
-            
+            const form = document.getElementById('otp-form');
+            const inputs = form.querySelectorAll('.otp-input');
+            const countdownEl = document.getElementById('countdown');
+            let countdownInterval;
+
+            function startCountdown(duration) {
+                clearInterval(countdownInterval);
+                let timeLeft = duration;
+                document.querySelector('.btn-resend').disabled = true;
+                
+                countdownInterval = setInterval(() => {
+                    countdownEl.textContent = timeLeft;
+                    if (timeLeft <= 0) {
+                        clearInterval(countdownInterval);
+                        document.querySelector('.btn-resend').disabled = false;
+                    }
+                    timeLeft--;
+                }, 1000);
+            }
+
+            AOS.init({
+                duration: 1000,
+                once: true,
+            });
+
             const formData = new FormData();
             formData.append('email', email);
+
+            Swal.fire({
+                title: 'Sending verification code',
+                text: 'Please wait a moment...',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                }
+            });
 
             fetch('/generate', {
                 method: 'POST',
@@ -213,40 +169,164 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Reset button state
-                resendBtn.disabled = false;
-                resendBtn.innerHTML = 'Resend';
-                
-                if (data.uuid) {
-                    document.getElementById('uuid').value = data.uuid;
+                if (data.success) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'OTP Resent!',
-                        text: 'New OTP has been sent to your email!',
+                        title: 'Code Sent!',
+                        text: 'Please check your email for the verification code.',
                         timer: 2000,
                         showConfirmButton: false
                     });
+                    document.getElementById('uuid').value = data.uuid;
+                    startCountdown(60);
                 } else {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Resend Failed',
-                        text: data.error || 'Failed to send new OTP'
+                        title: 'Oops...',
+                        text: data.error || 'Failed to send verification code'
                     });
                 }
             })
             .catch(error => {
-                // Reset button state on error
-                resendBtn.disabled = false;
-                resendBtn.innerHTML = 'Resend';
-                
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'Error occurred while requesting new OTP: ' + error
+                    text: 'An error occurred: ' + error
+                });
+            });
+
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', function() {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                    if (this.value.length === 1) {
+                        this.classList.add('active');
+                        if (index < inputs.length - 1) {
+                            inputs[index + 1].focus();
+                        }
+                    } else {
+                        this.classList.remove('active');
+                    }
+                });
+
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && !this.value && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                });
+
+                input.addEventListener('focus', function() {
+                    this.select();
+                });
+            });
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const otp = Array.from(inputs).map(input => input.value).join('');
+                const uuid = document.getElementById('uuid').value;
+                const verifyBtn = document.getElementById('verify-btn');
+                const defaultText = verifyBtn.querySelector('.default-text');
+                const loadingText = verifyBtn.querySelector('.loading-text');
+
+                verifyBtn.disabled = true;
+                defaultText.classList.add('d-none');
+                loadingText.classList.remove('d-none');
+
+                const formData = new FormData();
+                formData.append('uuid', uuid);
+                formData.append('otp', otp);
+                formData.append('email', email);
+
+                fetch('/verify', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.verified) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Verified!',
+                            text: 'Your email has been successfully verified.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            window.location.href = '/login';
+                        });
+                    } else {
+                        inputs.forEach(input => {
+                            input.value = '';
+                            input.classList.remove('active');
+                        });
+                        inputs[0].focus();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Invalid Code',
+                            text: data.error || 'Please check the code and try again.'
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred: ' + error
+                    });
+                })
+                .finally(() => {
+                    verifyBtn.disabled = false;
+                    defaultText.classList.remove('d-none');
+                    loadingText.classList.add('d-none');
+                });
+            });
+
+            document.querySelector('.btn-resend').addEventListener('click', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const resendBtn = this;
+
+                resendBtn.disabled = true;
+                resendBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
+
+                const formData = new FormData();
+                formData.append('email', email);
+
+                fetch('/generate', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.uuid) {
+                        document.getElementById('uuid').value = data.uuid;
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Code Sent!',
+                            text: 'A new verification code has been sent to your email.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        startCountdown(60);
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed to Send',
+                            text: data.error || 'Could not send new verification code'
+                        });
+                        resendBtn.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred: ' + error
+                    });
+                })
+                .finally(() => {
+                    resendBtn.innerHTML = 'Resend';
                 });
             });
         });
-    });
-</script>
+    </script>
 </body>
 </html>
