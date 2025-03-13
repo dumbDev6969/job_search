@@ -4,7 +4,7 @@ working
     send email
     databsae
     email utils
-    register (for jobseeker,todo:otp sending and verification,moving portfolio file to upload folder)
+    register (for jobseeker and employer,todo:,moving portfolio file to upload folder)
     login
     otp
 
