@@ -1,12 +1,49 @@
-🔹 Logo – Left side
-🔹 Links:
 
-👥 Find Talent (Browse job seekers)
-📢 Post a Job (Quick job posting)
-📊 Manage Listings (Track job posts & applications)
-💼 Company Dashboard (Stats, hiring insights)
-🔹 User Avatar Dropdown:
-⚙️ Company Profile
-🔔 Notifications
-🚪 Logout
-🔹 CTA Button: “Post a Job” (Primary color, stands out)
+
+    <nav class="navbar navbar-expand-lg ">
+        <div class="container-fluid">
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-around" id="navbarNav">
+                <ul class="navbar-nav gap-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Find Talent</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Manage Listings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Company Dashboard</a>
+                    </li>
+                </ul>
+    
+                <div class="d-flex align-items-center gap-3">
+                    <!-- User Avatar Dropdown -->
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="/assets/img/default_profile.jpg" alt="User Avatar" class="rounded-circle me-2"
+                                width="40" height="40">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="#">Company Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Notifications</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
+                        </ul>
+                    </div>
+    
+                    <!-- CTA Button -->
+                    <a href="#" ><button class="btn-primary">Post a Job</button></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    
+
