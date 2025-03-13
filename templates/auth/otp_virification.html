@@ -18,7 +18,10 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/general.css">
-
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <!-- nav -->
@@ -72,6 +75,17 @@
         const formData = new FormData();
         formData.append('email', email);
 
+        // Show loading animation before sending OTP
+        Swal.fire({
+            title: 'Sending OTP...',
+            text: 'Please wait while we send the verification code',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            willOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
         fetch('/generate', {
             method: 'POST',
             body: formData
@@ -79,14 +93,28 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('OTP has been sent to your email!');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'OTP Sent!',
+                    text: 'OTP has been sent to your email!',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
                 document.getElementById('uuid').value = data.uuid;
             } else {
-                alert(data.error || 'Failed to send OTP');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: data.error || 'Failed to send OTP'
+                });
             }
         })
         .catch(error => {
-            alert('Error occurred while sending OTP: ' + error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error occurred while sending OTP: ' + error
+            });
         });
         
         // Add input event listeners
@@ -128,7 +156,18 @@
             .then(response => response.json())
             .then(data => {
                 if (data.verified) {
-                    alert('OTP verified successfully!');
+                    // Reset button state on success
+                    verifyBtn.disabled = false;
+                    verifyBtn.innerHTML = 'Verify';
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'OTP verified successfully!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        // Redirect or perform next action here
+                    });
                 } else {
                     // Reset button state
                     verifyBtn.disabled = false;
@@ -136,14 +175,22 @@
                     // Clear OTP inputs
                     inputs.forEach(input => input.value = '');
                     inputs[0].focus();
-                    alert(data.error || 'OTP verification failed!');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Verification Failed',
+                        text: data.error || 'OTP verification failed!'
+                    });
                 }
             })
             .catch(error => {
                 // Reset button state on error
                 verifyBtn.disabled = false;
                 verifyBtn.innerHTML = 'Verify';
-                alert('Error occurred during verification: ' + error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error occurred during verification: ' + error
+                });
             });
         });
         
@@ -151,6 +198,11 @@
         document.querySelector('.btn-light').addEventListener('click', function(e) {
             e.preventDefault();
             const email = document.getElementById('email').value;
+            const resendBtn = this;
+            
+            // Disable button and show loading state
+            resendBtn.disabled = true;
+            resendBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Resending...';
             
             const formData = new FormData();
             formData.append('email', email);
@@ -161,16 +213,37 @@
             })
             .then(response => response.json())
             .then(data => {
-                alert(data)
+                // Reset button state
+                resendBtn.disabled = false;
+                resendBtn.innerHTML = 'Resend';
+                
                 if (data.uuid) {
                     document.getElementById('uuid').value = data.uuid;
-                    alert('New OTP has been sent to your email!');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OTP Resent!',
+                        text: 'New OTP has been sent to your email!',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
                 } else {
-                    alert(data.error || 'Failed to send new OTP');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Resend Failed',
+                        text: data.error || 'Failed to send new OTP'
+                    });
                 }
             })
             .catch(error => {
-                alert('Error occurred while requesting new OTP: ' + error);
+                // Reset button state on error
+                resendBtn.disabled = false;
+                resendBtn.innerHTML = 'Resend';
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error occurred while requesting new OTP: ' + error
+                });
             });
         });
     });

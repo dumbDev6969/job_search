@@ -34,7 +34,7 @@ def signup_employer():
             
         password = form.get('password')
         company_name = form.get('company_name')
-        field = form.get('field')
+        industry = form.get('industry')
         company_size = form.get('company_size')
         website = form.get('website')
         
@@ -56,16 +56,16 @@ def signup_employer():
             # Insert employer data
             query = text("""
                 INSERT INTO employers 
-                (email, password_hash, company_name, field, company_size, website, logo_url)
+                (email, password_hash, company_name, industry, company_size, website, logo_url)
                 VALUES 
-                (:email, :password_hash, :company_name, :field, :company_size, :website, :logo_url)
+                (:email, :password_hash, :company_name, :industry, :company_size, :website, :logo_url)
             """)
             
             result = db.execute_query(query, {
                 'email': email,
                 'password_hash': password_hash,
                 'company_name': company_name,
-                'field': field,
+                'industry': industry,
                 'company_size': company_size,
                 'website': website,
                 'logo_url': logo_url
