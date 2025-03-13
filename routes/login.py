@@ -2,6 +2,7 @@ from flask import Blueprint, request, render_template, jsonify, session
 from utils.database import get_db
 from utils.pasword_hash import verify_password
 from utils.email_utils import check_email_exists
+from utils.otp_utils import generate_otp,send_otp_email
 from sqlalchemy import text
 from datetime import datetime
 
@@ -22,6 +23,14 @@ def login_user():
         try:
             # Get database connection
             db = get_db()
+            
+            # Check if user is verified
+            verify_query = text("SELECT COUNT(*) as count FROM verified_users WHERE email = :email")
+            verify_result = db.execute_query(verify_query, {'email': email})
+            
+            if not verify_result['success'] or verify_result['output'][0]['count'] == 0:
+               
+                return render_template("/auth/otp_virification.html",email=email)
             
             # Check if user exists and get their credentials
             query = text("""

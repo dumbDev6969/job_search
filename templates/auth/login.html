@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechSprint</title>
-    <link rel="stylesheet" href="/static/assets/fonts.css">
-    <link rel="stylesheet" href="/static/assets/scheme.css">
+    <link rel="stylesheet" href="/assets/fonts.css">
+    <link rel="stylesheet" href="/assets/scheme.css">
     <!-- AOS CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 
@@ -18,7 +18,7 @@
     </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="/static/assets/general.css">
+    <link rel="stylesheet" href="/assets/general.css">
     <style>
         /* Custom styles for the carousel */
         .carousel-item {
@@ -74,29 +74,28 @@
                     </li>
                 </ul>
                 <form class=" ms-3 gap-2" role="search">
-                    <a href="/auth/register.html">
+                    <a href="/signup" >
                         <button class="sign-up" type="button">Sign up</button>
                     </a>
-                    <a href="/auth/login.html">
+                    <a href="/login">
                         <button class="btn-primary" type="button">Log in</button>
                     </a>
                 </form>
             </div>
         </div>
     </nav>
-    <div  class="container vh-100 d-flex justify-content-center align-items-center border">
+    <div  class="container vh-100 d-flex justify-content-center align-items-center ">
         <div class="row d-flex  justify-content-center w-100">
             <div data-aos="fade-right" class="col-md-6 ">
-                <form id="loginForm" onsubmit="handleLogin(event)">
-                    <div id="errorMessage" class="alert alert-danger d-none"></div>
+                <form action="/login" method="post" id="loginForm" onsubmit="handleLogin(event)">
                     <div class="mb-3">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" required />
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" />
                     </div>
                     <div class="mb-3">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" name="password"
-                            placeholder="Password" required />
+                            placeholder="Password" />
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
                         <div class="form-check">
@@ -106,6 +105,19 @@
                         <a class="" href="#">Forgot password?</a>
                     </div>
                     <button class="w-100 mt-3" type="submit">Login</button>
+                    <div id="errorMessage" class="alert alert-danger mt-3 d-none"></div>
+                    
+                        <div class="d-flex align-items-center justify-content-between mt-4">
+                            <div class="border-bottom border-secondary w-50"></div>
+                            <span class="mx-2">or</span>
+                            <div class="border-bottom border-secondary w-50"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="/auth/register.html">
+                                Register
+                            </a>
+                        </div>
+                    </div>
                     
                 </form>
             </div>
@@ -165,8 +177,7 @@
     </footer>
     <!-- AOS JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script src="/static/assets/js/animation.js"></script>
-    <script src="/static/javascript/login.js"></script>
+    <script src="/assets/js/animation.js"></script>
     <script>
         AOS.init({
             duration: 1000, // Animation duration (1000ms = 1s)
@@ -176,4 +187,8 @@
 
 </body>
 
+</html>
+
+<script src="/javascript/login.js"></script>
+</body>
 </html>

@@ -6,6 +6,7 @@ working
     email utils
     register (for jobseeker,todo:otp sending and verification,moving portfolio file to upload folder)
     login
+    otp
 
 pending:
-    otp utils
+    

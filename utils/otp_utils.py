@@ -84,10 +84,9 @@ def verify_otp(email: str, otp: str) -> bool:
         if 'db' in locals():
             db.close()
 
-def send_otp_email(email: str) -> bool:
+def send_otp_email(email:str,otp:str) -> bool:
     """Generate and send OTP via email"""
     try:
-        otp = generate_otp()
         if save_otp(email, otp):
             subject = "Your OTP Code"
             body = f"Your OTP code is: {otp}\n\nThis code will expire in 10 minutes."
