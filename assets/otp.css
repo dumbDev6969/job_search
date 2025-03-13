@@ -1,0 +1,150 @@
+:root {
+    /* Primary Colors */
+    --primary: #4A90E2; /* Soft blue */
+    --primary-dark: #357ABD; /* Darker blue */
+    --primary-light: #6AA7EC; /* Lighter blue */
+
+    /* Secondary & Accent Colors */
+    --secondary: #FF6B6B; /* Coral for accents */
+    --secondary-dark: #E55A5A; /* Darker coral */
+    --secondary-light: #FF8E8E; /* Lighter coral */
+
+    /* Background Colors */
+    --background-dark: #1A1A1A; /* Dark mode (not used here) */
+    --background-light: #FFFFFF; /* Light mode */
+    --card-bg: #F5F5F5; /* Light card background */
+
+    /* Text Colors */
+    --text-light: #FFFFFF; /* White text */
+    --text-dark: #2C3E50; /* Dark blue-grey text */
+    --text-muted: #7F8C8D; /* Subtle grey text */
+
+    /* Buttons */
+    --btn-primary: var(--primary);
+    --btn-secondary: var(--secondary);
+
+    /* Borders & Shadows */
+    --border-radius: 8px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    /* Important Styles */
+    --important-color: #FF6B6B; /* Coral for important items */
+    --important-background: #FFEEEE; /* Light coral background */
+    --important-text: #2C3E50; /* Dark text for contrast */
+}
+
+/* Apply global styles */
+body {
+    background-color: var(--background-light);
+    color: var(--text-dark);
+    font-family: 'Poppins', Arial, sans-serif;
+}
+.footer{
+    background-color: var(--background-dark);
+    color: var(--text-light);
+}
+/* Button styling */
+button {
+    background-color: var(--btn-primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--border-radius) !important;;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: var(--box-shadow);
+}
+.btn-danger{
+    background-color: var(--btn-secondary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--border-radius) !important;;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: var(--box-shadow);
+}
+
+.btn-danger:hover {
+    background-color: var(--secondary-dark);
+    transform: scale(0.98);
+}
+.btn-light{
+    background-color: var(--primary-light);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--border-radius) !important;;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: var(--box-shadow);
+}
+
+.btn-light:hover {
+    background-color: var(--primary-light);
+    transform: scale(0.98);
+}
+.sign-up{
+    background: none;
+    border: solid 1px var(--primary-dark);
+    color: var(--text-dark)
+}
+.sign-up:hover{
+    background: var(--primary-dark);
+    color: white;
+}
+button:hover {
+    background-color: var(--primary-dark);
+    transform: scale(0.98);
+}
+a{
+    text-decoration: none !important;
+}
+
+/* Input field styling */
+input[type="text"] {
+    width: 50px;
+    max-width: 50px !important;
+    padding: 12px;
+    border: 1px solid var(--text-muted);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    color: var(--text-dark);
+    background-color: var(--card-bg);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    appearance: none; /* Removes default browser styling */
+}
+
+/* Add padding for the select dropdown */
+select {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>'); 
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 36px;
+    cursor: pointer;
+}
+
+
+/* Focus effect for input fields */
+
+
+/* Placeholder text for inputs */
+input::placeholder {
+    color: var(--text-muted);
+}
+
+/* Navbar styling */
+
+
+/* Important items */
+.important {
+    color: var(--important-color);
+    background-color: var(--important-background);
+    padding: 8px;
+    border-radius: var(--border-radius);
+    font-weight: bold;
+}
