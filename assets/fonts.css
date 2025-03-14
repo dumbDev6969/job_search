@@ -41,7 +41,7 @@ h6 {
 }
 
 p {
-    font-size: clamp(1rem, 2vw, 1.25rem); /* Scales between 1rem and 1.25rem */
+    font-size: clamp(0.875rem, 1.5vw, 1rem); /* Scales between 14px (0.875rem) and 16px (1rem) */
     line-height: 1.6;
     margin: 0.5rem 0;
 }
