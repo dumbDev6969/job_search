@@ -6,12 +6,8 @@ jobseeker = Blueprint('jobseeker', __name__)
 # Define your routes using the Blueprint
 @jobseeker.route('/job_seeker/dashboard')
 def job_seeker_dashboard():
-    print(session)
-    if 'user_id' in session:
-        if session['user_type'] == 'seeker':
-            return redirect('/job_seeker/dashboard')
-        else:
-            return redirect('/login')
-    else:
+    if 'user_id' not in session:
+        return redirect('/login')
+    if session['user_type'] != 'seeker':
         return redirect('/login')
     return render_template("/pages/job_seeker/dashboard.html")

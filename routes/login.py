@@ -87,7 +87,7 @@ def login_user():
                         'portfolio_url': user['portfolio_url']
                     }
                     session.permanent = True
-                    return redirect('/job_seeker/dashboard'),200
+                    return redirect('/job_seeker/dashboard')
                     
             # Handle employer login
             elif employer_result['success'] and employer_result['output']:
@@ -118,7 +118,7 @@ def login_user():
                         'logo_url': user['logo_url']
                     }
                     session.permanent = True
-                    return redirect("/pages/recruiter/dashboard.html"),200
+                    return redirect("/pages/recruiter/dashboard.html")
             
             # Invalid credentials
             print('Invalid credentials')
