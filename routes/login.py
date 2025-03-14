@@ -1,10 +1,10 @@
-from flask import Blueprint, request, render_template, jsonify, session
+from flask import Blueprint, request, render_template, jsonify, session,redirect
 from utils.database import get_db
 from utils.pasword_hash import verify_password
 from utils.email_utils import check_email_exists
 from utils.otp_utils import generate_otp,send_otp_email
 from sqlalchemy import text
-from datetime import datetime
+from datetime import datetime,timedelta
 
 # Create a Blueprint
 login = Blueprint('login', __name__)
@@ -12,6 +12,11 @@ login = Blueprint('login', __name__)
 # Define your routes using the Blueprint
 @login.route('/login', methods=['GET', 'POST'])
 def login_user():
+    if 'user_id' in session:
+        if session['user_type'] == 'seeker':
+            return redirect('/job_seeker/dashboard')
+        else:
+            return redirect('/pages/recruiter/dashboard.html')
     if request.method == 'POST':
         form = request.form
         email = form.get('email')
@@ -81,7 +86,8 @@ def login_user():
                         'degree': user['degree'],
                         'portfolio_url': user['portfolio_url']
                     }
-                    return render_template("/pages/job_seeker/dashboard.html"),200
+                    session.permanent = True
+                    return redirect('/job_seeker/dashboard'),200
                     
             # Handle employer login
             elif employer_result['success'] and employer_result['output']:
@@ -111,7 +117,8 @@ def login_user():
                         'website': user['website'],
                         'logo_url': user['logo_url']
                     }
-                    return render_template("/pages/recruiter/dashboard.html"),200
+                    session.permanent = True
+                    return redirect("/pages/recruiter/dashboard.html"),200
             
             # Invalid credentials
             print('Invalid credentials')
