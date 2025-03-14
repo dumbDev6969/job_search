@@ -17,4 +17,6 @@
     transform: scaleX(1); /* Initial state */
     transition: transform 0.3s ease; /* Smooth transition */
 }
-
+li{
+    list-style-type: none;
+}
