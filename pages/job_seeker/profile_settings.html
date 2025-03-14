@@ -71,8 +71,14 @@
                     <div data-aos="fade-left" class="col-md-6">
                         <h4 class="fw-bold">Interests</h4>
                         <div class="mb-3">
-                            <label for="jobType" class="form-label">Job Type:</label>
-                            <input type="text" class="form-control" id="jobType" value="Software Engineer">
+                            <label for="job_type" class="form-label">Job Type</label>
+                            <select id="job_type" name="job_type" required>
+                                <option value="" selected disabled>Select job type</option>
+                                <option value="Full-time">Full-time</option>
+                                <option value="Part-time">Part-time</option>
+                                <option value="Freelance">Freelance</option>
+                                <option value="Internship">Internship</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="location" class="form-label">Preferred Location:</label>
