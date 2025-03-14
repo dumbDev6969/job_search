@@ -15,7 +15,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-        </script>
+    </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/general.css">
@@ -40,7 +40,7 @@
 
     <nav class="navbar navbar-expand-lg ">
         <div class="container-fluid">
-
+            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -48,7 +48,7 @@
             <div class="collapse navbar-collapse justify-content-around" id="navbarNav">
                 <ul class="navbar-nav gap-3">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Find Jobs</a>
+                        <a class="nav-link active" href="#">Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">My Applications</a>
@@ -60,13 +60,13 @@
                         <a class="nav-link" href="#">Success Stories</a>
                     </li>
                 </ul>
-
+    
                 <div class="d-flex align-items-center gap-3">
-
+                     
                     <!-- User Avatar Dropdown -->
                     <div class="dropdown">
-                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
-                            id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="/assets/img/default_profile.jpg" alt="User Avatar" class="rounded-circle me-2"
                                 width="40" height="40">
                         </a>
@@ -81,65 +81,114 @@
                     </div>
                     <!-- CTA Button -->
                     <a href="#" class="btn btn-primary">Explore Jobs</a>
-
+                   
                 </div>
             </div>
         </div>
     </nav>
-    <div class="container ">
-        <div class="mb-2 d-flex align-items-center">
-            <img src="/assets/img/default_profile.jpg" alt="" height="200">
-            <div class="me-2">
-                <h2>user name</h2>
-                <p>useremail@gmail,com</p>
+    <div class="container  mt-5 ">
+        <div class="row">
+            <div data-aos="fade-right" class="col-md-12 d-flex align-items-center">
+                <img src="/assets/img/default_profile.jpg" alt="" height="200">
+                <div class="me-2">
+                    <h2>Jim Spencer Lits</h2>
+                    <p>useremail@gmail,com</p>
+                </div>
             </div>
-        </div>
-        <div class="d-flex  gap-4 flex-column">
-            <div class="col-md-3">
-                <h3 class="text-secondary mb-4">Qualifications</h3>
-                <ul class="list-unstyled">
-                    <li class="mb-3">
-                        <span class="d-block text-dark fw-medium">Degree:</span>
-                        <span class="text-secondary">BSIT</span>
+            <div data-aos="fade-up" class="col-md-2 d-flex  gap-4 flex-column">
+                <div class="qualifications">
+                    <h3 class="text-secondary mb-4">Qualifications</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <span class="d-block text-dark fw-medium">Degree:</span>
+                            <span class="text-secondary">BSIT</span>
+                        </li>
+                        <li class="mb-3">
+                            <span class="d-block text-dark fw-medium">School Graduated:</span>
+                            <span class="text-secondary">[Your School Name]</span>
+                        </li>
+                        <li class="mb-3">
+                            <span class="d-block text-dark fw-medium">Certifications:</span>
+                            <span class="text-secondary">[Your Certifications]</span>
+                        </li>
+                        <li class="mb-3">
+                            <span class="d-block text-dark fw-medium">Specialized Training:</span>
+                            <span class="text-secondary">[Your Training]</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="interests">
+                    <h3 class="text-secondary mb-4">Interests</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <span class="d-block text-dark fw-medium">Job type:</span>
+                            <span class="text-secondary">[Job type]</span>
+                        </li>
+                        <li class="mb-3">
+                            <span class="d-block text-dark fw-medium">Preferred location:</span>
+                            <span class="text-secondary">[Your preferred location]</span>
+                        </li>
+                        <li class="mb-3">
+                            <span class="d-block text-dark fw-medium">Salary expectations:</span>
+                            <span class="text-secondary">[Your expectations]</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div data-aos="fade-down" class="col-md-9 ">
+                <form action="#" class="d-flex gap-2 mb-3">
+                    <input type="search" name="job-search" id="job-search" class="form-control" placeholder="Search for jobs" aria-label="Search for jobs">
+                    <button type="submit" class=" btn-primary">Search</button>
+                </form>
+                
+                <ul class="list-unstyled mt-2 " style="overflow : auto; height: 80vh;">
+                    <li class="p-3 mb-3 rounded job">
+                        <div class="row align-items-center">
+                            <!-- Profile Image -->
+                            <div class="col-md-2 d-flex justify-content-center">
+                                <img class="rounded-circle" src="/assets/img/default_profile.jpg" alt="default_profile" height="100">
+                            </div>
+                            
+                            <!-- Job Details -->
+                            <div class="col-md-10">
+                                <div class="row">
+                                    <div class="col-md-12 d-flex justify-content-between align-items-center">
+                                        <div class="name d-flex align-items-center">
+                                            <h3 class="mb-0">Job Title</h3>
+                                            <p class="badge rounded-pill text-bg-primary ms-3 job-status d-flex align-items-center">Active</p>
+                                        </div>
+                                        <button type="button" class=" btn-danger">Remove</button>
+                                    </div>
+                    
+                                    <div class="col-md-12">
+                                        <p class="text-secondary mb-1">Company Name</p>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <span class="badge rounded-pill text-bg-primary job-info">San Carlos City Pang.</span>
+                                            <span class="badge rounded-pill text-bg-primary job-info">40k-50k</span>
+                                            <span class="badge rounded-pill text-bg-primary job-info">Full-time</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </li>
-                    <li class="mb-3">
-                        <span class="d-block text-dark fw-medium">School Graduated:</span>
-                        <span class="text-secondary">[Your School Name]</span>
-                    </li>
-                    <li class="mb-3">
-                        <span class="d-block text-dark fw-medium">Certifications:</span>
-                        <span class="text-secondary">[Your Certifications]</span>
-                    </li>
-                    <li class="mb-3">
-                        <span class="d-block text-dark fw-medium">Specialized Training:</span>
-                        <span class="text-secondary">[Your Training]</span>
-                    </li>
+                    
+                    
                 </ul>
+                
             </div>
-            <div class="col-md-3">
-                <h3 class="text-secondary mb-4">Interests</h3>
-                <ul class="list-unstyled">
-                    <li class="mb-3">
-                        <span class="d-block text-dark fw-medium">Job type:</span>
-                        <span class="text-secondary">[Job type]</span>
-                    </li>
-                    <li class="mb-3">
-                        <span class="d-block text-dark fw-medium">Preferred location:</span>
-                        <span class="text-secondary">[Your preferred location]</span>
-                    </li>
-                    <li class="mb-3">
-                        <span class="d-block text-dark fw-medium">Salary expectations:</span>
-                        <span class="text-secondary">[Your expectations]</span>
-                    </li>
-                </ul>
-            </div>
+
         </div>
     </div>
 
-      
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="/assets/js/animation.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000, // Animation duration (1000ms = 1s)
+            once: true, // Run animation only once when scrolling
+        });
+    </script>
 </body>
 
 </html>
-   
-</div>
-</div>
