@@ -7,44 +7,97 @@
     <title>TechSprint</title>
     <link rel="stylesheet" href="/assets/fonts.css">
     <link rel="stylesheet" href="/assets/scheme.css">
-    <!-- AOS CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/general.css">
-    <style>
-        /* Custom styles for the carousel */
-        .carousel-item {
-            text-align: center;
-            padding: 50px 20px;
-            color: var(--text-light);
-            background-color: var(--background-dark);
-        }
-
-        .slide {
-            height: 60px;
-        }
-    </style>
 </head>
 
 <body>
-    <nav aria-label="breadcrumb mt-5">
+    <nav aria-label="breadcrumb" class="mt-2 ms-2">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Library</li>
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Settings</li>
         </ol>
-      </nav>
+    </nav>
 
+    <div class="container mt-4">
+        <div class="card p-4 shadow">
+            <h3 class="mb-4">Edit Profile</h3>
+            <form action="#">
+                <!-- Profile Photo Upload -->
+                <div data-aos="fade-down" class="row align-items-center mb-4">
+                    <div class="col-md-3 text-center">
+                        <p class="text-secondary">Profile Photo</p>
+                        <img src="/assets/img/default_profile.jpg" alt="Profile" class="rounded-circle img-fluid">
+                    </div>
+                    <div class="col-md-3">
+                        <h5 class="text-secondary">Upload Photo</h5>
+                        <p class="text-secondary">Your photo should be in (format).</p>
+                        <input type="file" class="form-control" id="logo_url" name="logo_url" accept="image/*">
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <!-- Qualifications -->
+                    <div data-aos="fade-right" class="col-md-6 border-end">
+                        <h4 class="fw-bold">Qualifications</h4>
+                        <div class="mb-3">
+                            <label for="degree" class="form-label">Degree:</label>
+                            <input type="text" class="form-control" id="degree"
+                                value="Bachelor of Science in Computer Science">
+                        </div>
+                        <div class="mb-3">
+                            <label for="school" class="form-label">School Graduated:</label>
+                            <input type="text" class="form-control" id="school"
+                                value="University of the Philippines">
+                        </div>
+                        <div class="mb-3">
+                            <label for="certifications" class="form-label">Certifications:</label>
+                            <input type="text" class="form-control" id="certifications"
+                                value="Certified Java Developer">
+                        </div>
+                        <div class="mb-3">
+                            <label for="training" class="form-label">Specialized Training:</label>
+                            <input type="text" class="form-control" id="training"
+                                value="Full Stack Web Development">
+                        </div>
+                    </div>
+
+                    <!-- Interests -->
+                    <div data-aos="fade-left" class="col-md-6">
+                        <h4 class="fw-bold">Interests</h4>
+                        <div class="mb-3">
+                            <label for="jobType" class="form-label">Job Type:</label>
+                            <input type="text" class="form-control" id="jobType" value="Software Engineer">
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Preferred Location:</label>
+                            <input type="text" class="form-control" id="location" value="Manila, Philippines">
+                        </div>
+                        <div class="mb-3">
+                            <label for="salary" class="form-label">Salary Expectations:</label>
+                            <input type="text" class="form-control" id="salary" value="PHP 50,000 - PHP 70,000">
+                        </div>
+                    </div>
+
+                    <div class=" d-flex justify-content-end align-items-center p-3">
+                        <a href="#" class="me-2 text-decoration-none">Cancel</a>
+                        <button type="submit" class=" ms-3 btn-primary">Save Changes</button>
+                    </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="/assets/js/animation.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000, // Animation duration (1000ms = 1s)
+            once: true, // Run animation only once when scrolling
+        });
+    </script>
 </body>
 
 </html>
-
-</div>
-</div>
