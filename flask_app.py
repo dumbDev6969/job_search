@@ -13,9 +13,12 @@ from routes.login import login
 from routes.signup import signup
 from routes.otp import otp
 from routes.static_files import static_files
-from swagger import swagger_ui_blueprint, SWAGGER_URL
 from routes.jobseeker import jobseeker
 from routes.logout import logout
+from routes.errors import errors
+from swagger import swagger_ui_blueprint, SWAGGER_URL
+
+
 
 app = Flask(__name__)
 
@@ -39,6 +42,7 @@ app.register_blueprint(signup)
 app.register_blueprint(otp)
 app.register_blueprint(static_files)
 app.register_blueprint(logout)
+app.register_blueprint(errors)
 app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 
 if __name__ == '__main__':

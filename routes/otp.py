@@ -1,11 +1,10 @@
-from flask import Blueprint, request, jsonify,render_template
+from flask import Blueprint, request, jsonify,render_template,session,redirect
 import random
 import uuid
 from utils.database import get_db
 from utils.email_utils import check_email_exists
+from datetime import datetime, timedelta
 
-# Global OTP store
-otp_store = {}
 
 # Create a Blueprint
 otp = Blueprint('otp', __name__)
@@ -37,14 +36,14 @@ def verify() -> dict:
         user_otp = request.form.get('otp')
         email = request.form.get('email')
         print(f"UUID: {uuid}, OTP: {user_otp}")
-        print(otp_store)
+       
         
         # Validate required fields
-        if not uuid or not user_otp:
+        if not user_otp:
             return jsonify({'error': 'Missing required fields', 'verified': False}), 400
         
         # Check if UUID exists and OTP matches
-        stored_otp = otp_store.get(uuid)
+        stored_otp = session.get('otp', {}).get('code')
         if not stored_otp:
             return jsonify({'verified': False}), 200
             
@@ -52,7 +51,7 @@ def verify() -> dict:
             # if check_email_exists('employers', 'email', email) or check_email_exists('job_seekers', 'email', email):
             #     return jsonify({'error': 'Email already exists'}), 400
             # Remove the used OTP
-            del otp_store[uuid]
+            session.pop('otp', None)
             db = get_db()
             from sqlalchemy import text
             query = text("INSERT INTO verified_users (email) VALUES (:email)")
@@ -80,12 +79,14 @@ def generate() -> dict:
         #     return jsonify({'error': 'Email already exists'}), 400
         # Generate 6 random numbers
         code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
-        
+        session['otp'] = {
+            'email': email,
+            'code': code,
+            'expiry': datetime.now() + timedelta(minutes=5)}
         # Generate unique UUID
         unique_id = str(uuid.uuid4())
         
-        # Store the OTP
-        otp_store[unique_id] = code
+       
         
         # Send OTP via email
         from utils.email_sender import my_send_email, SENDER_EMAIL, SENDER_PASSWORD

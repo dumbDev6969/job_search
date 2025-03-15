@@ -5,18 +5,15 @@ from utils.email_utils import check_email_exists
 from utils.otp_utils import generate_otp,send_otp_email
 from sqlalchemy import text
 from datetime import datetime,timedelta
-
+from middlewares.is_user_logged_in import is_user_logged_in
 # Create a Blueprint
 login = Blueprint('login', __name__)
 
 # Define your routes using the Blueprint
 @login.route('/login', methods=['GET', 'POST'])
+@is_user_logged_in
 def login_user():
-    if 'user_id' in session:
-        if session['user_type'] == 'seeker':
-            return redirect('/job_seeker/dashboard')
-        else:
-            return redirect('/pages/recruiter/dashboard.html')
+    
     if request.method == 'POST':
         form = request.form
         email = form.get('email')
