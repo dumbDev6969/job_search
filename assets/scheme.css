@@ -94,7 +94,6 @@ a{
 input[type="text"],
 input[type="email"],
 input[type="password"],
-input[type="search"],
 input[type="file"],
 input[type="url"],
 select {
@@ -157,4 +156,9 @@ input::placeholder {
     padding: 8px;
     border-radius: var(--border-radius);
     font-weight: bold;
+}
+.btn-outline-primary{
+    background: none !important;
+    border: solid 1px var(--primary-dark) !important;
+    color: var(--primary-dark)!important;
 }
