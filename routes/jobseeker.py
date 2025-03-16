@@ -1,7 +1,7 @@
 from flask import Blueprint,render_template,session,redirect
 from middlewares.verify_user import verify_user
 from middlewares.is_email_verified import is_email_verified
-
+from middlewares.user_access import jobseeker as job_seeker_middleware,admin,emplyer
 # Create a Blueprint
 jobseeker = Blueprint('jobseeker', __name__)
 

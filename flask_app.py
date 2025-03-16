@@ -1,5 +1,12 @@
-from flask import Flask
+from flask import Flask,request
 from datetime import datetime,timedelta
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+from swagger import swagger_ui_blueprint, SWAGGER_URL
+
+app = Flask(__name__)
+
+# Import routes
 from routes.routes import main
 from routes.database import database
 from routes.admin import admin
@@ -13,19 +20,22 @@ from routes.login import login
 from routes.signup import signup
 from routes.otp import otp
 from routes.static_files import static_files
-from routes.jobseeker import jobseeker
 from routes.logout import logout
 from routes.errors import errors
-from swagger import swagger_ui_blueprint, SWAGGER_URL
-
-
-
-app = Flask(__name__)
-
+from routes.dashboard import dashboard
+import os
 # Configure session
-app.secret_key = 'your-secret-key-here'  # Replace with a secure secret key in production
+app.secret_key = os.environ.get('SECRET_KEY')
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
+
+
+limiter = Limiter(
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://",
+)
+limiter.init_app(app)
 
 # Register the Blueprints
 app.register_blueprint(main)
@@ -43,7 +53,11 @@ app.register_blueprint(otp)
 app.register_blueprint(static_files)
 app.register_blueprint(logout)
 app.register_blueprint(errors)
+app.register_blueprint(dashboard)
 app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
+
+
+limiter.limit("3/minute")(otp)
 
 if __name__ == '__main__':
     app.run(debug=True)
