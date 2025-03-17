@@ -1,4 +1,4 @@
-cript>
+
     document.addEventListener("DOMContentLoaded", function () {
         const elements = document.querySelectorAll(".fade-in");
 
@@ -13,4 +13,7 @@ cript>
 
         window.addEventListener("scroll", checkScroll);
         checkScroll();
+        
+
     });
+    
