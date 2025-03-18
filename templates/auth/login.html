@@ -19,6 +19,10 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/general.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         /* Custom styles for the carousel */
         .carousel-item {
@@ -87,7 +91,7 @@
     <div  class="container vh-100 d-flex justify-content-center align-items-center ">
         <div class="row d-flex  justify-content-center w-100">
             <div data-aos="fade-right" class="col-md-6 ">
-                <form action="/login" method="post" id="loginForm" onsubmit="handleLogin(event)">
+                <form  id="loginForm" onsubmit="handleLogin(event)">
                     <div class="mb-3">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="Email" />

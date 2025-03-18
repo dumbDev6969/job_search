@@ -13,8 +13,8 @@ def verify_user(f):
         
         # Define allowed paths for each user type
         allowed_paths = {
-            'seeker': ['/job_seeker','/dashboard'],
-            'employer': ['/employer', '/pages/recruiter','/dashboard'],
+            'seeker': ['/jobseeker','/dashboard'],
+            'employer': ['/employer', '/pages/recruiter','/dashboard',],
             'admin': ['/admin','/dashboard']
         }
         

@@ -99,3 +99,27 @@ def serve_assets(filename):
     except Exception as e:
         logger.error(f"Error serving asset file {filename}: {str(e)}")
         return abort(404)
+
+@static_files.route('/javascript/<path:filename>')
+def serve_javascript(filename):
+    """
+    Serve JavaScript files from the javascript directory with caching and security measures.
+    
+    Args:
+        filename (str): The path to the file within the javascript directory
+        
+    Returns:
+        The requested file if it exists, appropriate error response otherwise
+    """
+    if not allowed_file(filename):
+        logger.warning(f"Attempted access to unauthorized file type in javascript: {filename}")
+        return abort(403)
+
+    try:
+        static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static', 'javascript')
+        response = send_from_directory(static_dir, filename)
+        logger.info(f"Serving javascript file: {filename}")
+        return add_cache_headers(response)
+    except Exception as e:
+        logger.error(f"Error serving javascript file {filename}: {str(e)}")
+        return abort(404)

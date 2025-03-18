@@ -12,7 +12,8 @@ dashboard = Blueprint('dashboard', __name__)
 @is_email_verified
 def dashboard_():
     if session.get('user_type') == 'jobseeker':
-        return redirect('/job_seeker/dashboard')
+        print("the user::::::::::",session.get('user_type'))
+        return redirect('/jobseeker/dashboard')
     elif session.get('user_type') == 'employer':
         return redirect('/employer/dashboard')
     elif session.get('user_type') == 'admin':

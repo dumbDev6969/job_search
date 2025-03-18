@@ -1,3 +1,4 @@
+import logging
 from flask import Blueprint, request, render_template, jsonify, session,redirect
 from utils.database import get_db
 from utils.pasword_hash import verify_password
@@ -25,13 +26,30 @@ def login_user():
         try:
             # Get database connection
             db = get_db()
+            check_email_query = text("""
+                SELECT 
+                    CASE    
+                        WHEN EXISTS (SELECT 1 FROM job_seekers WHERE email = :email) THEN 1
+                        WHEN EXISTS (SELECT 1 FROM employers WHERE email = :email) THEN 1
+                        ELSE 0
+                    END as email_exists
+            """)
             
+            email_check_result = db.execute_query(check_email_query, {'email': email})
+            logging.info(f"Email check result: {email_check_result}")
+            if not email_check_result['success'] or not email_check_result['output'][0]['email_exists']:
+                
+                return jsonify({'error': 'Email does not exist'}), 404
             # Check if user is verified
             verify_query = text("SELECT COUNT(*) as count FROM verified_users WHERE email = :email")
             verify_result = db.execute_query(verify_query, {'email': email})
             
             if not verify_result['success'] or verify_result['output'][0]['count'] == 0:
-                return render_template("/auth/otp_virification.html",email=email),200
+                return jsonify({'error': 'Email not verified', 'email': email}), 401
+            
+            # First check if email exists in either table
+           
+            
             
             # First check job seekers table
             seeker_query = text("""
@@ -85,7 +103,7 @@ def login_user():
                     }
                     session.permanent = True
                     return redirect("/dashboard")
-                    return redirect('/job_seeker/dashboard')
+                    return redirect('/jobseeker/dashboard')
                     
             # Handle employer login
             elif employer_result['success'] and employer_result['output']:
@@ -120,13 +138,16 @@ def login_user():
                     return redirect("/pages/recruiter/dashboard.html")
             
             # Invalid credentials
-            print('Invalid credentials')
             return jsonify({'error': 'Invalid credentials'}), 401
+            # return render_template("/auth/otp_virification.html",email=email,error='Invalid credentials')
                 
         except Exception as e:
-            print(str(e))
+            print("errrrrrrrrrrrrrrrrr",str(e))
             return jsonify({'error': 'Login failed', 'details': str(e)}), 500
+            
             
     else:
         # Render the login form
+        print("rendering login form")
         return render_template('auth/login.html')
+logging.basicConfig(level=logging.INFO)

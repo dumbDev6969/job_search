@@ -14,18 +14,21 @@ from routes.chat import chat
 from routes.employer import employer
 from routes.geo import geo
 from routes.interest import interest
-from routes.jobs import jobs
-from routes.jobseeker import jobseeker
+from routes.jobseeker_dashboard import jobseeker
 from routes.login import login
 from routes.signup import signup
 from routes.otp import otp
 from routes.static_files import static_files
 from routes.logout import logout
 from routes.errors import errors
-from routes.dashboard import dashboard
 import os
+from routes.dashboard import dashboard
+from routes.jobseeker_jobs import jobseeker_job
+from routes.jobseeker_profile import jobseeker_profile
+from routes.jobseeker_qualification import jobseeker_qualification
+
 # Configure session
-app.secret_key = os.environ.get('SECRET_KEY')
+app.secret_key = os.environ.get('secret')
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 
@@ -45,7 +48,6 @@ app.register_blueprint(chat)
 app.register_blueprint(employer)
 app.register_blueprint(geo)
 app.register_blueprint(interest)
-app.register_blueprint(jobs)
 app.register_blueprint(jobseeker)
 app.register_blueprint(login)
 app.register_blueprint(signup)
@@ -54,6 +56,9 @@ app.register_blueprint(static_files)
 app.register_blueprint(logout)
 app.register_blueprint(errors)
 app.register_blueprint(dashboard)
+app.register_blueprint(jobseeker_job)
+app.register_blueprint(jobseeker_profile)
+app.register_blueprint(jobseeker_qualification)
 app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 
 

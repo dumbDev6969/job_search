@@ -2,7 +2,6 @@ async function handleLogin(event) {
     event.preventDefault();
     
     const form = document.getElementById('loginForm');
-    const errorMessage = document.getElementById('errorMessage');
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     
@@ -17,9 +16,26 @@ async function handleLogin(event) {
                 password: password
             })
         });
+
+        // Check if response is a redirect
+        if (response.redirected) {
+            window.location.href = response.url;
+            return;
+        }
         
-        const data = await response.json();
-        
+        // Try to parse JSON response
+        let data;
+        try {
+            data = await response.json();
+        } catch (e) {
+            // If response is not JSON, might be a redirect or other response
+            if (response.ok) {
+                window.location.reload();
+                return;
+            }
+            throw new Error('Invalid response format');
+        }
+    
         if (response.ok) {
             // Redirect based on role
             if (data.role === 'jobseeker') {
@@ -27,14 +43,31 @@ async function handleLogin(event) {
             } else if (data.role === 'employer') {
                 window.location.href = '/employer/dashboard';
             } else {
-                window.location.href = '/';
+              if (data.error){
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Login Failed',
+                      text: data.error || 'Invalid credentials',
+                      confirmButtonColor: '#3085d6'
+                  });}
+              
             }
         } else {
-            errorMessage.textContent = data.error || 'Login failed';
-            errorMessage.classList.remove('d-none');
+            // Handle error responses including 401
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: data.error || 'Invalid credentials',
+                confirmButtonColor: '#3085d6'
+            });
         }
     } catch (error) {
-        errorMessage.textContent = 'An error occurred. Please try again.';
-        errorMessage.classList.remove('d-none');
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred. Please try again.',
+            confirmButtonColor: '#3085d6'
+        });
     }
 }

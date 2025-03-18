@@ -124,6 +124,16 @@
     <script src="/assets/js/animation.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Check for error parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = '{{error}}';
+            if (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error
+                });
+            }
             const email = document.getElementById('email').value;
             const form = document.getElementById('otp-form');
             const inputs = form.querySelectorAll('.otp-input');

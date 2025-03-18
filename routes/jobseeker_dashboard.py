@@ -6,7 +6,7 @@ from middlewares.user_access import jobseeker as job_seeker_middleware,admin,emp
 jobseeker = Blueprint('jobseeker', __name__)
 
 # Define your routes using the Blueprint
-@jobseeker.route('/job_seeker/dashboard')
+@jobseeker.route('/jobseeker/dashboard')
 @verify_user
 @is_email_verified
 def job_seeker_dashboard():

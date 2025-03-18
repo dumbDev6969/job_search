@@ -17,4 +17,45 @@
     transform: scaleX(1); /* Initial state */
     transition: transform 0.3s ease; /* Smooth transition */
 }
+li{
+    list-style-type: none;
+}
+.job{
+    background-color: var(--important-background);
+}
+
+.job-status{
+    background-color: var(--secondary) !important;
+}
+.job-info{
+    background-color: var(--primary-light) !important;
+}
+/* For Webkit-based browsers (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    border-radius: 10px; /* Soft edges */
+}
+
+::-webkit-scrollbar-track {
+    background: #f8f9fa; /* Light gray for a soft, neutral look */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c5d1e3; /* Soft pastel blue */
+    border-radius: 20px; /* Fully rounded edges */
+    transition: background 0.3s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #aab8d1; /* Slightly darker blue on hover */
+}
+
+.navbar{
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    top: 0;
+}
 

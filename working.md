@@ -12,4 +12,11 @@ working
     session
 
 pending:
+
+jobseeker-routes
+    dashboard
+    jobs
+    profile
+    profilesettings
+    job interest
     
