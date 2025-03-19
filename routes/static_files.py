@@ -12,14 +12,11 @@ logger = logging.getLogger(__name__)
 static_files = Blueprint('static_files', __name__)
 
 
-# Allowed file types
-ALLOWED_EXTENSIONS = {
-    'css', 'js', 'png', 'jpg', 'jpeg', 'gif', 'svg',
-    'woff', 'woff2', 'ttf', 'eot', 'ico', 'json'
-}
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+def is_safe_path(path):
+    """Check if the path is safe to serve."""
+    # Normalize path and check for directory traversal attempts
+    normalized = os.path.normpath(path)
+    return not normalized.startswith('..')
 
 def add_cache_headers(response):
     # Cache static files for 1 week
@@ -28,98 +25,38 @@ def add_cache_headers(response):
     response.expires = datetime.now() + timedelta(days=7)
     return response
 
-@static_files.route('/static/<path:filename>')
-def serve_static(filename):
+@static_files.route('/<path:filepath>')
+def serve_static_files(filepath):
     """
-    Serve static files from the static directory with caching and security measures.
+    Serve all static files from any subdirectory under /static with security measures.
     
     Args:
-        filename (str): The path to the file within the static directory
+        filepath (str): The path to the file within the static directory
         
     Returns:
-        The requested file if it exists, appropriate error response otherwise
+        The requested file if it exists and is safe, appropriate error response otherwise
     """
-    if not allowed_file(filename):
-        logger.warning(f"Attempted access to unauthorized file type: {filename}")
+    if not is_safe_path(filepath):
+        logger.warning(f"Attempted directory traversal: {filepath}")
         return abort(403)
 
     try:
+        # Get the base static directory
         static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static')
-        response = send_from_directory(static_dir, filename)
-        logger.info(f"Serving static file: {filename}")
-        return add_cache_headers(response)
-    except Exception as e:
-        logger.error(f"Error serving static file {filename}: {str(e)}")
-        return abort(404)
-
-@static_files.route('/auth/<path:filename>')
-def serve_auth_static(filename):
-    """
-    Serve static files from the auth directory with caching and security measures.
-    
-    Args:
-        filename (str): The path to the file within the auth directory
         
-    Returns:
-        The requested file if it exists, appropriate error response otherwise
-    """
-    if not allowed_file(filename):
-        logger.warning(f"Attempted access to unauthorized file type in auth: {filename}")
-        return abort(403)
+        # Ensure the requested file is within the static directory
+        requested_path = os.path.join(static_dir, filepath)
+        if not os.path.commonpath([requested_path, static_dir]) == static_dir:
+            logger.warning(f"Attempted access outside static directory: {filepath}")
+            return abort(403)
 
-    try:
-        static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static', 'auth')
-        response = send_from_directory(static_dir, filename)
-        logger.info(f"Serving auth static file: {filename}")
+        # Get the directory and filename
+        dir_path = os.path.dirname(requested_path)
+        filename = os.path.basename(requested_path)
+
+        response = send_from_directory(dir_path, filename)
+        logger.info(f"Serving static file: {filepath}")
         return add_cache_headers(response)
     except Exception as e:
-        logger.error(f"Error serving auth static file {filename}: {str(e)}")
-        return abort(404)
-
-@static_files.route('/assets/<path:filename>')
-def serve_assets(filename):
-    """
-    Serve static files from the assets directory with caching and security measures.
-    
-    Args:
-        filename (str): The path to the file within the assets directory
-        
-    Returns:
-        The requested file if it exists, appropriate error response otherwise
-    """
-    if not allowed_file(filename):
-        logger.warning(f"Attempted access to unauthorized file type in assets: {filename}")
-        return abort(403)
-
-    try:
-        static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static', 'assets')
-        response = send_from_directory(static_dir, filename)
-        logger.info(f"Serving asset file: {filename}")
-        return add_cache_headers(response)
-    except Exception as e:
-        logger.error(f"Error serving asset file {filename}: {str(e)}")
-        return abort(404)
-
-@static_files.route('/javascript/<path:filename>')
-def serve_javascript(filename):
-    """
-    Serve JavaScript files from the javascript directory with caching and security measures.
-    
-    Args:
-        filename (str): The path to the file within the javascript directory
-        
-    Returns:
-        The requested file if it exists, appropriate error response otherwise
-    """
-    if not allowed_file(filename):
-        logger.warning(f"Attempted access to unauthorized file type in javascript: {filename}")
-        return abort(403)
-
-    try:
-        static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static', 'javascript')
-        response = send_from_directory(static_dir, filename)
-        logger.info(f"Serving javascript file: {filename}")
-        return add_cache_headers(response)
-    except Exception as e:
-        logger.error(f"Error serving javascript file {filename}: {str(e)}")
+        logger.error(f"Error serving static file {filepath}: {str(e)}")
         return abort(404)

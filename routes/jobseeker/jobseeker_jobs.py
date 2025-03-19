@@ -10,12 +10,35 @@ jobseeker_job = Blueprint('jobseeker_job', __name__)
 @verify_user
 @is_email_verified
 def jobseeker_job_():
+    """Render the job seeker's jobs page.
+
+    This route displays the page where job seekers can view available job listings
+    and opportunities. Access requires user authentication and email verification.
+
+    Decorators:
+        @verify_user: Ensures the user is authenticated
+        @is_email_verified: Ensures the user's email is verified
+
+    Returns:
+        rendered template: The job seeker jobs HTML page
+    """
     return render_template('/pages/job_seeker/jobs.html')
 
 
-# Define your routes using the Blueprint
 @jobseeker_job.route('/jobseeker/jobs-interest')
 @verify_user
 @is_email_verified
 def jobseeker_job_interest():
-    return render_template('/pages/job_seeker/jobs_interest.html')
+    """Render the job seeker's job interests page.
+
+    This route displays the page where job seekers can view and manage their
+    saved job interests. Access requires user authentication and email verification.
+
+    Decorators:
+        @verify_user: Ensures the user is authenticated
+        @is_email_verified: Ensures the user's email is verified
+
+    Returns:
+        rendered template: The job seeker job interests HTML page
+    """
+    return render_template('/pages/job_seeker/job_interests.html')

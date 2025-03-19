@@ -10,4 +10,16 @@ jobseeker_post_job = Blueprint('jobseeker_post_job', __name__)
 @verify_user
 @is_email_verified
 def jobseeker_post_job_():
+    """Render the job seeker's post job page.
+
+    This route displays the page where job seekers can create and post new job
+    listings. Access requires user authentication and email verification.
+
+    Decorators:
+        @verify_user: Ensures the user is authenticated
+        @is_email_verified: Ensures the user's email is verified
+
+    Returns:
+        rendered template: The job seeker post job HTML page
+    """
     return render_template('/pages/job_seeker/post_job.html')

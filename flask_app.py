@@ -21,6 +21,7 @@ from routes.static_files import static_files
 from routes.logout import logout
 from routes.errors import errors
 from routes.dashboard import dashboard
+from routes.forgot_password import forgot_password
 # from routes.jobseeker_jobs import jobseeker_job
 # from routes.jobseeker_profile import jobseeker_profile
 # from routes.jobseeker_qualification import jobseeker_qualification
@@ -56,14 +57,16 @@ app.register_blueprint(logout)
 app.register_blueprint(errors)
 app.register_blueprint(dashboard)
 app.register_blueprint(jobseeker_bp)
+app.register_blueprint(forgot_password)
 # app.register_blueprint(jobseeker)
 # app.register_blueprint(jobseeker_job)
 # app.register_blueprint(jobseeker_profile)
 # app.register_blueprint(jobseeker_qualification)
 app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
-print(app.url_map)
-
+# Apply rate limiting to specific routes
+limiter.limit("5/minute")(login)
 limiter.limit("3/minute")(otp)
+limiter.limit("5/minute")(signup)
 
 if __name__ == '__main__':
     app.run(debug=True)
