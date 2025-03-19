@@ -14,7 +14,21 @@ login = Blueprint('login', __name__)
 @login.route('/login', methods=['GET', 'POST'])
 @is_user_logged_in
 def login_user():
+    """
+    Handle user login functionality.
     
+    GET: Renders the login form
+    POST: Processes login attempt
+    
+    Form Parameters:
+        - email (str): User's email address
+        - password (str): User's password
+    
+    Returns:
+        - GET: Rendered login template
+        - POST (success): Redirect to appropriate dashboard
+        - POST (failure): JSON error response with appropriate status code
+    """
     if request.method == 'POST':
         form = request.form
         email = form.get('email')
