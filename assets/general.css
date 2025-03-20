@@ -30,6 +30,7 @@ li{
 .job-info{
     background-color: var(--primary-light) !important;
 }
+
 /* For Webkit-based browsers (Chrome, Edge, Safari) */
 ::-webkit-scrollbar {
     width: 8px;
