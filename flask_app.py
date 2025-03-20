@@ -4,7 +4,10 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from swagger import swagger_ui_blueprint, SWAGGER_URL
 import os
+from utils.database import test_mysql
+
 app = Flask(__name__)
+
 
 # Import routes
 from routes.routes import main
@@ -69,4 +72,13 @@ limiter.limit("3/minute")(otp)
 limiter.limit("5/minute")(signup)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    test = test_mysql()
+    if test:
+        print("Database connected")
+        app.run(debug=True)
+    else:
+        print("Database not connected")
+        from routes.databse_notactive import db_not_active
+        app1 = Flask(__name__)
+        app1.register_blueprint(db_not_active)
+        app1.run(debug=True)

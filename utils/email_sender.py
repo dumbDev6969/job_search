@@ -12,7 +12,7 @@ SENDER_EMAIL = os.getenv('SENDER_EMAIL')
 SENDER_PASSWORD = os.getenv('SENDER_PASSWORD')
 
 def my_send_email(subject, body, sender, recipients, password):
-    msg = MIMEText(body)
+    msg = MIMEText(body, 'html')
     msg['Subject'] = subject
     msg['From'] = sender
     msg['To'] = ', '.join(recipients)

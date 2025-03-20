@@ -118,31 +118,22 @@ class DatabaseManager:
         """Closes the database connection."""
         self.engine.dispose()
 
-
 def test_mysql():
     # Initialize the MySQL DatabaseManager
     mysql_db = DatabaseManager('mysql', 'mysql+pymysql://root@localhost/job_portal_db')
     
-    # Query the table with parameterized query
-    query = text("INSERT INTO `job_seekers` (`seeker_id`, `email`, `password_hash`, `created_at`, `last_login`, `first_name`, `last_name`, `phone`, `province`, `municipality`, `degree`, `portfolio_url`) VALUES (:seeker_id, :email, :password_hash, current_timestamp(), :last_login, :first_name, :last_name, :phone, :province, :municipality, :degree, :portfolio_url)")
-    
-    params = {
-        'seeker_id': '123',
-        'email': 'asd',
-        'password_hash': 'asd',
-        'last_login': 'asd',
-        'first_name': 'asd',
-        'last_name': 'asd',
-        'phone': 'asd',
-        'province': 'asd',
-        'municipality': 'asd',
-        'degree': 'asd',
-        'portfolio_url': 'asd'
-    }
-    
-    results = mysql_db.execute_query(query, params)
-    print("MySQL Results:", results)
-
-    # Close the MySQL connection
-    mysql_db.close()
+    # Test connection by executing a simple query
+    try:
+        result = mysql_db.execute_query(text("SELECT 1"))
+        if result["success"]:
+            print("MySQL connection test successful")
+            return True
+        else:
+            print("MySQL connection test failed")
+            return False
+    except Exception as e:
+        print(f"MySQL connection test failed: {str(e)}")
+        return False
+    finally:
+        mysql_db.close()
 

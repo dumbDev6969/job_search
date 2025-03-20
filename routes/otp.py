@@ -67,37 +67,57 @@ def verify() -> dict:
 
 @otp.route('/generate', methods=['POST'])
 def generate() -> dict:
-    print("generate")
     try:
         # Get email from request
         email = request.form.get("email")
-        print(f"Data: {email}")
-        print(f"Form: {request.form}")
         if not email:
             return jsonify({'error': 'Email is required'}), 400
-        # if check_email_exists('employers', 'email', email) or check_email_exists('job_seekers', 'email', email):
-        #     return jsonify({'error': 'Email already exists'}), 400
+            
+        # Rate limiting check
+        last_request = session.get('last_otp_request', {})
+        if email in last_request:
+            time_diff = (datetime.now() - last_request[email]).total_seconds()
+            if time_diff < 60:  # 1 minute cooldown
+                return jsonify({'error': f'Please wait {60 - int(time_diff)} seconds before requesting another OTP'}), 429
+                
         # Generate 6 random numbers
         code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+        
+        # Store OTP data
         session['otp'] = {
             'email': email,
             'code': code,
-            'expiry': datetime.now() + timedelta(minutes=5)}
+            'expiry': datetime.now() + timedelta(minutes=5)
+        }
+        
+        # Update rate limiting
+        if 'last_otp_request' not in session:
+            session['last_otp_request'] = {}
+        session['last_otp_request'][email] = datetime.now()
+        
         # Generate unique UUID
         unique_id = str(uuid.uuid4())
-        
-       
         
         # Send OTP via email
         from utils.email_sender import my_send_email, SENDER_EMAIL, SENDER_PASSWORD
         
-        subject = "Your OTP Code"
-        body = f"Your OTP code is: {code}"
+        subject = "Your OTP Verification Code"
+        body = f"""
+        <html>
+        <body style="font-family: Arial, sans-serif; padding: 20px;">
+            <h2>Email Verification</h2>
+            <p>Your verification code is:</p>
+            <h1 style="color: #4CAF50; font-size: 32px; letter-spacing: 5px;">{code}</h1>
+            <p>This code will expire in 5 minutes.</p>
+            <p>If you didn't request this code, please ignore this email.</p>
+        </body>
+        </html>
+        """
+        
         try:
             my_send_email(subject, body, SENDER_EMAIL, [email], SENDER_PASSWORD)
             return jsonify({'success': True, 'uuid': unique_id}), 200
         except Exception as e:
-            print(f"Failed to send OTP email: {str(e)}")
             return jsonify({'error': f'Failed to send OTP: {str(e)}'}), 500
             
     except Exception as e:
