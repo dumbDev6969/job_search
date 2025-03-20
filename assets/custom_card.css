@@ -54,68 +54,10 @@ body {
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: var(--box-shadow);
 }
-
-.btn-danger{
-    background-color: var(--btn-secondary);
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: var(--border-radius) !important;;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: var(--box-shadow);
-}
-
-.btn-danger:hover {
-    background-color: var(--secondary-dark);
-    transform: scale(0.98);
-}
-
-.sign-up{
-    background: none;
-    border: solid 1px var(--primary-dark);
-    color: var(--text-dark)
-}
-.sign-up:hover{
-    background: var(--primary-dark);
-    color: white;
-}
-.btn-primary:hover {
-    background-color: var(--primary-dark);
-    transform: scale(0.98);
-}
 a{
     text-decoration: none !important;
 }
 
-/* Input field styling */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="file"],
-input[type="url"],
-select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--text-muted);
-    border-radius: var(--border-radius);
-    font-size: 16px;
-    color: var(--text-dark);
-    background-color: var(--card-bg);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    appearance: none; /* Removes default browser styling */
-}
-
-/* Add padding for the select dropdown */
-select {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>'); 
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 16px;
-    padding-right: 36px;
-    cursor: pointer;
-}
 
 
 /* Focus effect for input fields */
