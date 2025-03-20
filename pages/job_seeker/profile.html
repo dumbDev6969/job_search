@@ -30,19 +30,25 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Resume</h1>
+                    <button type="button" class="btn-close custom-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    ...
+                <div class="modal-body text-center">
+                    <img src="/assets/img/default_resume.jpg" alt="Default resume" class="img-fluid rounded shadow">
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-danger px-4 py-2 rounded-pill" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <label for="upload-resume" class="btn btn-primary px-4 py-2 rounded-pill">
+                        Upload Resume
+                    </label>
+                    <input type="file" name="upload-resume" id="upload-resume" class="d-none">
                 </div>
             </div>
         </div>
     </div>
+    
 
     <nav class="navbar navbar-expand-lg ">
         <div class="container-fluid">
@@ -54,19 +60,15 @@
             <div class="collapse navbar-collapse justify-content-around" id="navbarNav">
                 <ul class="navbar-nav gap-3">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">My Applications</a>
+                        <a class="nav-link active" href="#">Find jobs</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Skills & Resume</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Success Stories</a>
+                        <a class="nav-link" href="#">Profile</a>
                     </li>
                 </ul>
-    
                 <div class="d-flex align-items-center gap-3">
                      
                     <!-- User Avatar Dropdown -->
@@ -86,7 +88,7 @@
                         </ul>
                     </div>
                     <!-- CTA Button -->
-                    <a href="#" class="btn btn-primary">Explore Jobs</a>
+                    <a href="#" class="btn-primary">Explore Jobs</a>
                    
                 </div>
             </div>
@@ -102,8 +104,8 @@
                 </div>
                 <!-- Trigger Button -->
                  <!-- Button trigger modal -->
-                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Launch demo modal
+                 <button type="button" class="btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Resume
                 </button>
 
                 
@@ -149,6 +151,7 @@
                 </div>
             </div>
             <div data-aos="fade-down" class="col-md-9 ">
+                <h4 class="text-secondary">Saved jobs</h4>
                 <form action="#" class="d-flex gap-2 mb-3">
                     <input type="search" name="job-search" id="job-search" class="form-control" placeholder="Search for jobs" aria-label="Search for jobs">
                     <button type="submit" class=" btn-primary">Search</button>
@@ -170,7 +173,10 @@
                                             <h3 class="mb-0">Job Title</h3>
                                             <p class="badge rounded-pill text-bg-primary ms-3 job-status d-flex align-items-center">Active</p>
                                         </div>
-                                        <button type="button" class=" btn-danger">Remove</button>
+                                        <div class="d-flex flex-column gap-2">
+                                            <button type="button" class=" btn-danger">Remove</button>
+                                            <button type="button" class=" btn-primary">View</button>
+                                        </div>
                                     </div>
                     
                                     <div class="col-md-12">
