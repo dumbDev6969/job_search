@@ -23,24 +23,19 @@
 </head>
 
 <body>
-    <style>
-        .table-container {
-            overflow: auto;
-            max-height: 400px;
-        }
 
-        .fixed-filters {
-            position: sticky;
-            top: 0;
-            background: white;
-            z-index: 100;
-            padding-bottom: 10px;
-        }
-    </style>
+
+<nav aria-label="breadcrumb" class="mt-2 ms-2 sticky-top">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Candidates</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Candidate name</li>
+    </ol>
+</nav>
+
 <div class="container mt-5">
-    <div class="row">
+    <div  class="row">
         <!-- Left Column: Profile Details -->
-        <div class="col-md-4">
+        <div data-aos="fade-down" class="col-md-4">
             <div class="card text-center p-4">
                 <!-- Profile Image -->
                 <img src="/assets/img/job_seeker_profile.jpg" alt="Job Seeker Profile Image" class="profile-img rounded-circle mx-auto mb-3">
@@ -48,7 +43,7 @@
                 <h3>John Doe</h3>
                 <p class="text-muted">Frontend Developer</p>
                 <!-- Contact Button -->
-                <button class="btn btn-primary w-100 mb-3">Contact Me</button>
+                <button class=" btn-primary w-100 mb-3">Contact Me</button>
                 <!-- Social Links -->
                 <div class="d-flex justify-content-center gap-3 mb-4">
                     <a href="#" class="text-dark"><i class="fab fa-linkedin fa-2x"></i></a>
@@ -57,13 +52,13 @@
                 </div>
                 <!-- Skills Section -->
                 <h5>Skills</h5>
-                <div class="d-flex flex-wrap justify-content-center">
-                    <span class="badge bg-primary skill-badge">HTML</span>
-                    <span class="badge bg-primary skill-badge">CSS</span>
-                    <span class="badge bg-primary skill-badge">JavaScript</span>
-                    <span class="badge bg-primary skill-badge">React</span>
-                    <span class="badge bg-primary skill-badge">Bootstrap</span>
-                    <span class="badge bg-primary skill-badge">UI/UX Design</span>
+                <div class="d-flex flex-wrap justify-content-center gap-1">
+                    <span class="badge  seeker-skill">HTML</span>
+                    <span class="badge  seeker-skill">CSS</span>
+                    <span class="badge  seeker-skill">JavaScript</span>
+                    <span class="badge  seeker-skill">React</span>
+                    <span class="badge  seeker-skill">Bootstrap</span>
+                    <span class="badge  seeker-skill">UI/UX Design</span>
                 </div>
             </div>
         </div>
@@ -71,7 +66,7 @@
         <!-- Right Column: Job Preferences and Experience -->
         <div class="col-md-8">
             <!-- About Me Section -->
-            <div class="card mb-4">
+            <div data-aos="fade-left"data-aos-delay="100" class="card mb-4">
                 <div class="card-body">
                     <h4 class="card-title">About Me</h4>
                     <p class="card-text">
@@ -81,7 +76,7 @@
             </div>
 
             <!-- Experience Section -->
-            <div class="card mb-4">
+            <div data-aos="fade-left"data-aos-delay="200" class="card mb-4">
                 <div class="card-body">
                     <h4 class="card-title">Experience</h4>
                     <!-- Experience Item 1 -->
@@ -108,7 +103,7 @@
             </div>
 
             <!-- Job Preferences Section -->
-            <div class="card mb-4">
+            <div data-aos="fade-left"data-aos-delay="300" class="card mb-4">
                 <div class="card-body">
                     <h4 class="card-title">Job Preferences</h4>
                     <div class="row">
