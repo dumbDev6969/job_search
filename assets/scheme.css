@@ -44,7 +44,8 @@ body {
     color: var(--text-light);
 }
 /* Button styling */
-button {
+button, 
+.btn-primary {
     background-color: var(--btn-primary);
     color: white;
     border: none;
@@ -96,6 +97,7 @@ input[type="email"],
 input[type="password"],
 input[type="file"],
 input[type="url"],
+textarea,
 select {
     width: 100%;
     padding: 12px;
@@ -108,9 +110,12 @@ select {
     appearance: none; /* Removes default browser styling */
 }
 
+textarea {
+    resize: vertical;
+}
+
 /* Add padding for the select dropdown */
 select {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>'); 
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 16px;
