@@ -69,12 +69,18 @@ class DatabaseManager:
         start_time = datetime.now()
         try:
             with self.Session() as session:
+                # Format the query with actual parameter values for logging
+                formatted_query = str(query)
+                if params:
+                    for key, value in params.items():
+                        formatted_query = formatted_query.replace(f":{key}", repr(value))
+                
                 result = session.execute(query, params if params else {})
                 if str(query).strip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
                     session.commit()
                     execution_time = (datetime.now() - start_time).total_seconds()
                     self.query_logger.log_query(
-                        query_text=str(query),
+                        query_text=formatted_query,
                         success=True,
                         affected_rows=result.rowcount,
                         execution_duration=execution_time
@@ -88,7 +94,7 @@ class DatabaseManager:
                 output = [dict(row._mapping) for row in result]
                 execution_time = (datetime.now() - start_time).total_seconds()
                 self.query_logger.log_query(
-                    query_text=str(query),
+                    query_text=formatted_query,
                     success=True,
                     affected_rows=result.rowcount,
                     execution_duration=execution_time
@@ -102,7 +108,7 @@ class DatabaseManager:
         except Exception as e:
             execution_time = (datetime.now() - start_time).total_seconds()
             self.query_logger.log_query(
-                query_text=str(query),
+                query_text=formatted_query,
                 success=False,
                 error_message=str(e),
                 execution_duration=execution_time
