@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechSprint</title>
+    <link rel="stylesheet" href="/assets/fonts.css">
+    <link rel="stylesheet" href="/assets/scheme.css">
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="/aos-master/dist/aos.css">
+
+        <link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+
+
+      <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/assets/general.css">
+    <link rel="stylesheet" href="/assets/custom_card.css">
+</head>
+
+<body>
+
+
+
+    <nav class="navbar navbar-expand-lg ">
+        <div class="container-fluid">
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-around" id="navbarNav">
+                <ul class="navbar-nav gap-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Find jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Skills & Resume</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Profile</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                     
+                    <!-- User Avatar Dropdown -->
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="/assets/img/default_profile.jpg" alt="User Avatar" class="rounded-circle me-2"
+                                width="40" height="40">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="#">Profile Settings</a></li>
+                            <li><a class="dropdown-item" href="#">Notifications</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                    <!-- CTA Button -->
+                    <a href="#" class="btn btn-primary">Explore Jobs</a>
+                   
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <div style="min-width: 350px;" class="container w-50 mt-5 p-4">
+    <h2>Create your profile</h2>
+    <form style="min-width: 350px;">
+        <!-- About Section -->
+        <div data-aos="fade-left" data-aos-delay="100" class="mb-2">
+            <label for="about" class="form-label">About You</label>
+            <textarea id="about" rows="4"
+                placeholder="Tell us about yourself, your skills, and your career goals..."></textarea>
+        </div>
+
+        <!-- Experience Section -->
+        <div data-aos="fade-left" data-aos-delay="200"  class="mb-2">
+            <label for="experience" class="form-label">Experience</label>
+            <input type="text" id="experience" placeholder="e.g., Software Engineer">
+        </div>
+
+        <div data-aos="fade-left" data-aos-delay="200"  class="mb-2">
+            <label for="company" class="form-label">Company</label>
+            <input type="text" id="company" placeholder="e.g.,  XYZ Company">
+        </div>
+
+        <div data-aos="fade-left" data-aos-delay="200"  class="mb-2">
+    <label for="experience-date" class="form-label">Experience Date</label>
+    <input type="text" id="experience-date" placeholder="e.g., Jan 20, 2020 - Present">
+</div>
+
+
+        <!-- Experience Description Section -->
+        <div data-aos="fade-left" data-aos-delay="300"  class="mb-2">
+            <label for="experience-description" class="form-label">Experience Description</label>
+            <textarea id="experience-description" rows="4"
+                placeholder="Describe your responsibilities, achievements, and key contributions..."></textarea>
+        </div>
+
+        <!-- Resume Upload Section -->
+        <div data-aos="fade-left" data-aos-delay="400"  class="mb-2">
+            <label for="resume" class="form-label">Upload Resume</label>
+            <input type="file" id="resume" accept=".pdf, .docx, .doc">
+        </div>
+
+        <label data-aos="fade-left" data-aos-delay="500" for="social-links" class="form-label">Social Links</label>
+        <div data-aos="fade-left" data-aos-delay="500"  class="mb-2">
+            <label for="linkedin" class="form-label">LinkedIn</label>
+            <input type="url" id="linkedin" placeholder="https://www.linkedin.com/in/your-profile">
+        </div>
+
+        <div data-aos="fade-left" data-aos-delay="600"  class="mb-2">
+            <label for="github" class="form-label">GitHub</label>
+            <input type="url" id="github" placeholder="https://github.com/your-username">
+        </div>
+
+        <div data-aos="fade-left" data-aos-delay="700"  class="mb-2">
+            <label for="twitter" class="form-label">Twitter</label>
+            <input type="url" id="twitter" placeholder="https://twitter.com/your-handle">
+        </div>
+
+
+        <!-- Submit Button -->
+        <div  class="mt-4">
+            <button type="submit" class=" btn-primary">Save Profile</button>
+        </div>
+    </form>
+</div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="/assets/js/animation.js"></script>
+    <script>
+        AOS.init({
+            duration: 800, // Animation duration (1000ms = 1s)
+            once: true, // Run animation only once when scrolling
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JXT</title>
+    <link rel="stylesheet" href="/assets/fonts.css">
+    <link rel="stylesheet" href="/assets/scheme.css">
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="/aos-master/dist/aos.css">
+
+        <link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+
+
+      <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/assets/general.css">
+
+</head>
+
+<body>
+    <nav aria-label="breadcrumb" class="mt-2 ms-2">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Candidates</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Post job</li>
+        </ol>
+    </nav>
+
+    <div class="container mb-5 mt-5">
+        <div class="row d-flex align-items-center">
+            <div data-aos="fade-right" class="col-md-6">
+                <form action="#">
+                    <div class="mb-3">
+                        <label for="title">Job Title</label>
+                        <input type="text" " id="title" name="title" placeholder="Enter job title" required>
+                    </div>
+    
+                    <div class="mb-3">
+                        <label for="description">Job Description</label>
+                        <textarea id="description" name="description" placeholder="Enter job description" rows="4" required></textarea>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="location">Location</label>
+                            <input type="text"  id="location" name="location" placeholder="Enter location" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="salary_range">Salary Range</label>
+                            <input type="text" id="salary_range" name="salary_range" placeholder="e.g., $50,000 - $70,000" required>
+                        </div>
+                    </div>
+    
+                    <div class="mb-3">
+                        <label for="employment_type">Employment Type</label>
+                        <select  id="employment_type" name="employment_type" required>
+                            <option value="" selected disabled>Choose...</option>
+                            <option value="Full-Time">Full-Time</option>
+                            <option value="Part-Time">Part-Time</option>
+                            <option value="Contract">Contract</option>
+                            <option value="Freelance">Freelance</option>
+                        </select>
+                    </div>
+    
+                    <button class=" btn-primary 0 mt-3" type="submit">Post job</button>
+                </form>
+            </div>
+            <div data-aos="fade-left" class="col-md-6">
+                <img class="img-fluid" height="500" src="/assets/img/post-job.jpg" alt="Job Form">
+            </div>
+        </div>
+    </div>
+    
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- AOS JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="/assets/js/animation.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000, // Animation duration (1000ms = 1s)
+            once: true, // Run animation only once when scrolling
+        });
+
+    </script>
+</body>
+
+</html>

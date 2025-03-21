@@ -1,10 +1,19 @@
 
+DROP DATABASE IF EXISTS job_portal_db;
+
+-- Create the database again
+CREATE DATABASE job_portal_db;
+
+-- Use the newly created database
+USE job_portal_db;
+
+
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 19, 2025 at 05:43 AM
+-- Generation Time: Mar 21, 2025 at 06:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -263,6 +272,26 @@ CREATE TABLE `ratings` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `seeker_profiles`
+--
+
+CREATE TABLE `seeker_profiles` (
+  `id` int(11) NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `about` text DEFAULT NULL,
+  `experience_title` varchar(255) DEFAULT NULL,
+  `company` varchar(255) DEFAULT NULL,
+  `experience_date` varchar(255) DEFAULT NULL,
+  `experience_description` text DEFAULT NULL,
+  `resume` varchar(255) DEFAULT NULL,
+  `linkedin` varchar(255) DEFAULT NULL,
+  `github` varchar(255) DEFAULT NULL,
+  `twitter` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `seeker_skills`
 --
 
@@ -299,23 +328,6 @@ CREATE TABLE `verified_users` (
 
 INSERT INTO `verified_users` (`email`) VALUES
 ('jemcarlo46@gmail.com');
-
-CREATE TABLE user_profiles (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,  -- Assuming each profile belongs to a user
-    about TEXT,
-    experience_title VARCHAR(255),
-    company VARCHAR(255),
-    experience_date VARCHAR(255),
-    experience_description TEXT,
-    resume VARCHAR(255), -- Store file path
-    linkedin VARCHAR(255),
-    github VARCHAR(255),
-    twitter VARCHAR(255),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
-
 
 --
 -- Indexes for dumped tables
@@ -436,6 +448,13 @@ ALTER TABLE `ratings`
   ADD KEY `idx_job_id` (`job_id`);
 
 --
+-- Indexes for table `seeker_profiles`
+--
+ALTER TABLE `seeker_profiles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `seeker_skills`
 --
 ALTER TABLE `seeker_skills`
@@ -533,6 +552,12 @@ ALTER TABLE `ratings`
   MODIFY `rating_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `seeker_profiles`
+--
+ALTER TABLE `seeker_profiles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `skills`
 --
 ALTER TABLE `skills`
@@ -595,6 +620,12 @@ ALTER TABLE `ratings`
   ADD CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `seeker_profiles`
+--
+ALTER TABLE `seeker_profiles`
+  ADD CONSTRAINT `seeker_profiles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `job_seekers` (`seeker_id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `seeker_skills`
 --
 ALTER TABLE `seeker_skills`
@@ -605,4 +636,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-

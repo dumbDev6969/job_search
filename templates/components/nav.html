@@ -9,10 +9,10 @@
         <div class="collapse navbar-collapse justify-content-around " id="navbarSupportedContent">
             <ul class="navbar-nav gap-3 mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/jobseeker/dashboard">Home</a>
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/jobseeker/jobs">Jobs</a>
+                    <a class="nav-link" href="#">Jobs</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -35,28 +35,14 @@
                     <a class="nav-link" href="#about">About us</a>
                 </li>
             </ul>
-          
-            <div class="d-flex align-items-center gap-3">
-
-                <!-- User Avatar Dropdown -->
-                <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
-                        id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="/assets/img/default_profile.jpg" alt="User Avatar" class="rounded-circle me-2"
-                            width="40" height="40">
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="/jobseeker/profile-setting">Profile Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Notifications</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item text-danger" href="/logout">Logout</a></li>
-                    </ul>
-                </div>
-                <!-- CTA Button -->
-                <a href="#" class="btn btn-primary">Explore Jobs</a>
-            </div>
+            <form class=" ms-3 gap-2" role="search">
+                <a href="/auth/confirm-role.html">
+                    <button class="sign-up" type="button">Sign up</button>
+                </a>
+                <a href="/auth/login.html">
+                    <button class="btn-primary" type="button">Log in</button>
+                </a>
+            </form>
         </div>
     </div>
 </nav>
