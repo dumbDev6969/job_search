@@ -13,7 +13,7 @@ dashboard = Blueprint('dashboard', __name__)
 def dashboard_():
     if session.get('user_type') == 'jobseeker':
         print("the user::::::::::",session.get('user_type'))
-        return redirect('/jobseeker/dashboard')
+        return redirect('/jobseeker/find-jobs')
     elif session.get('user_type') == 'employer':
         return redirect('/employer/dashboard')
     elif session.get('user_type') == 'admin':

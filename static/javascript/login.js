@@ -39,7 +39,7 @@ async function handleLogin(event) {
         if (response.ok) {
             // Redirect based on role
             if (data.role === 'jobseeker') {
-                window.location.href = '/jobseeker/dashboard';
+                window.location.href = '/jobseeker/find-jobs';
             } else if (data.role === 'employer') {
                 window.location.href = '/employer/dashboard';
             } else {

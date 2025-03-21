@@ -1,3 +1,4 @@
+
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
@@ -6,6 +7,13 @@
 -- Generation Time: Mar 21, 2025 at 07:43 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
+DROP DATABASE IF EXISTS job_portal_db;
+
+-- Create the database again
+CREATE DATABASE job_portal_db;
+
+-- Use the newly created database
+USE job_portal_db;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;

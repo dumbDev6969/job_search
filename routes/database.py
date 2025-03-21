@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 import sqlite3
-
+from middlewares.verify_user import verify_user
 # Create a Blueprint
 database = Blueprint('database', __name__)
 
@@ -10,6 +10,7 @@ def home():
     return 'this is the database'
 
 @database.route('/admin/database/history')
+# @verify_user
 def history():
     # Connect to the SQLite database
     conn = sqlite3.connect('utils/query_logs.db')

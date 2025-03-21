@@ -3,7 +3,7 @@ import random
 import uuid
 from utils.database import get_db
 from utils.email_utils import check_email_exists
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 
 # Create a Blueprint
@@ -37,20 +37,25 @@ def verify() -> dict:
         email = request.form.get('email')
         print(f"UUID: {uuid}, OTP: {user_otp}")
        
-        
         # Validate required fields
         if not user_otp:
             return jsonify({'error': 'Missing required fields', 'verified': False}), 400
         
         # Check if UUID exists and OTP matches
-        stored_otp = session.get('otp', {}).get('code')
-        if not stored_otp:
+        otp_data = session.get('otp', {})
+        stored_otp = otp_data.get('code')
+        expiry_time = otp_data.get('expiry')
+        
+        if not stored_otp or not expiry_time:
             return jsonify({'verified': False}), 200
             
+        # Check if OTP has expired
+        current_time = datetime.now(timezone.utc)
+        if current_time > expiry_time:
+            session.pop('otp', None)
+            return jsonify({'error': 'OTP has expired', 'verified': False}), 400
+            
         if stored_otp == user_otp:
-            # if check_email_exists('employers', 'email', email) or check_email_exists('job_seekers', 'email', email):
-            #     return jsonify({'error': 'Email already exists'}), 400
-            # Remove the used OTP
             session.pop('otp', None)
             db = get_db()
             from sqlalchemy import text
@@ -75,31 +80,34 @@ def generate() -> dict:
             
         # Rate limiting check
         last_request = session.get('last_otp_request', {})
-        if email in last_request:
-            time_diff = (datetime.now() - last_request[email]).total_seconds()
-            if time_diff < 60:  # 1 minute cooldown
-                return jsonify({'error': f'Please wait {60 - int(time_diff)} seconds before requesting another OTP'}), 429
-                
+        # print(last_request)
+        # if email in last_request:
+        #     current_time = datetime.now(timezone.utc)
+        #     last_request_time = last_request[email]
+        #     time_diff = (current_time - last_request_time).total_seconds()
+        #     if time_diff < 60:  # 1 minute cooldown
+        #         return jsonify({'error': f'Please wait {60 - int(time_diff)} seconds before requesting another OTP'}), 429
+
         # Generate 6 random numbers
         code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
         
-        # Store OTP data
+        # Store OTP data with timezone-aware datetime
         session['otp'] = {
             'email': email,
             'code': code,
-            'expiry': datetime.now() + timedelta(minutes=5)
+            'expiry': datetime.now(timezone.utc) + timedelta(minutes=5)
         }
         
-        # Update rate limiting
+        # Update rate limiting with timezone-aware datetime
         if 'last_otp_request' not in session:
             session['last_otp_request'] = {}
-        session['last_otp_request'][email] = datetime.now()
+        session['last_otp_request'][email] = datetime.now(timezone.utc)
         
         # Generate unique UUID
         unique_id = str(uuid.uuid4())
         
         # Send OTP via email
-        from utils.email_sender import my_send_email, SENDER_EMAIL, SENDER_PASSWORD
+        from utils.email_sender import my_send_email
         
         subject = "Your OTP Verification Code"
         body = f"""
@@ -115,7 +123,7 @@ def generate() -> dict:
         """
         
         try:
-            my_send_email(subject, body, SENDER_EMAIL, [email], SENDER_PASSWORD)
+            my_send_email(subject, body, [email])
             return jsonify({'success': True, 'uuid': unique_id}), 200
         except Exception as e:
             return jsonify({'error': f'Failed to send OTP: {str(e)}'}), 500

@@ -13,13 +13,14 @@ app.config['SESSION_TYPE'] = 'filesystem'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 limiter = Limiter(
     key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"],
+    default_limits=["10000 per day", "1000 per hour"],
     storage_uri="memory://",
 )
 limiter.init_app(app)
 
 
 app.register_blueprint(routes_bp)
+print(app.url_map)
 # Apply rate limiting to specific routes
 limiter.limit("5/minute")(login)
 limiter.limit("3/minute")(otp)

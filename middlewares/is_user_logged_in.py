@@ -9,7 +9,7 @@ def is_user_logged_in(f):
         if 'user_id' in session:
             user_type = session['user_type']
             if user_type == 'seeker':
-                return redirect('/jobseeker/dashboard')
+                return redirect('/jobseeker/find-jobs')
             elif user_type == 'employer':
                 return redirect('/employer/dashboard')
             elif user_type == 'admin':

@@ -58,8 +58,9 @@ def login_user():
             verify_query = text("SELECT COUNT(*) as count FROM verified_users WHERE email = :email")
             verify_result = db.execute_query(verify_query, {'email': email})
             
-            if not verify_result['success'] or verify_result['output'][0]['count'] == 0:
-                return jsonify({'error': 'Email not verified', 'email': email}), 401
+            # if not verify_result['success'] or verify_result['output'][0]['count'] == 0:
+            #     return redirect('/verify-account')
+            #     return jsonify({'error': 'Email not verified', 'email': email}), 401
             
             # First check if email exists in either table
            
@@ -117,7 +118,7 @@ def login_user():
                     }
                     session.permanent = True
                     return redirect("/dashboard")
-                    return redirect('/jobseeker/dashboard')
+                    return redirect('/jobseeker/find-jobs')
                     
             # Handle employer login
             elif employer_result['success'] and employer_result['output']:
