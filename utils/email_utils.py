@@ -1,6 +1,6 @@
 from utils.database import DatabaseManager
 from sqlalchemy import text
-from .email_sender import my_send_email, SENDER_EMAIL, SENDER_PASSWORD
+from .email_sender import my_send_email
 
 def check_email_exists(table_name: str, email_column: str, email: str) -> bool:
     """
@@ -92,7 +92,7 @@ def send_reset_password_email(email, reset_link):
         """
         
         # Send the email
-        my_send_email(subject, body, SENDER_EMAIL, [email], SENDER_PASSWORD)
+        my_send_email(subject, body, [email])
         return True
         
     except Exception as e:

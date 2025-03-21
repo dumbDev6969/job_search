@@ -135,6 +135,16 @@ def test_mysql():
             print("MySQL connection test successful")
             return True
         else:
+            from utils.email_sender import my_send_email
+            subject = "MySQL Connection Test Failed"
+            body = "The MySQL database connection test has failed. Please check the database configuration and connectivity."
+            recipients = ["jemcarlo46@gmail.com"]
+
+            try:
+                my_send_email(subject, body, recipients)
+            except Exception as e:
+                print(str(e))
+                print("Failed to send email")
             print("MySQL connection test failed")
             return False
     except Exception as e:

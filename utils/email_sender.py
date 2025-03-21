@@ -8,10 +8,21 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Get email credentials from environment variables
-SENDER_EMAIL = os.getenv('SENDER_EMAIL')
-SENDER_PASSWORD = os.getenv('SENDER_PASSWORD')
 
-def my_send_email(subject, body, sender, recipients, password):
+
+def my_send_email(subject: str, body: str, recipients: list[str]) -> None:
+    """
+    Send an HTML email using Gmail SMTP server.
+
+    Args:
+        subject (str): The subject line of the email
+        body (str): The HTML body content of the email
+        recipients (list[str]): List of recipient email addresses
+    Returns:
+        None: This function doesn't return anything, but prints a success message
+    """
+    sender = os.getenv('SENDER_EMAIL')
+    password = os.getenv('SENDER_PASSWORD')
     msg = MIMEText(body, 'html')
     msg['Subject'] = subject
     msg['From'] = sender
@@ -23,14 +34,14 @@ def my_send_email(subject, body, sender, recipients, password):
 
 
 # Example usage
-if __name__ == "__main__":
-    subject = "daily update"
-    body = "This is your daily update"
-    recipients = ["jemcarlo46@gmail.com", "recipient2@gmail.com"]
+# if __name__ == "__main__":
+#     subject = "daily update"
+#     body = "This is your daily update"
+#     recipients = ["jemcarlo46@gmail.com", "recipient2@gmail.com"]
 
-    try:
-       # Use environment variables instead of decode_string
-       my_send_email(subject, body, SENDER_EMAIL, recipients, SENDER_PASSWORD)
-    except Exception as e:
-       print(str(e))
-       print("Failed to send email")
+#     try:
+#        # Use environment variables instead of decode_string
+#        my_send_email(subject, body, SENDER_EMAIL, recipients, SENDER_PASSWORD)
+#     except Exception as e:
+#        print(str(e))
+#        print("Failed to send email")
