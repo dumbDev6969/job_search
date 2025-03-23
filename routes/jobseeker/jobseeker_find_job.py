@@ -11,6 +11,7 @@ jobseeker_find_job = Blueprint('jobseeker_find_job', __name__)
 @verify_user
 @is_email_verified
 @is_qualification_done
+@is_interests_done
 @job_seeker_middleware
 def jobseeker_find_job_():
     return render_template('/pages/job_seeker/find_jobs.html')

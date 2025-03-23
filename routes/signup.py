@@ -158,3 +158,4 @@ def signup_jobseeker():
     else:
         # Render the signup form
         return render_template('auth/register_seekers.html')
+

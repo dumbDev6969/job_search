@@ -1,14 +1,16 @@
-from flask import Blueprint,render_template
+from flask import Blueprint,render_template,jsonify,request,session
 from middlewares.verify_user import verify_user
 from middlewares.is_email_verified import is_email_verified
-from middlewares.user_access import jobseeker as job_seeker_middleware,admin,emplyer
-# Create a Blueprint
+from middlewares.is_setup_done  import interests_done
+from utils.database import get_db
+from sqlalchemy import text
 jobseeker_job_interest = Blueprint('jobseeker_job_interest', __name__)
 
 # Define your routes using the Blueprint
 @jobseeker_job_interest.route('/jobseeker/job-interest')
 @verify_user
 @is_email_verified
+@interests_done
 def jobseeker_job_interest_():
     """Render the job seeker's job interest page.
 
@@ -24,3 +26,43 @@ def jobseeker_job_interest_():
         rendered template: The job seeker job interest HTML page
     """
     return render_template('/pages/job_seeker/job_interest.html')
+
+
+
+@jobseeker_job_interest.route('/api/job-interest', methods=['POST'])
+def job_interest_api():
+    try:
+        data = request.form
+        seeker_id = session['user_id']
+        
+        # Validate required fields
+        required_fields = ['job_interest', 'job_type', 'preferred_location', 'expected_salary_range']
+        for field in required_fields:
+            if not data.get(field):
+                return jsonify({'error': f'{field.replace("_", " ").title()} is required'}), 400
+        
+        # Get database connection
+        db = get_db()
+        
+        # Insert job interest data
+        query = text("""
+            INSERT INTO job_interest 
+            (user_id, job_interest, job_type, preferred_location, expected_salary_range)
+            VALUES (:user_id, :job_interest, :job_type, :preferred_location, :expected_salary_range)
+        """)
+        
+        db.execute_query(query, {
+            'user_id': seeker_id,
+            'job_interest': data.get('job_interest'),
+            'job_type': data.get('job_type'),
+            'preferred_location': data.get('preferred_location'),
+            'expected_salary_range': data.get('expected_salary_range')
+        })
+        
+        return jsonify({'message': 'Job interest added successfully'}), 201
+        
+    except Exception as e:
+        print(f"Error adding job interest: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+

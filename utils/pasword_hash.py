@@ -33,13 +33,16 @@ def verify_password(plain_password, hashed_password):
     
     Args:
         plain_password (str): The plain text password to verify
-        hashed_password (bytes): The hashed password to check against
+        hashed_password (bytes or str): The hashed password to check against
         
     Returns:
         bool: True if the password matches, False otherwise
     """
     if isinstance(plain_password, str):
         plain_password = plain_password.encode('utf-8')
+    
+    if isinstance(hashed_password, str):
+        hashed_password = hashed_password.encode('utf-8')
     
     return bcrypt.checkpw(plain_password, hashed_password)
 
@@ -126,3 +129,4 @@ def decrypt_data(encrypted_data, password, salt):
     decrypted_data = cipher.decrypt(encrypted_data)
     
     return decrypted_data
+

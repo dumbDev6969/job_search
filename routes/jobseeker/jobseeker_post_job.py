@@ -12,6 +12,7 @@ jobseeker_post_job = Blueprint('jobseeker_post_job', __name__)
 @verify_user
 @is_email_verified
 @is_qualification_done
+@is_interests_done
 @job_seeker_middleware
 def jobseeker_post_job_():
     """Render the job seeker's post job page.

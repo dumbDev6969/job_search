@@ -38,9 +38,3 @@ def check_column_exists(table_name: str, column: str, value: str) -> bool:
         if 'db' in locals():
             db.close()
 
-
-
-
-
-a = check_column_exists('qualifications', 'seeker_id',124)
-print(a)

@@ -15,35 +15,42 @@
 </head>
 
 <body>
-    <div class="container mt-4">
-        <h2>Admin Dashboard</h2>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <h3>Admin dashboard</h3>
+            <a href="#" class="btn-primary">
+                Browse users
+            </a>
+        </div>
+    </nav>
+    <div class="container" style="margin-top: 100px;">
         <div class="row text-center">
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="100">
                 <div class="p-3 bg-light rounded shadow-sm">
                     <i class="fas fa-user-tie fa-3x icon-blue mb-3"></i>
                     <h5>Total Employers</h5>
-                    <h3>45</h3>
+                    <h3 id="employersCount">-</h3>
                 </div>
             </div>
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="200">
                 <div class="p-3 bg-light rounded shadow-sm">
                     <i class="fas fa-user-graduate fa-3x icon-blue mb-3"></i>
                     <h5>Registered Job Seekers</h5>
-                    <h3>150</h3>
+                    <h3 id="jobseekersCount">-</h3>
                 </div>
             </div>
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="300">
                 <div class="p-3 bg-light rounded shadow-sm">
                     <i class="fas fa-briefcase fa-3x icon-blue mb-3"></i>
                     <h5>Open Job Listings</h5>
-                    <h3>38</h3>
+                    <h3 id="jobsCount">-</h3>
                 </div>
             </div>
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="400">
                 <div class="p-3 bg-light rounded shadow-sm">
                     <i class="fas fa-handshake fa-3x icon-blue mb-3"></i>
-                    <h5>Hired Candidates</h5>
-                    <h3>90</h3>
+                    <h5>Applications</h5>
+                    <h3 id="applicationsCount">-</h3>
                 </div>
             </div>
         </div>
@@ -66,7 +73,7 @@
         <div class="row mt-4">
             <div data-aos="fade-right" data-aos-delay="300" class="col-md-6">
                 <h5>Recent Applications</h5>
-                <input type="text" id="searchApplications" class="form-control mb-2" placeholder="Search applications...">
+                <input type="text" id="searchApplications" class=" mb-2" placeholder="Search applications...">
                 <div  style="max-height: 390px; overflow-y: auto;">
                     <table class="table table-striped table-hover" id="applicationsTable">
                         <thead class="table-dark">
@@ -95,7 +102,7 @@
             </div>
             <div data-aos="fade-left" data-aos-delay="400" class="col-md-6">
                 <h5>Banned Accounts</h5>
-                <input type="text" id="searchBanned" class="form-control mb-2" placeholder="Search banned accounts...">
+                <input type="text" id="searchBanned" class=" mb-2" placeholder="Search banned accounts...">
                 <div style="max-height: 390px; overflow-y: auto;">
                     <table class="table table-striped table-hover" id="bannedTable">
                         <thead class="table-dark">
@@ -120,9 +127,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="/assets/js/animation.js"></script>
     <script>
+        // Fetch statistics from API
+        fetch('/api/stats')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('employersCount').textContent = data.employers;
+                document.getElementById('jobseekersCount').textContent = data.jobseekers;
+                document.getElementById('jobsCount').textContent = data.jobs;
+                document.getElementById('applicationsCount').textContent = data.applications;
+            })
+            .catch(error => console.error('Error fetching stats:', error));
+
         AOS.init({
-            duration: 1000, // Animation duration (1000ms = 1s)
-            once: true, // Run animation only once when scrolling
+            duration: 1000,
+            once: true,
         });
 
         // Recruiter Chart Configuration
@@ -133,7 +151,7 @@
                 labels: ['Registered Recruiters', 'Job Postings', 'Active Jobs', 'Completed Hires'],
                 datasets: [{
                     label: 'Recruiter Metrics',
-                    data: [45, 120, 80, 50], // Example data
+                    data: [45, 120, 80, 50],
                     backgroundColor: ['#4A90E2', '#357ABD', '#6AA7EC', '#95bfef']
                 }]
             }

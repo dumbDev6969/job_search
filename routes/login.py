@@ -45,6 +45,7 @@ def login_user():
                     CASE    
                         WHEN EXISTS (SELECT 1 FROM job_seekers WHERE email = :email) THEN 1
                         WHEN EXISTS (SELECT 1 FROM employers WHERE email = :email) THEN 1
+                        WHEN EXISTS (SELECT 1 FROM admin WHERE email = :email) THEN 1
                         ELSE 0
                     END as email_exists
             """)
@@ -151,11 +152,37 @@ def login_user():
                     session.permanent = True
                     return redirect("/dashboard")
                     return redirect("/pages/recruiter/dashboard.html")
-            
-            # Invalid credentials
+            else:
+                print("checking admin")
+                admin_query = text("""
+                    SELECT username, email, password
+                    FROM admin 
+                    WHERE email = :email
+                """)
+    
+                admin_result = db.execute_query(admin_query, {'email': email})
+                print("admin result", admin_result)
+                
+                if admin_result['success'] and admin_result['output']:
+                    user = admin_result['output'][0]
+                    print("ad",password,user,user['password'])
+                    print("verifyin password:::",verify_password(password, user['password']))
+                    
+                    if verify_password(password, user['password']):
+                        print("admin verified")
+                        # Set session data for admin
+                        session['user_id'] = user['username']
+                        session['email'] = user['email']
+                        session['username'] = user['username']
+                        session['user_type'] = 'admin'
+                        session.permanent = True
+                        return redirect("/admin/index")
+                    # return jsonify({'error': 'Invalid credentials'}), 401
+                # return jsonify({'error': 'Invalid credentials'}), 401
+                       
             return jsonify({'error': 'Invalid credentials'}), 401
             # return render_template("/auth/otp_virification.html",email=email,error='Invalid credentials')
-                
+                            
         except Exception as e:
             print("errrrrrrrrrrrrrrrrr",str(e))
             return jsonify({'error': 'Login failed', 'details': str(e)}), 500

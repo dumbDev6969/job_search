@@ -28,10 +28,10 @@
     <div class="container mb-5 mt-5">
         <div class="row d-flex align-items-center">
             <div data-aos="fade-right" class="col-md-6">
-                <form action="#">
+                <form id="jobPostForm" action="/api/post-job" method="POST">
                     <div class="mb-3">
                         <label for="title">Job Title</label>
-                        <input type="text" " id="title" name="title" placeholder="Enter job title" required>
+                        <input type="text" id="title" name="title" placeholder="Enter job title" required>
                     </div>
     
                     <div class="mb-3">
@@ -42,17 +42,26 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="location">Location</label>
-                            <input type="text"  id="location" name="location" placeholder="Enter location" required>
+                            <input type="text" id="location" name="location" placeholder="Enter location" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="salary_range">Salary Range</label>
                             <input type="text" id="salary_range" name="salary_range" placeholder="e.g., $50,000 - $70,000" required>
                         </div>
                     </div>
-    
+                    <div class="mb-3">
+                        <label for="expires_at">Expiration Date</label>
+                        <input type="date" id="expires_at" name="expires_at" required>
+                    </div>
+
+                    <select name="status" class="">
+                        <option value="active" selected>Active</option>
+                        <option value="paused">Paused</option>
+                        <option value="closed">Closed</option>
+                    </select>
                     <div class="mb-3">
                         <label for="employment_type">Employment Type</label>
-                        <select  id="employment_type" name="employment_type" required>
+                        <select id="employment_type" name="employment_type" required>
                             <option value="" selected disabled>Choose...</option>
                             <option value="Full-Time">Full-Time</option>
                             <option value="Part-Time">Part-Time</option>
@@ -61,8 +70,55 @@
                         </select>
                     </div>
     
-                    <button class=" btn-primary 0 mt-3" type="submit">Post job</button>
+                    <button class="btn btn-primary mt-3" type="submit">Post job</button>
                 </form>
+
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script>
+                    document.getElementById('jobPostForm').addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        
+                        Swal.fire({
+                            title: 'Posting Job...',
+                            text: 'Please wait',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        const formData = new FormData(this);
+                        fetch('/api/post-job', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.message) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: data.message
+                                }).then(() => {
+                                    this.reset();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: data.error || 'Something went wrong'
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'An unexpected error occurred'
+                            });
+                        });
+                    });
+                </script>
             </div>
             <div data-aos="fade-left" class="col-md-6">
                 <img class="img-fluid" height="500" src="/assets/img/post-job.jpg" alt="Job Form">

@@ -1,0 +1,11 @@
+from flask import Blueprint,render_template
+from middlewares.verify_user import verify_user
+
+# Create a Blueprint
+index = Blueprint('index', __name__)
+
+# Define your routes using the Blueprint
+@index.route('/admin/index')
+@verify_user
+def index_():
+    return render_template('/pages/admin/index.html')
