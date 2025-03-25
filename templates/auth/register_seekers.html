@@ -86,15 +86,15 @@
     <div class="container  mb-5 mt-5">
         <div class="row d-flex align-items-center">
             <div data-aos="fade-right" class="col-md-6 ">
-                <form id="signup-form" action="/signup/jobseeker" method="post">
+                <form id="signup-form" action="/signup/jobseeker" method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                            <label for="first_name">Name</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Name" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="last-name">Last name</label>
-                            <input type="text" class="form-control" id="last-name" name="las-name" placeholder="Last name" required>
+                            <label for="last_name">Last name</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last name" required>
                         </div>
                     </div>
                     <div class=" mb-3">
@@ -110,6 +110,10 @@
                             <label for="municipality">Municipality</label>
                             <input type="text" class="form-control" id="municipality" name="municipality" placeholder="Municipality"/>
                         </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="degree">Degree</label>
+                        <input type="text" class="form-control" id="degree" name="degree" placeholder="Your degree">
                     </div>
                     <div class=" mb-3">
                         <label for="portfolio">Portfolio</label>

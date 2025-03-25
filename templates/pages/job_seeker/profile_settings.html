@@ -101,12 +101,84 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="/assets/js/animation.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
         AOS.init({
-            duration: 1000, // Animation duration (1000ms = 1s)
-            once: true, // Run animation only once when scrolling
+            duration: 1000,
+            once: true,
+        });
+
+        $(document).ready(function() {
+            // Fetch qualifications
+            $.ajax({
+                url: '/jobseeker/api/qualification',
+                method: 'GET',
+                success: function(data) {
+                    $('#degree').val(data.degree || '');
+                    $('#school').val(data.school_graduated || '');
+                    $('#certifications').val(data.certifications || '');
+                    $('#training').val(data.specialized_training || '');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching qualifications:', error);
+                }
+            });
+
+            // Fetch job interests
+            $.ajax({
+                url: '/jobseeker/api/job-interest',
+                method: 'GET',
+                success: function(data) {
+                    $('#job_type').val(data.job_type || '');
+                    $('#location').val(data.preferred_location || '');
+                    $('#salary').val(data.expected_salary_range || '');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching job interests:', error);
+                }
+            });
+
+            // Handle form submission
+            $('form').on('submit', function(e) {
+                e.preventDefault();
+
+                // Save qualifications
+                $.ajax({
+                    url: '/jobseeker/api/qualification',
+                    method: 'POST',
+                    data: {
+                        degree: $('#degree').val(),
+                        school_graduated: $('#school').val(),
+                        certifications: $('#certifications').val(),
+                        specialized_training: $('#training').val()
+                    },
+                    success: function(response) {
+                        console.log('Qualifications saved successfully');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error saving qualifications:', error);
+                    }
+                });
+
+                // Save job interests
+                $.ajax({
+                    url: '/jobseeker/api/job-interest',
+                    method: 'POST',
+                    data: {
+                        job_type: $('#job_type').val(),
+                        preferred_location: $('#location').val(),
+                        expected_salary_range: $('#salary').val(),
+                        job_interest: $('#job_type').val() // Using job_type as job_interest
+                    },
+                    success: function(response) {
+                        console.log('Job interests saved successfully');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error saving job interests:', error);
+                    }
+                });
+            });
         });
     </script>
 </body>
-
 </html>

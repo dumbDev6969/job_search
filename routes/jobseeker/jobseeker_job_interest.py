@@ -29,7 +29,8 @@ def jobseeker_job_interest_():
 
 
 
-@jobseeker_job_interest.route('/api/job-interest', methods=['POST'])
+@jobseeker_job_interest.route('/jobseeker/api/job-interest', methods=['POST'])
+@verify_user
 def job_interest_api():
     try:
         data = request.form
@@ -66,3 +67,37 @@ def job_interest_api():
         return jsonify({'error': str(e)}), 500
 
 
+@jobseeker_job_interest.route('/jobseeker/api/job-interest', methods=['GET'])
+@verify_user
+def get_job_interest():
+    """Retrieve job interest information for the current job seeker.
+    
+    This route fetches the job interest details for the authenticated job seeker
+    from the database.
+    
+    Returns:
+        JSON response containing job interest data or error message
+    """
+    try:
+        seeker_id = session['user_id']
+        
+        # Get database connection
+        db = get_db()
+        
+        # Query to fetch job interest data
+        query = text("""
+            SELECT job_interest, job_type, preferred_location, expected_salary_range 
+            FROM job_interest 
+            WHERE user_id = :user_id
+        """)
+        
+        # Execute query and fetch results
+        result = db.execute_query(query, {'user_id': seeker_id})
+        
+        if result:
+            return jsonify(result['output'][0]), 200
+        else:
+            return jsonify({'message': 'No job interest found'}), 404
+            
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

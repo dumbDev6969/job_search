@@ -29,7 +29,8 @@ def jobseeker_qualification_():
     """
     return render_template('/pages/job_seeker/qualification.html')
 
-@jobseeker_qualification.route('/api/qualification', methods=['POST'])
+@jobseeker_qualification.route('/jobseeker/api/qualification', methods=['POST'])
+@verify_user
 def add_qualification():
     """Handle qualification form submission.
     
@@ -71,4 +72,37 @@ def add_qualification():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-
+@jobseeker_qualification.route('/jobseeker/api/qualification', methods=['GET'])
+@verify_user
+def get_qualification():
+    """Retrieve qualification information for the current job seeker.
+    
+    This route fetches the qualification details for the authenticated job seeker
+    from the database.
+    
+    Returns:
+        JSON response containing qualification data or error message
+    """
+    try:
+        seeker_id = session['user_id']
+        
+        # Get database connection
+        db = get_db()
+        
+        # Query to fetch qualification data
+        query = text("""
+            SELECT degree, school_graduated, certifications, specialized_training 
+            FROM qualifications 
+            WHERE seeker_id = :seeker_id
+        """)
+        
+        # Execute query and fetch results
+        result = db.execute_query(query, {'seeker_id': seeker_id})
+        
+        if result:
+            return jsonify(result['output'][0]), 200
+        else:
+            return jsonify({'message': 'No qualification found'}), 404
+            
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
