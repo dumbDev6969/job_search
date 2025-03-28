@@ -36,92 +36,52 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-around " id="navbarSupportedContent">
-                <ul class="navbar-nav gap-3 mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Jobs</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Resources
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Resume Tips</a></li>
-                            <li><a class="dropdown-item" href="#">Interview Prep</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Career Advice</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#features">Features</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">About us</a>
-                    </li>
-                </ul>
-                <form class=" ms-3 gap-2" role="search">
-                    <a href="/auth/confirm-role.html">
-                        <button class="sign-up" type="button">Sign up</button>
-                    </a>
-                    <a href="/auth/login.html">
-                        <button class="btn-primary" type="button">Log in</button>
-                    </a>
-                </form>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container vh-100 mt-5">
+    <div class="row d-flex align-items-center justify-content-center mt-5 p-5 ">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="qualification.html">Qualifications</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Job Preferences</li>
+            </ol>
+          </nav>
+       <div class="col-md-6">
         <form action="t" method="POST" class="p-4">
             <div class="mb-3">
-    <label for="job_interest" class="form-label">Job Interest</label>
-    <input type="text" id="job_interest" name="job_interest" class="form-control" placeholder="Eg. Frontend Developer, Data Scientist, etc."
-</div>
+                <label for="job_interest" class="form-label">Job Interest</label>
+                <input type="text" id="job_interest" name="job_interest" 
+                    placeholder="Eg. Frontend Developer, Data Scientist, etc." 
+                </div>
 
-<div class="mb-3">
-    <label for="job_type" class="form-label">Job Type</label>
-    <select id="job_type" name="job_type" required>
-        <option value="" selected disabled>Select job type</option>
-        <option value="Full-time">Full-time</option>
-        <option value="Part-time">Part-time</option>
-        <option value="Freelance">Freelance</option>
-        <option value="Internship">Internship</option>
-    </select>
-</div>
+                <div class="mb-3">
+                    <label for="job_type" class="form-label">Job Type</label>
+                    <select id="job_type" name="job_type" required>
+                        <option value="" selected disabled>Select job type</option>
+                        <option value="Full-time">Full-time</option>
+                        <option value="Part-time">Part-time</option>
+                        <option value="Freelance">Freelance</option>
+                        <option value="Internship">Internship</option>
+                    </select>
+                </div>
 
-<div class="mb-3">
-    <label for="preferred_location" class="form-label">Preferred Location</label>
-    <input type="text" id="preferred_location" name="preferred_location" class="form-control" placeholder="Enter preferred location">
-</div>
+                <div class="mb-3">
+                    <label for="preferred_location" class="form-label">Preferred Location</label>
+                    <input type="text" id="preferred_location" name="preferred_location" 
+                        placeholder="Enter preferred location">
+                </div>
 
-<div class="mb-3">
-    <label for="expected_salary_range" class="form-label">Expected Salary Range</label>
-    <input type="text" id="expected_salary_range" name="expected_salary_range" class="form-control" placeholder="Enter expected salary range">
-</div>
-        
-            <input type="hidden" name="user_id" value="<!--  -->">
-        
-            <button type="submit" class="btn-primary w-100 mt-3">Submit</button>
+                <div class="mb-3">
+                    <label for="expected_salary_range" class="form-label">Expected Salary Range</label>
+                    <input type="text" id="expected_salary_range" name="expected_salary_range"
+                         placeholder="Enter expected salary range">
+                </div>
+
+                <input type="hidden" name="user_id" value="<!--  -->">
+
+                <button type="submit" class="btn-primary w-100 mt-3">Submit</button>
         </form>
-        
-        
+       </div>
     </div>
 
-   
+
     <!-- AOS JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="/assets/js/animation.js"></script>
