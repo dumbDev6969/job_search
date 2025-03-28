@@ -108,37 +108,204 @@
                 </div>
             </div>
         </div>
-        
-        
+    
         
         <div class="row mt-4">
-            <div data-aos="fade-right" class="col-md-6">
-                <canvas id="candidateChart" height="200"></canvas>
+            
+            <div class="col-lg-8">
+                
+                <div class="card mb-4" data-aos="fade-right">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"> Candidates</h5>
+                        <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Candidate</th>
+                                        <th>Position</th>
+                                        <th>Stage</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle me-2" width="36" height="36">
+                                                <div>
+                                                    <h6 class="mb-0">John Doe</h6>
+                                                    <small class="text-muted">Senior Frontend Dev</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Senior Frontend</td>
+                                        <td><span class="badge bg-warning">Technical Review</span></td>
+                                       
+                                        <td>
+                                            <button class="btn btn-sm btn-info">View</button>
+                                            <button class="btn btn-sm btn-primary">Schedule Interview</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle me-2" width="36" height="36">
+                                                <div>
+                                                    <h6 class="mb-0">Sarah Smith</h6>
+                                                    <small class="text-muted">UX Designer</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>UX Designer</td>
+                                        <td><span class="badge bg-info">Final Interview</span></td>
+                                        
+                                        <td>
+                                            <button class="btn btn-sm btn-info">View</button>
+                                            <button class="btn btn-sm btn-primary">Schedule Interview</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://randomuser.me/api/portraits/men/22.jpg" class="rounded-circle me-2" width="36" height="36">
+                                                <div>
+                                                    <h6 class="mb-0">David Kim</h6>
+                                                    <small class="text-muted">Data Scientist</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Data Scientist</td>
+                                        <td><span class="badge bg-secondary">New Applicant</span></td>
+                                        
+                                        <td>
+                                            <button class="btn btn-sm btn-info">View</button>
+                                            <button class="btn btn-sm btn-primary">Schedule Interview</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="card" data-aos="fade-right" data-aos-delay="100">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Upcoming Interviews</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">Technical Interview - John Doe</h6>
+                                        <small class="text-muted">Senior Frontend Developer | 2024-03-28 2:00 PM</small>
+                                    </div>
+                                    <span class="badge bg-primary">Zoom</span>
+                                </div>
+                            </div>
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">Cultural Fit - Sarah Smith</h6>
+                                        <small class="text-muted">UX Designer | 2024-03-28 10:30 AM</small>
+                                    </div>
+                                    <span class="badge bg-primary">Zoom</span>
+                                </div>
+                            </div>
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">Final Round - Michael Chen</h6>
+                                        <small class="text-muted">Product Manager | 2024-03-28 3:00 PM</small>
+                                    </div>
+                                    <span class="badge bg-primary">On-site</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-outline-primary w-100 rounded-0">View All Interviews</a>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6">
-                <h5>Recent Applications</h5>
-                <div data-aos="fade-left"  style="max-height: 390px; overflow-y: auto;">
-                    <table class="table table-striped table-hover">
-                        <thead class="table-dark" style="position: sticky; top: 0; background-color: white;">
-                            <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>John Doe</td>
-                                <td>Software Engineer</td>
-                                <td><span class="badge bg-success">Interview</span></td>
-                            </tr>
-                            <tr>
-                                <td>Jane Smith</td>
-                                <td>Project Manager</td>
-                                <td><span class="badge bg-warning">Pending</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+    
+            <!-- Right Column - Recent Activity -->
+            <div class="col-lg-4">
+                <!-- Recent Applications -->
+                <div class="card mb-4" data-aos="fade-left">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Recent Applications</h5>
+                        <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                    <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-hover mb-0">
+                            <thead class="sticky-top bg-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle me-2" width="30" height="30">
+                                            John Doe
+                                        </div>
+                                    </td>
+                                    <td>Senior Frontend Dev</td>
+                                    <td><span class="badge bg-warning">Screening</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle me-2" width="30" height="30">
+                                            Sarah Smith
+                                        </div>
+                                    </td>
+                                    <td>UX Designer</td>
+                                    <td><span class="badge bg-info">Interview</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://randomuser.me/api/portraits/men/75.jpg" class="rounded-circle me-2" width="30" height="30">
+                                            Michael Chen
+                                        </div>
+                                    </td>
+                                    <td>Product Manager</td>
+                                    <td><span class="badge bg-success">Hired</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://randomuser.me/api/portraits/women/68.jpg" class="rounded-circle me-2" width="30" height="30">
+                                            Emily Wilson
+                                        </div>
+                                    </td>
+                                    <td>Backend Engineer</td>
+                                    <td><span class="badge bg-danger">Rejected</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+    
+                <!-- Quick Actions -->
+                <div class="card" data-aos="fade-left" data-aos-delay="100">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Quick Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <a href="find_talent.html" class="btn btn-outline-primary w-100 mb-2 text-start">
+                            <i class="fas fa-user-plus me-2"></i> Add Candidate
+                        </a>
+                        <a href="manage_listing.html" class="btn btn-outline-primary w-100 mb-2 text-start">
+                            <i class="fas fa-calendar-plus me-2"></i> Schedule Interview
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -159,18 +326,7 @@
             once: true, // Run animation only once when scrolling
         });
 
-        const ctx = document.getElementById('candidateChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Applied', 'Interview', 'Shortlisted', 'Hired'],
-                datasets: [{
-                    label: 'Candidates',
-                    data: [300, 120, 80, 50],
-                    backgroundColor: ['#4A90E2', '#357ABD', '#6AA7EC', '#95bfef']
-                }]
-            }
-        });
+        
     </script>
 </body>
 
