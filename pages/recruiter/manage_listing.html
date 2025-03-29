@@ -85,80 +85,208 @@
     </nav>
 
     <div class="container mt-4">
-        <h2>Candidate Search</h2>
-        <div data-aos="fade-right" class="fixed-filters">
-            <div class="row mb-3 gap-2">
-                <div class="col-md-4 ">
-                    <input type="text" class="form-control" placeholder="Search candidates...">
-                </div>
-                <div class="col-md-6 d-flex gap-2 ">
-                    <select class="form-select">
-                        <option selected>Salary Expectation</option>
-                        <option>20,000 - 35,000</option>
-                        <option>45,000 - 60,000</option>
-                        <option>90,000+</option>
-                    </select>
-                    <select class="form-select">
-                        <option selected>Location</option>
-                        <option>Remote</option>
-                        <option>On-site</option>
-                        <option>Hybrid</option>
-                    </select>
-                    <select class="form-select">
-                        <option selected>Skills</option>
-                        <option>Web</option>
-                        <option>Design</option>
-                        <option>Ai</option>
-                    </select>
-                </div>
-                <div class="col-md-2 text-md-end ">
-                    <button class="btn-danger w-100" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove selected candidates">Remove</button>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Candidate Search</h2>
+            <div class="text-muted">Showing 24 candidates</div>
+        </div>
+        
+        <!-- Search and Filters -->
+        <div class="card mb-4 border-0 shadow-sm" data-aos="fade-right">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="search-box position-relative">
+                            <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                            <input type="text" class="form-control ps-5" placeholder="Search by name, skills...">
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row g-2">
+                            <div class="col-md">
+                                <select name="salary-range" title="Select a salary range">
+                                    <option value="" selected>All Salary Ranges</option>
+                                    <option>20,000 - 35,000</option>
+                                    <option>35,000 - 50,000</option>
+                                    <option>50,000 - 75,000</option>
+                                    <option>75,000+</option>
+                                </select>
+                            </div>
+                            <div class="col-md">
+                                <select name="location" title="Select a location">
+                                    <option value="" selected>All Locations</option>
+                                    <option>Remote</option>
+                                    <option>On-site</option>
+                                    <option>Hybrid</option>
+                                </select>
+                            </div>
+                            <div class="col-md">
+                                <select name="skills" title="Select a skill">
+                                    <option value="" selected>All Skills</option>
+                                    <option>JavaScript</option>
+                                    <option>Python</option>
+                                    <option>UI/UX</option>
+                                    <option>AI/ML</option>
+                                </select>
+                            </div>
+                            <div class="col-md-auto">
+                                <button class="btn btn-outline-danger w-100">
+                                    <i class="fas fa-trash-alt me-1"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div data-aos="fade-up" class="table-container">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Status</th>
-                        <th>Skills</th>
-                        <th>Salary Expectation</th>
-                        <th>Location</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>John Doe</td>
-                        <td><span class="badge bg-success">Available</span></td>
-                        <td>React, Node.js</td>
-                        <td>50,000 - 60,000</td>
-                        <td>Remote</td>
-                        <td>
-                            <button class="btn btn-sm btn-info">View</button>
-                            <button class="btn btn-sm btn-primary">Schedule Interview</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>Jane Smith</td>
-                        <td><span class="badge bg-danger">Hired</span></td>
-                        <td>Python, Flask</td>
-                        <td>80,000 - 90,000</td>
-                        <td>On-site</td>
-                        <td>
-                            <button class="btn btn-sm btn-info">View</button>
-                            <button class="btn btn-sm btn-primary" disabled>Schedule Interview</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    
+        <!-- Candidates Table -->
+        <div class="card border-0 shadow-sm" data-aos="fade-up">
+            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light" style="position: sticky; top: 0; z-index: 1; background-color: white;">
+                        <tr>
+                            <th width="40"><input type="checkbox" class="form-check-input" id="select-all"></th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Skills</th>
+                            <th>Salary Expectation</th>
+                            <th>Location</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Table rows remain the same as before -->
+                        <tr>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" 
+                                         class="rounded-circle me-2" width="36" height="36">
+                                    <div>
+                                        <div class="fw-bold">John Doe</div>
+                                        <small class="text-muted">Senior Frontend Developer</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge bg-success">Available</span></td>
+                            <td>
+                                <span class="badge bg-light text-dark me-1">React</span>
+                                <span class="badge bg-light text-dark me-1">Node.js</span>
+                                <span class="badge bg-light text-dark">TypeScript</span>
+                            </td>
+                            <td>50,000 - 60,000</td>
+                            <td>Remote</td>
+                            
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-primary" 
+                                            data-bs-toggle="tooltip" 
+                                            data-bs-placement="top" 
+                                            title="Schedule interview with this candidate">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" 
+                                         class="rounded-circle me-2" width="36" height="36">
+                                    <div>
+                                        <div class="fw-bold">John Doe</div>
+                                        <small class="text-muted">Senior Frontend Developer</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge bg-success">Available</span></td>
+                            <td>
+                                <span class="badge bg-light text-dark me-1">React</span>
+                                <span class="badge bg-light text-dark me-1">Node.js</span>
+                                <span class="badge bg-light text-dark">TypeScript</span>
+                            </td>
+                            <td>50,000 - 60,000</td>
+                            <td>Remote</td>
+                            
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-primary" 
+                                            data-bs-toggle="tooltip" 
+                                            data-bs-placement="top" 
+                                            title="Schedule interview with this candidate">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="form-check-input"></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" 
+                                         class="rounded-circle me-2" width="36" height="36">
+                                    <div>
+                                        <div class="fw-bold">John Doe</div>
+                                        <small class="text-muted">Senior Frontend Developer</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge bg-success">Available</span></td>
+                            <td>
+                                <span class="badge bg-light text-dark me-1">React</span>
+                                <span class="badge bg-light text-dark me-1">Node.js</span>
+                                <span class="badge bg-light text-dark">TypeScript</span>
+                            </td>
+                            <td>50,000 - 60,000</td>
+                            <td>Remote</td>
+                            
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-primary" 
+                                            data-bs-toggle="tooltip" 
+                                            data-bs-placement="top" 
+                                            title="Schedule interview with this candidate">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                       
+                        <!-- Additional rows... -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="card-footer bg-white">
+                <nav aria-label="Candidate pagination">
+                    <ul class="pagination justify-content-center mb-0">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
-
+    
 
 
 
