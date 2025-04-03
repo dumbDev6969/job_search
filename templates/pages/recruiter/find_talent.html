@@ -8,13 +8,14 @@
     <link rel="stylesheet" href="/assets/fonts.css">
     <link rel="stylesheet" href="/assets/scheme.css">
     <!-- AOS CSS -->
-    <link rel="stylesheet" href="/aos-master/dist/aos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 
-        <link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-
-      <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/general.css">
@@ -37,79 +38,84 @@
         }
     </style>
 
+
 {% include 'components/recruiter-nav.html' %}
 
-
     <div class="container mt-4">
-        <h2>Candidate Search</h2>
-        <div data-aos="fade-right" class="fixed-filters">
-            <div class="row mb-3 gap-2">
-                <div class="col-md-4 ">
-                    <input type="text" class="form-control" placeholder="Search candidates...">
-                </div>
-                <div class="col-md-6 d-flex gap-2 ">
-                    <select class="form-select">
-                        <option selected>Salary Expectation</option>
-                        <option>20,000 - 35,000</option>
-                        <option>45,000 - 60,000</option>
-                        <option>90,000+</option>
-                    </select>
-                    <select class="form-select">
-                        <option selected>Location</option>
-                        <option>Remote</option>
-                        <option>On-site</option>
-                        <option>Hybrid</option>
-                    </select>
-                    <select class="form-select">
-                        <option selected>Skills</option>
-                        <option>Web</option>
-                        <option>Design</option>
-                        <option>Ai</option>
-                    </select>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Candidate Search</h2>
+            <div class="text-muted">Showing 24 candidates</div>
+        </div>
+        
+        <!-- Search and Filters -->
+        <div class="container mb-4 border-0 " data-aos="fade-right">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="search-box position-relative">
+                            <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                            <input type="text" id="search-name" class="ps-5" placeholder="Search by name, skills...">
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row g-2">
+                            <div class="col-md">
+                                <input type="text" id="salary-range" name="salary-range" title="Select a salary range" placeholder="Enter salary range">
+                            </div>
+                            <div class="col-md">
+                                <input type="text" id="location" name="location" title="Select a location" placeholder="Enter location">
+                            </div>
+                            <div class="col-md">
+                                <input type="text" id="skills" name="skills" title="Select a skill" placeholder="Enter skills">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div data-aos="fade-up" class="table-container">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Status</th>
-                        <th>Skills</th>
-                        <th>Salary Expectation</th>
-                        <th>Location</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>John Doe</td>
-                        <td><span class="badge bg-success">Available</span></td>
-                        <td>React, Node.js</td>
-                        <td>50,000 - 60,000</td>
-                        <td>Remote</td>
-                        <td>
-                            <button class="btn btn-sm btn-info">View</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>Jane Smith</td>
-                        <td><span class="badge bg-danger">Hired</span></td>
-                        <td>Python, Flask</td>
-                        <td>80,000 - 90,000</td>
-                        <td>On-site</td>
-                        <td>
-                            <button class="btn btn-sm btn-info">View</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    
+        <!-- Candidates Table -->
+        <div class="card border-0 shadow-sm" data-aos="fade-up">
+            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light" style="position: sticky; top: 0; z-index: 1; background-color: white;">
+                        <tr>
+                            <th width="40"><input type="checkbox" class="form-check-input" id="select-all"></th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Skills</th>
+                            <th>Salary Expectation</th>
+                            <th>Location</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-talent">
+                        <!-- Table rows remain the same as before -->
+                     
+                        <!-- Additional rows... -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="card-footer bg-white">
+                <nav aria-label="Candidate pagination">
+                    <ul class="pagination justify-content-center mb-0">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
-
+    
 
 
 
@@ -120,12 +126,75 @@
     <!-- AOS JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="/assets/js/animation.js"></script>
-    <script>
-        AOS.init({
-            duration: 1000, // Animation duration (1000ms = 1s)
-            once: true, // Run animation only once when scrolling
+ <!-- ... existing code ... -->
+<script>
+    AOS.init({
+        duration: 1000,
+        once: true,
+    });
+
+    let currentPage = 1;
+    const itemsPerPage = 10;
+
+    function fetchTalents(page = 1) {
+        const searchName = document.getElementById('search-name').value;
+        const salaryRange = document.getElementById('salary-range').value;
+        const location = document.getElementById('location').value;
+        const skills = document.getElementById('skills').value;
+
+        const params = new URLSearchParams({
+            name: searchName,
+            salary: salaryRange,
+            location: location,
+            skills: skills,
+            page: page,
+            per_page: itemsPerPage
         });
-    </script>
+
+        fetch(`/employer/api/find-talent?${params}`)
+            .then((response) => response.json())
+            .then((data) => {
+                if (!data.talents || data.talents.trim() === '') {
+                    document.getElementById("table-talent").innerHTML = "<tr><td colspan='7'>No candidates found.</td></tr>";
+                } else {
+                    document.getElementById("table-talent").innerHTML = data.talents;
+                    updatePagination(data.total_pages, page);
+                }
+            });
+    }
+
+    function updatePagination(totalPages, currentPage) {
+        const pagination = document.querySelector('.pagination');
+        let paginationHtml = `
+            <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="fetchTalents(${currentPage - 1}); return false;">Previous</a>
+            </li>`;
+
+        for (let i = 1; i <= totalPages; i++) {
+            paginationHtml += `
+                <li class="page-item ${i === currentPage ? 'active' : ''}">
+                    <a class="page-link" href="#" onclick="fetchTalents(${i}); return false;">${i}</a>
+                </li>`;
+        }
+
+        paginationHtml += `
+            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="fetchTalents(${currentPage + 1}); return false;">Next</a>
+            </li>`;
+
+        pagination.innerHTML = paginationHtml;
+    }
+
+    // Add event listeners for real-time filtering
+    const filterInputs = ['search-name', 'salary-range', 'location', 'skills'];
+    filterInputs.forEach(id => {
+        document.getElementById(id).addEventListener('input', () => fetchTalents(1));
+    });
+
+    // Initial fetch
+    fetchTalents(1);
+</script>
+<!-- ... existing code ... -->
 </body>
 
 </html>

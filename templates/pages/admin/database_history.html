@@ -11,7 +11,28 @@
 </head>
 <body>
     <div class="container mt-5">
+        {% include'/components/admin-nav.html'%}
+
         <h2 class="mb-4">Database Query History</h2>
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date" class="form-control" id="startDate">
+            </div>
+            <div class="col-md-3">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="date" class="form-control" id="endDate">
+            </div>
+            <div class="col-md-2">
+                <label for="rowsPerPage" class="form-label">Rows per page</label>
+                <select class="form-select" id="rowsPerPage">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
@@ -46,7 +67,9 @@
                 </tbody>
             </table>
         </div>
+        <div id="pagination" class="mt-4"></div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/database-history.js"></script>
 </body>
 </html>

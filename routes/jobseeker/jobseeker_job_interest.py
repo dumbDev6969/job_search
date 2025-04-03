@@ -4,6 +4,7 @@ from middlewares.is_email_verified import is_email_verified
 from middlewares.is_setup_done  import interests_done
 from utils.database import get_db
 from sqlalchemy import text
+from utils.check_if_exists import check_column_exists
 jobseeker_job_interest = Blueprint('jobseeker_job_interest', __name__)
 
 # Define your routes using the Blueprint
@@ -35,7 +36,10 @@ def job_interest_api():
     try:
         data = request.form
         seeker_id = session['user_id']
-        
+        # Check if job interest already exists for the seeker
+        if check_column_exists('job_interest', 'user_id', seeker_id):
+            return jsonify({'error': 'Job interest already exists'}), 400
+         
         # Validate required fields
         required_fields = ['job_interest', 'job_type', 'preferred_location', 'expected_salary_range']
         for field in required_fields:
@@ -60,7 +64,7 @@ def job_interest_api():
             'expected_salary_range': data.get('expected_salary_range')
         })
         
-        return jsonify({'message': 'Job interest added successfully'}), 201
+        return jsonify({'success': True,'message': 'Job interest added successfully'}), 201
         
     except Exception as e:
         print(f"Error adding job interest: {str(e)}")

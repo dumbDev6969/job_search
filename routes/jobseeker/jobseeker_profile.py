@@ -11,8 +11,8 @@ jobseeker_profile= Blueprint('jobseeker_profile', __name__)
 @jobseeker_profile.route('/jobseeker/profile')
 @verify_user
 @is_email_verified
-@is_qualification_done
 @is_interests_done
+@is_qualification_done
 def jobseeker_profile_():
     """Render the job seeker's profile page.
 
@@ -33,8 +33,8 @@ def jobseeker_profile_():
 @jobseeker_profile.route('/jobseeker/profile-setting')
 @verify_user
 @is_email_verified
-@is_qualification_done
 @is_interests_done
+@is_qualification_done
 def jobseeker_profile_settings():
     """Render the job seeker's profile settings page.
 

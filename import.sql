@@ -1,10 +1,9 @@
-
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 21, 2025 at 07:43 AM
+-- Generation Time: Mar 25, 2025 at 04:22 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 DROP DATABASE IF EXISTS job_portal_db;
@@ -14,7 +13,6 @@ CREATE DATABASE job_portal_db;
 
 -- Use the newly created database
 USE job_portal_db;
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -28,6 +26,25 @@ SET time_zone = "+00:00";
 --
 -- Database: `job_portal_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin`
+--
+
+CREATE TABLE `admin` (
+  `username` varchar(20) NOT NULL,
+  `email` varchar(30) NOT NULL,
+  `password` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`username`, `email`, `password`) VALUES
+('jem', 'jem@admin.com', '$2b$12$a20x8Hn1uiymEFVSrf.5zO4B3bZCWemh8WpuSVPKpbBVN.9RFkNUG');
 
 -- --------------------------------------------------------
 
@@ -79,6 +96,14 @@ CREATE TABLE `employers` (
   `logo_url` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `employers`
+--
+
+INSERT INTO `employers` (`employer_id`, `email`, `password_hash`, `created_at`, `last_login`, `company_name`, `industry`, `company_size`, `website`, `logo_url`) VALUES
+(2, 'kamjijajajo@gmail.com', '$2b$12$EmVDH7PYPLQSpKkBqN4Mterb9N5buSsJN9WvGOAWjFkscfIsryAA.', '2025-03-21 09:01:05', NULL, 'Innovatech', 'Programming', 1, '', ''),
+(3, 'kanjijajajo@gmail.com', '$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm', '2025-03-21 09:03:05', '2025-03-24 11:18:40', 'company001', 'Programming', 1, '', '');
+
 -- --------------------------------------------------------
 
 --
@@ -111,6 +136,13 @@ CREATE TABLE `jobs` (
   `status` enum('active','paused','closed') DEFAULT 'active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `jobs`
+--
+
+INSERT INTO `jobs` (`job_id`, `employer_id`, `title`, `description`, `location`, `salary_range`, `employment_type`, `posted_at`, `expires_at`, `status`) VALUES
+(1, 3, 'progamming', 'a programming job', 'manila', '$20,000 -  $60,000', 'contract', '2025-03-23 03:18:19', '2025-04-22 16:00:00', 'active');
+
 -- --------------------------------------------------------
 
 --
@@ -141,6 +173,13 @@ CREATE TABLE `job_interest` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `job_interest`
+--
+
+INSERT INTO `job_interest` (`interest_id`, `user_id`, `job_interest`, `job_type`, `preferred_location`, `expected_salary_range`, `created_at`) VALUES
+(5, 139, 'programming', 'Part-time', 'manila', '200', '2025-03-25 02:50:12');
+
 -- --------------------------------------------------------
 
 --
@@ -167,8 +206,7 @@ CREATE TABLE `job_seekers` (
 --
 
 INSERT INTO `job_seekers` (`seeker_id`, `email`, `password_hash`, `created_at`, `last_login`, `first_name`, `last_name`, `phone`, `province`, `municipality`, `degree`, `portfolio_url`) VALUES
-(124, 'hhh@gmail.com', '$2b$12$dRVKSN9RYlxCMW5dojEPHeeV2AXs2U9AjU.rq5QaI3tRzOtQaXy02', '2025-03-12 10:22:22', '2025-03-12 10:45:09', 'aaa', 'aaa', 'hhh', 'hh', 'hhh', 'hhh', 'Screenshot 2025-02-24 235132.png'),
-(136, 'jemcarlo46@gmail.com', '$2b$12$k0SjjjM7brxzBEOQ.S5k9On64hR2xg9Wl4bgmDLVmSbMW6py9Se3W', '2025-03-18 08:16:00', '2025-03-19 01:23:08', 'jem', 'aus', '090909', 'jkjk', 'jkkk', NULL, NULL);
+(139, 'jemcarlo46@gmail.com', '$2b$12$jJsAP1.XiA4IFyrGxSCW0eeHEPop1rxc2Gz8XnKcUjDkthM1iwjRC', '2025-03-25 02:49:13', '2025-03-25 02:49:19', 'Jemcarlo', 'Austria', '09207766194', 'Pangasinan', '', 'bsit', '');
 
 -- --------------------------------------------------------
 
@@ -265,6 +303,13 @@ CREATE TABLE `qualifications` (
   `specialized_training` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `qualifications`
+--
+
+INSERT INTO `qualifications` (`qualification_id`, `seeker_id`, `degree`, `school_graduated`, `certifications`, `specialized_training`) VALUES
+(2, 139, 'bsit', 'bcc', 'none', 'programming');
+
 -- --------------------------------------------------------
 
 --
@@ -346,6 +391,12 @@ INSERT INTO `verified_users` (`email`) VALUES
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `applications`
@@ -510,7 +561,7 @@ ALTER TABLE `availability`
 -- AUTO_INCREMENT for table `employers`
 --
 ALTER TABLE `employers`
-  MODIFY `employer_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `employer_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `interviews`
@@ -522,7 +573,7 @@ ALTER TABLE `interviews`
 -- AUTO_INCREMENT for table `jobs`
 --
 ALTER TABLE `jobs`
-  MODIFY `job_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `job_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `job_alerts`
@@ -534,13 +585,13 @@ ALTER TABLE `job_alerts`
 -- AUTO_INCREMENT for table `job_interest`
 --
 ALTER TABLE `job_interest`
-  MODIFY `interest_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `interest_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `job_seekers`
 --
 ALTER TABLE `job_seekers`
-  MODIFY `seeker_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=137;
+  MODIFY `seeker_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
 
 --
 -- AUTO_INCREMENT for table `messages`
@@ -570,7 +621,7 @@ ALTER TABLE `password_reset_tokens`
 -- AUTO_INCREMENT for table `qualifications`
 --
 ALTER TABLE `qualifications`
-  MODIFY `qualification_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `qualification_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `ratings`

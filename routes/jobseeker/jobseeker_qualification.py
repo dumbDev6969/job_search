@@ -5,6 +5,8 @@ from middlewares.user_access import jobseeker as job_seeker_middleware,admin,emp
 from utils.database import get_db
 from sqlalchemy import text
 from middlewares.is_setup_done  import qualification_done
+from utils.check_if_exists import check_column_exists
+
 # Create a Blueprint
 jobseeker_qualification = Blueprint('jobseeker_qualification', __name__)
 
@@ -44,6 +46,8 @@ def add_qualification():
     try:
         data = request.form
         seeker_id =session['user_id'] # Assuming user_id is set by verify_user middleware
+        if check_column_exists('qualifications','seeker_id',seeker_id):
+            return jsonify({'error': 'Qualification already exists'}), 400
         
         # Validate required fields
         if not data.get('degree') or not data.get('school_graduated'):
@@ -67,7 +71,7 @@ def add_qualification():
             'specialized_training': data.get('specialized_training')
         })
         
-        return jsonify({'message': 'Qualification added successfully'}), 201
+        return jsonify({'success': True,'message': 'Qualification added successfully'}), 201
         
     except Exception as e:
         return jsonify({'error': str(e)}), 500
