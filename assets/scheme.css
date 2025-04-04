@@ -39,6 +39,9 @@ body {
     color: var(--text-dark);
     font-family: 'Poppins', Arial, sans-serif;
 }
+.background-primary{
+    background-color: (--primary) !important;
+}
 .footer{
     background-color: var(--background-dark);
     color: var(--text-light);
