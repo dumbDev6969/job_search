@@ -41,7 +41,7 @@
 
 {% include 'components/recruiter-nav.html' %}
 
-    <div class="container mt-4">
+    <div class="container pt-5 mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Candidate Search</h2>
             <div class="text-muted">Showing 24 candidates</div>
@@ -54,13 +54,13 @@
                     <div class="col-md-4">
                         <div class="search-box position-relative">
                             <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                            <input type="text" class="form-control ps-5" placeholder="Search by name, skills...">
+                            <input type="text" class="form-control ps-5" placeholder="Search by name, skills..." id="search">
                         </div>
                     </div>
                     <div class="col-md-8">
                         <div class="row g-2">
                             <div class="col-md">
-                                <select name="salary-range" title="Select a salary range">
+                                <select name="salary-range" title="Select a salary range" id="salary">
                                     <option value="" selected>All Salary Ranges</option>
                                     <option>20,000 - 35,000</option>
                                     <option>35,000 - 50,000</option>
@@ -69,7 +69,7 @@
                                 </select>
                             </div>
                             <div class="col-md">
-                                <select name="location" title="Select a location">
+                                <select name="location" title="Select a location" id="location">
                                     <option value="" selected>All Locations</option>
                                     <option>Remote</option>
                                     <option>On-site</option>
@@ -77,7 +77,7 @@
                                 </select>
                             </div>
                             <div class="col-md">
-                                <select name="skills" title="Select a skill">
+                                <select name="skills" title="Select a skill" id="skills">
                                     <option value="" selected>All Skills</option>
                                     <option>JavaScript</option>
                                     <option>Python</option>
@@ -111,114 +111,9 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="table-listing">
                         <!-- Table rows remain the same as before -->
-                        <tr>
-                            <td><input type="checkbox" class="form-check-input"></td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" 
-                                         class="rounded-circle me-2" width="36" height="36">
-                                    <div>
-                                        <div class="fw-bold">John Doe</div>
-                                        <small class="text-muted">Senior Frontend Developer</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-success">Available</span></td>
-                            <td>
-                                <span class="badge bg-light text-dark me-1">React</span>
-                                <span class="badge bg-light text-dark me-1">Node.js</span>
-                                <span class="badge bg-light text-dark">TypeScript</span>
-                            </td>
-                            <td>50,000 - 60,000</td>
-                            <td>Remote</td>
-                            
-                            <td>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary" 
-                                            data-bs-toggle="tooltip" 
-                                            data-bs-placement="top" 
-                                            title="Schedule interview with this candidate">
-                                        <i class="fas fa-calendar-check"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" class="form-check-input"></td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" 
-                                         class="rounded-circle me-2" width="36" height="36">
-                                    <div>
-                                        <div class="fw-bold">John Doe</div>
-                                        <small class="text-muted">Senior Frontend Developer</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-success">Available</span></td>
-                            <td>
-                                <span class="badge bg-light text-dark me-1">React</span>
-                                <span class="badge bg-light text-dark me-1">Node.js</span>
-                                <span class="badge bg-light text-dark">TypeScript</span>
-                            </td>
-                            <td>50,000 - 60,000</td>
-                            <td>Remote</td>
-                            
-                            <td>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary" 
-                                            data-bs-toggle="tooltip" 
-                                            data-bs-placement="top" 
-                                            title="Schedule interview with this candidate">
-                                        <i class="fas fa-calendar-check"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" class="form-check-input"></td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" 
-                                         class="rounded-circle me-2" width="36" height="36">
-                                    <div>
-                                        <div class="fw-bold">John Doe</div>
-                                        <small class="text-muted">Senior Frontend Developer</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-success">Available</span></td>
-                            <td>
-                                <span class="badge bg-light text-dark me-1">React</span>
-                                <span class="badge bg-light text-dark me-1">Node.js</span>
-                                <span class="badge bg-light text-dark">TypeScript</span>
-                            </td>
-                            <td>50,000 - 60,000</td>
-                            <td>Remote</td>
-                            
-                            <td>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary" 
-                                            data-bs-toggle="tooltip" 
-                                            data-bs-placement="top" 
-                                            title="Schedule interview with this candidate">
-                                        <i class="fas fa-calendar-check"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-
+                    
                        
                         <!-- Additional rows... -->
                     </tbody>
@@ -259,6 +154,43 @@
             duration: 1000, // Animation duration (1000ms = 1s)
             once: true, // Run animation only once when scrolling
         });
+
+        const search = document.getElementById('search');
+        const salary = document.getElementById('salary');
+        const selected_location = document.getElementById('location');
+        const skills = document.getElementById('skills');
+        const table =  document.getElementById('table-listing');
+      document.addEventListener('DOMContentLoaded', () => {
+      
+        fetch(`/employer/api/get_listing`)
+            .then(response => response.text())
+            .then(data => {
+                    table.innerHTML = data;
+            })
+        });
+           search.addEventListener('keyup', updateTbael);
+           salary.addEventListener('change', updateTbael);
+           selected_location.addEventListener('change', updateTbael);
+           skills.addEventListener('change', updateTbael);
+
+           function updateTbael(){
+                const params = new URLSearchParams({
+                    search: search.value,
+                    salary: salary.value,
+                    location: selected_location.value,
+                    skills: skills.value,
+                });     
+
+                fetch(`/employer/api/get_listing?${params}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        // alert(data);
+                            table.innerHTML = data;
+                            console.log("data:",data);
+                    })
+           }
+
+
     </script>
 </body>
 

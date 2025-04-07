@@ -8,7 +8,7 @@ from utils.check_if_exists import check_column_exists
 jobseeker_job_interest = Blueprint('jobseeker_job_interest', __name__)
 
 # Define your routes using the Blueprint
-@jobseeker_job_interest.route('/jobseeker/job-interest')
+@jobseeker_job_interest.route('/jobseeker/job-interest' , methods=['GET'])
 @verify_user
 @is_email_verified
 @interests_done
@@ -30,7 +30,7 @@ def jobseeker_job_interest_():
 
 
 
-@jobseeker_job_interest.route('/jobseeker/api/job-interest', methods=['POST'])
+@jobseeker_job_interest.route('/api/jobseeker/job-interest', methods=['POST'])
 @verify_user
 def job_interest_api():
     try:
@@ -38,12 +38,14 @@ def job_interest_api():
         seeker_id = session['user_id']
         # Check if job interest already exists for the seeker
         if check_column_exists('job_interest', 'user_id', seeker_id):
+            print("Job interest already exists for the seeker")
             return jsonify({'error': 'Job interest already exists'}), 400
          
         # Validate required fields
         required_fields = ['job_interest', 'job_type', 'preferred_location', 'expected_salary_range']
         for field in required_fields:
             if not data.get(field):
+                print(f"Missing field: {field}")
                 return jsonify({'error': f'{field.replace("_", " ").title()} is required'}), 400
         
         # Get database connection
@@ -56,22 +58,26 @@ def job_interest_api():
             VALUES (:user_id, :job_interest, :job_type, :preferred_location, :expected_salary_range)
         """)
         
-        db.execute_query(query, {
+        result = db.execute_query(query, {
             'user_id': seeker_id,
             'job_interest': data.get('job_interest'),
             'job_type': data.get('job_type'),
             'preferred_location': data.get('preferred_location'),
             'expected_salary_range': data.get('expected_salary_range')
         })
-        
-        return jsonify({'success': True,'message': 'Job interest added successfully'}), 201
+        if result['success']:
+            print("Job interest added successfully")
+            return jsonify({'success': True,'message': 'Job interest added successfully'}), 201
+        else:
+            print("Failed to add job interest")
+            return jsonify({'error': 'Failed to add job interest'}), 500
         
     except Exception as e:
         print(f"Error adding job interest: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 
-@jobseeker_job_interest.route('/jobseeker/api/job-interest', methods=['GET'])
+@jobseeker_job_interest.route('/api/jobseeker/job-interest', methods=['GET'])
 @verify_user
 def get_job_interest():
     """Retrieve job interest information for the current job seeker.

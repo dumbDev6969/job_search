@@ -31,7 +31,7 @@ def jobseeker_qualification_():
     """
     return render_template('/pages/job_seeker/qualification.html')
 
-@jobseeker_qualification.route('/jobseeker/api/qualification', methods=['POST'])
+@jobseeker_qualification.route('/api/jobseeker/qualification', methods=['POST'])
 @verify_user
 def add_qualification():
     """Handle qualification form submission.
@@ -76,7 +76,7 @@ def add_qualification():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@jobseeker_qualification.route('/jobseeker/api/qualification', methods=['GET'])
+@jobseeker_qualification.route('/api/jobseeker/qualification', methods=['GET'])
 @verify_user
 def get_qualification():
     """Retrieve qualification information for the current job seeker.

@@ -11,4 +11,4 @@ company_details = Blueprint('company_details', __name__)
 @verify_user
 @is_email_verified
 def company_details_():
-    return render_template('/pages/recruiter/company_details.html')
+    return render_template('/pages/recruiter/profile.html')

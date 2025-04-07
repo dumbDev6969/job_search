@@ -45,7 +45,7 @@
             </ol>
           </nav>
        <div class="col-md-6">
-        <form action="/jobseeker/api/job-interest" method="POST" class="p-4" id="interestForm">
+        <form action="/api/jobseeker/job-interest" method="POST" class="p-4" id="interestForm">
             <div class="mb-3">
                 <label for="job_interest" class="form-label">Job Interest</label>
                 <input type="text" id="job_interest" name="job_interest" 
@@ -63,17 +63,26 @@
                     </select>
                 </div>
 
+                
                 <div class="mb-3">
-                    <label for="preferred_location" class="form-label">Preferred Location</label>
-                    <input type="text" id="preferred_location" name="preferred_location" 
-                        placeholder="Enter preferred location">
+                    <select name="preferred_location" title="Select a location" id="location" required>
+                        <option value="" selected>All Locations</option>
+                        <option>Remote</option>
+                        <option>On-site</option>
+                        <option>Hybrid</option>
+                    </select>
                 </div>
 
                 <div class="mb-3">
-                    <label for="expected_salary_range" class="form-label">Expected Salary Range</label>
-                    <input type="text" id="expected_salary_range" name="expected_salary_range"
-                         placeholder="Enter expected salary range">
+                    <select name="expected_salary_range" title="Select a salary range" id="salary" required>
+                        <option value="" selected>All Salary Ranges</option>
+                        <option>20,000 - 35,000</option>
+                        <option>35,000 - 50,000</option>
+                        <option>50,000 - 75,000</option>
+                        <option>75,000+</option>
+                    </select>
                 </div>
+                
 
                 <input type="hidden" name="user_id" value="<!--  -->">
 
@@ -97,8 +106,14 @@
             e.preventDefault();
             
             const formData = new FormData(this);
-            
-            fetch('/jobseeker/api/job-interest', {
+            console.log('Form Values:', {
+                job_interest: formData.get('job_interest'),
+                job_type: formData.get('job_type'),
+                preferred_location: formData.get('preferred_location'),
+                salary_range: formData.get('expected_salary_range'),
+                user_id: formData.get('user_id')
+            });
+            fetch('/api/jobseeker/job-interest', {
                 method: 'POST',
                 body: formData
             })

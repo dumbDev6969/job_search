@@ -1,6 +1,8 @@
-from flask import Blueprint,render_template
+from flask import Blueprint,render_template,request
 from middlewares.verify_user import verify_user
 from middlewares.is_email_verified import is_email_verified
+from utils.database import get_db
+from sqlalchemy import text
 # Create a Blueprint
 manage_listing = Blueprint('manage_listing', __name__)
 
@@ -10,23 +12,134 @@ manage_listing = Blueprint('manage_listing', __name__)
 @is_email_verified
 def manage_listing_():
     return render_template('/pages/recruiter/manage_listing.html')
-"""
-SELECT 
-    a.application_id,
-    a.status as application_status,
-    a.applied_at,
-    a.resume_url,
-    a.cover_letter,
-    j.title as job_title,
-    j.description as job_description,
-    j.location as job_location,
-    j.salary_range,
-    j.employment_type,
-    CONCAT(js.first_name, ' ', js.last_name) as applicant_name,
-    js.email as applicant_email,
-    js.phone as applicant_phone,
-    js.province as applicant_province
-FROM applications a
-JOIN jobs j ON a.job_id = j.job_id
-JOIN job_seekers js ON a.seeker_id = js.seeker_id
-ORDER BY a.applied_at DESC;"""
+
+
+@manage_listing.route('/employer/api/get_listing' ,methods=['GET', 'POST'])
+@verify_user
+@is_email_verified
+def get_listing_api():
+    db = get_db()
+    search = request.args.get('search','')
+    salary = request.args.get('salary','')
+    
+    
+    location = request.args.get('location','')
+    skills = request.args.get('skills','')
+    print("search",search)
+    print("salary",salary)
+    print("location",location)
+    print("skills",skills)
+    query = """
+    WITH filtered_applications AS (
+        SELECT 
+            a.application_id,
+            a.status as application_status,
+            a.applied_at,
+            a.resume_url,
+            a.cover_letter,
+            j.title as job_title,
+            j.description as job_description,
+            ji.preferred_location as job_location,
+            j.salary_range,
+            j.employment_type,
+            CONCAT(js.first_name, ' ', js.last_name) as applicant_name,
+            js.email as applicant_email,
+            js.phone as applicant_phone,
+            js.province as applicant_province,
+            q.specialized_training as skills
+        FROM applications a
+        JOIN jobs j ON a.job_id = j.job_id
+        JOIN job_seekers js ON a.seeker_id = js.seeker_id
+        LEFT JOIN qualifications q ON js.seeker_id = q.seeker_id
+        LEFT JOIN job_interest ji ON js.seeker_id = ji.user_id
+    )
+    SELECT *
+    FROM filtered_applications
+    """
+    
+    if search or salary or location or skills:
+        query += " WHERE "
+        conditions = []
+        
+        if search:      
+            conditions.append(f"((LOWER(applicant_name) LIKE LOWER('%{search}%')) OR "
+                           f"(LOWER(skills) LIKE LOWER('%{search}%')))")
+        
+        if salary:
+            conditions.append(f"salary_range LIKE '%{salary}%'")
+            
+        if location:
+            conditions.append(f"job_location LIKE '%{location}%'")
+            
+        if skills:
+            conditions.append(f"skills LIKE '%{skills}%'")
+            
+        query += " AND ".join(conditions)
+        query += " ORDER BY applied_at DESC"
+    else:
+        query += " ORDER BY applied_at DESC"
+        print("query", query)
+    
+    result = db.execute_query(text(query))
+    if result['success'] and result['output']:
+            full_html = ""
+            for job in result['output']:
+                full_html +=f""" <tr>
+                            <td><input type="checkbox" class="form-check-input" data-id={job['application_id']}></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" 
+                                         class="rounded-circle me-2" width="36" height="36">
+                                    <div>
+                                        <div class="fw-bold">{job['applicant_name']}</div>
+                                        <small class="text-muted">{job['job_title']}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge bg-{
+                                'success' if job['application_status'] == 'applied' 
+                                else 'warning' if job['application_status'] == 'pending' 
+                                else 'danger'}">{job['application_status'].capitalize()}</span></td>
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <small>{job['skills']}</small>
+                                    
+                                </div>
+                            </td>
+                            <td>{job['salary_range']}</td>
+                            <td>{job['job_location']}</td>
+                            
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-outline-primary view-application" 
+                                            data-application-id="{job['application_id']}"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="View application details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-primary schedule-interview"
+                                            data-application-id="{job['application_id']}"
+                                            data-bs-toggle="tooltip" 
+                                            data-bs-placement="top" 
+                                            title="Schedule interview with this candidate">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>"""
+
+            return full_html
+    else:
+        return """
+            <tr>
+                <td colspan="7" class="text-center py-4">
+                    <div class="d-flex flex-column align-items-center">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No listings found</h5>
+                        <p class="text-muted">There are currently no job applications to display.</p>
+                    </div>
+                </td>
+            </tr>
+        """
+                

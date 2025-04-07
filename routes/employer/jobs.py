@@ -65,7 +65,7 @@ def post_job_api():
 def post_job_():
     return render_template('/pages/recruiter/post_job.html')
 
-@jobs.route('/employer/api/get-jobs')
+@jobs.route('/api/employer/get-jobs')
 @verify_user
 @is_email_verified
 def get_jobs_api():
@@ -104,7 +104,7 @@ def get_jobs_api():
 
 
 
-@jobs.route('/employer/api/get-job-cards')
+@jobs.route('/api/employer/get-job-cards')
 @verify_user
 @is_email_verified
 def get_job_cards():

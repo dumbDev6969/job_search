@@ -13,9 +13,9 @@ def verify_user(f):
         
         # Define allowed paths for each user type
         allowed_paths = {
-            'seeker': ['/jobseeker','/dashboard'],
-            'employer': ['/employer', '/pages/recruiter','/dashboard',],
-            'admin': ['/admin','/dashboard']
+            'seeker': ['/jobseeker','/dashboard','/api/jobseeker/'],
+            'employer': ['/employer', '/pages/recruiter','/dashboard','/api/employer/'],
+            'admin': ['/admin','/dashboard','/api']
         }
         
         # Check if user is accessing allowed paths

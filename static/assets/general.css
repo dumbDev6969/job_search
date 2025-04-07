@@ -61,3 +61,251 @@ li{
     background-color: var(--background-light);
 }
 
+/* General Improvements */
+body {
+    background-color: #f8fafc;
+    font-family: 'Inter', sans-serif;
+}
+
+.container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: 1200px;
+}
+
+/* Header and Search */
+h2 {
+    color: #1e293b;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.w-25 {
+    min-width: 250px;
+    width: auto !important;
+}
+
+input[type="text"] {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    width: 100%;
+    transition: all 0.2s;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Card Styling */
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.card-footer {
+    border-top: 1px solid #f1f5f9;
+    padding: 1rem;
+}
+
+/* Table Styling */
+.table-responsive {
+    border-radius: 12px 12px 0 0;
+}
+
+.table {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+
+.table thead th {
+    background-color: #f1f5f9;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    padding: 1rem 1.25rem;
+    border-bottom-width: 1px;
+}
+
+.table tbody td {
+    padding: 1rem 1.25rem;
+    vertical-align: middle;
+    color: #334155;
+    border-top: 1px solid #f1f5f9;
+}
+
+.table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #f1f5f9;
+    box-shadow: inset 0 -1px 0 #e2e8f0;
+}
+
+/* Badge Styling */
+.badge {
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 500;
+    border-radius: 6px;
+}
+
+.badge.bg-success {
+    background-color: #10b981 !important;
+}
+
+.badge.bg-warning {
+    background-color: #f59e0b !important;
+}
+
+/* Button Styling */
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 6px;
+}
+
+.gap-2 {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-outline-primary {
+    color: #6366f1;
+    border-color: #6366f1;
+}
+
+.btn-outline-primary:hover {
+    background-color: #6366f1;
+    color: white;
+}
+
+.btn-outline-secondary {
+    color: #64748b;
+    border-color: #e2e8f0;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #e2e8f0;
+    color: #1e293b;
+}
+
+.btn-outline-danger {
+    color: #ef4444;
+    border-color: #ef4444;
+}
+
+.btn-outline-danger:hover {
+    background-color: #ef4444;
+    color: white;
+}
+
+/* Pagination Styling */
+.pagination {
+    margin-bottom: 0;
+}
+
+.page-item .page-link {
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    margin: 0 0.25rem;
+    border-radius: 8px;
+    min-width: 2.5rem;
+    text-align: center;
+}
+
+.page-item.active .page-link {
+    background-color: #6366f1;
+    border-color: #6366f1;
+    color: white;
+}
+
+.page-item.disabled .page-link {
+    color: #94a3b8;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .d-flex {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .w-25 {
+        width: 100% !important;
+    }
+    
+    .table-responsive {
+        max-height: none;
+    }
+    
+    .table thead {
+        display: none;
+    }
+    
+    .table, .table tbody, .table tr, .table td {
+        display: block;
+        width: 100%;
+    }
+    
+    .table tr {
+        margin-bottom: 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 0.5rem;
+        position: relative;
+    }
+    
+    .table td {
+        padding: 0.5rem;
+        text-align: right;
+        border-top: none;
+        position: relative;
+        padding-left: 50%;
+    }
+    
+    .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        width: calc(50% - 1rem);
+        padding-right: 1rem;
+        text-align: left;
+        font-weight: 600;
+        color: #64748b;
+    }
+    
+    .gap-2 {
+        justify-content: flex-end;
+    }
+}
+
+/* Scrollbar Styling */
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}

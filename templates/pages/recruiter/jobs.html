@@ -62,7 +62,7 @@
 
 
 
-    <div class="container">
+    <div class="container pt-5 mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Job Postings</h2>
             <div class="search-box" style="width: 300px;">
@@ -116,7 +116,7 @@
             const type = document.getElementById('typeFilter').value;
             const sort = document.getElementById('sortFilter').value;
             
-            fetch(`/employer/api/get-job-cards?status=${status}&type=${type}&sort=${sort}`)
+            fetch(`/api/employer/get-job-cards?status=${status}&type=${type}&sort=${sort}`)
                 .then(response => response.text())
                 .then(data => {
                     console.log(data);

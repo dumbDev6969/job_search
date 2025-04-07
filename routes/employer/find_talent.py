@@ -14,7 +14,7 @@ find_talent = Blueprint('find_talent', __name__)
 def find_talent_():
     return render_template('/pages/recruiter/find_talent.html')
    
-@find_talent.route('/employer/api/find-talent', methods=['GET', 'POST'])
+@find_talent.route('/api/employer/find-talent', methods=['GET', 'POST'])
 @verify_user
 @is_email_verified
 def find_talent_api():
