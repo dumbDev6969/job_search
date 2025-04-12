@@ -39,50 +39,99 @@
 
 
 
-    <nav class="navbar navbar-expand-lg ">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-around" id="navbarNav">
             
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-around" id="navbarNav">
-                <ul class="navbar-nav gap-3">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Find jobs</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Skills & Resume</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Profile</a>
-                    </li>
-                </ul>
-                <div class="d-flex align-items-center gap-3">
-                     
-                    <!-- User Avatar Dropdown -->
-                    <div class="dropdown">
-                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="/assets/img/default_profile.jpg" alt="User Avatar" class="rounded-circle me-2"
-                                width="40" height="40">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="#">Profile Settings</a></li>
-                            <li><a class="dropdown-item" href="#">Notifications</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
-                        </ul>
-                    </div>
-                    <!-- CTA Button -->
-                    <a href="#" class="btn btn-primary">Explore Jobs</a>
-                   
+            <!-- Left Links -->
+            <ul class="navbar-nav gap-3">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Find jobs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Skills & Resume</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Recommendations</a>
+                </li>
+            </ul>
+
+            <!-- Right: Notifications + Avatar + Button -->
+            <div class="d-flex align-items-center gap-3">
+
+                <!-- 🔔 Notification Dropdown -->
+                <div class="dropdown">
+                    <a href="#" class="position-relative text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell fs-5 text-dark"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            3
+                            <span class="visually-hidden">unread notifications</span>
+                        </span>
+                    </a>
+                
+                    <ul class="dropdown-menu dropdown-menu-end shadow p-2" style="width: 300px;">
+                        <li class="mb-2">
+                            <a href="#" class="dropdown-item">
+                                <div>
+                                    <small class="fw-bold">New application received</small><br>
+                                    <small class="text-muted">2 mins ago</small>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="dropdown-item d-flex">
+                                <div>
+                                    <small class="fw-bold">Profile update approved</small><br>
+                                    <small class="text-muted">10 mins ago</small>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="dropdown-item">
+                                <div>
+                                    <small class="fw-bold">Job listing reviewed</small><br>
+                                    <small class="text-muted">1 hour ago</small>
+                                </div>
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a href="#" class="dropdown-item text-center text-primary fw-semibold">View all notifications</a>
+                        </li>
+                    </ul>
                 </div>
+
+                <!-- 👤 User Dropdown -->
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                        id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="/assets/img/default_profile.jpg" alt="User Avatar" class="rounded-circle me-2"
+                            width="40" height="40">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="#">Profile Settings</a></li>
+                        <li><a class="dropdown-item" href="#">My Jobs</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
+                    </ul>
+                </div>
+
+                <!-- CTA Button -->
+                <a href="#" class="btn btn-primary">Explore Jobs</a>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
+
     
     <div class="container-fluid mt-5 pt-3">
         <div class="row  ">
