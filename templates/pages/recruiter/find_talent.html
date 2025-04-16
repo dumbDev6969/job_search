@@ -44,7 +44,24 @@
     <div class="container pt-5 mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Candidate Search</h2>
-            <div class="text-muted">Showing 24 candidates</div>
+            <div class="text-muted" id="candidateCount">Showing candidates</div>
+            <script>
+             function updateCandidateCount() {
+              fetch('/api/employer/find-talent')
+               .then(response => response.json())
+               .then(data => {
+                const totalRecords = data.total_records;
+                document.getElementById('candidateCount').textContent = `Showing ${totalRecords} candidates`;
+               })
+               .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('candidateCount').textContent = 'Error fetching candidate count';
+               });
+             }
+           
+             // Call the function when the page loads
+             window.onload = updateCandidateCount;
+            </script>
         </div>
           <!-- Search and Filters -->
           <div class="card mb-4 border-0 shadow-sm" data-aos="fade-right">

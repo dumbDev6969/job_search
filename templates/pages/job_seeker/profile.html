@@ -68,19 +68,19 @@
                     <ul class="list-unstyled">
                         <li class="mb-3">
                             <span class="d-block text-dark fw-medium">Degree:</span>
-                            <span class="text-secondary">BSIT</span>
+                            <span class="text-secondary" data-block="degree">BSIT</span>
                         </li>
                         <li class="mb-3">
                             <span class="d-block text-dark fw-medium">School Graduated:</span>
-                            <span class="text-secondary">[Your School Name]</span>
+                            <span class="text-secondary" data-block="school_graduated">[Your School Name]</span>
                         </li>
                         <li class="mb-3">
                             <span class="d-block text-dark fw-medium">Certifications:</span>
-                            <span class="text-secondary">[Your Certifications]</span>
+                            <span class="text-secondary" data-block="certifications">[Your Certifications]</span>
                         </li>
                         <li class="mb-3">
                             <span class="d-block text-dark fw-medium">Specialized Training:</span>
-                            <span class="text-secondary">[Your Training]</span>
+                            <span class="text-secondary" data-block="specialized_training">[Your Training]</span>
                         </li>
                     </ul>
                 </div>
@@ -89,15 +89,15 @@
                     <ul class="list-unstyled">
                         <li class="mb-3">
                             <span class="d-block text-dark fw-medium">Job type:</span>
-                            <span class="text-secondary">[Job type]</span>
+                            <span class="text-secondary" data-block="job_type">[Job type]</span>
                         </li>
                         <li class="mb-3">
                             <span class="d-block text-dark fw-medium">Preferred location:</span>
-                            <span class="text-secondary">[Your preferred location]</span>
+                            <span class="text-secondary" data-block="preferred_location">[Your preferred location]</span>
                         </li>
                         <li class="mb-3">
                             <span class="d-block text-dark fw-medium">Salary expectations:</span>
-                            <span class="text-secondary">[Your expectations]</span>
+                            <span class="text-secondary" data-block="expected_salary_range">[Your expectations]</span>
                         </li>
                     </ul>
                 </div>
@@ -158,6 +158,39 @@
             once: true, // Run animation only once when scrolling
         });
     </script>
+<script>
+    // Function to fetch and display profile data
+    async function fetchProfileData() {
+        try {
+            const response = await fetch('/jobseeker/profile-data');
+            const data = await response.json();
+            
+            if (data && data.length > 0) {
+                const profile = data[0];
+                
+                // Update name and email
+                document.querySelector('h2').textContent = `${profile.first_name} ${profile.last_name}`;
+                document.querySelector('p').textContent = profile.email;
+                
+                // Update qualifications
+                document.querySelector('[data-block="degree"]').textContent = profile.degree;
+                document.querySelector('[data-block="school_graduated"]').textContent = profile.school_graduated;
+                document.querySelector('[data-block="certifications"]').textContent = profile.certifications;
+                document.querySelector('[data-block="specialized_training"]').textContent = profile.specialized_training;
+                
+                // Update interests
+                document.querySelector('[data-block="job_type"]').textContent = profile.job_type;
+                document.querySelector('[data-block="preferred_location"]').textContent = profile.preferred_location;
+                document.querySelector('[data-block="expected_salary_range"]').textContent = profile.expected_salary_range;
+            }
+        } catch (error) {
+            console.error('Error fetching profile data:', error);
+        }
+    }
+    
+    // Call the function when the page loads
+    document.addEventListener('DOMContentLoaded', fetchProfileData);
+</script>
 </body>
 
 </html>

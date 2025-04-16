@@ -124,7 +124,8 @@ def find_talent_api():
             return jsonify({
                 'talents': talent_html,
                 'total_pages': total_pages,
-                'current_page': page
+                'current_page': page,
+                'total_records': total_records
             })
         else:
             return jsonify({

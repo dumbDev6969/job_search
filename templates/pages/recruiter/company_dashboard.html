@@ -33,40 +33,52 @@
             <!-- Total Candidates Card -->
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="100">
                 <div class="p-3 bg-light rounded shadow-sm hover-effect">
-                    <i class="fas fa-users fa-3x icon-blue mb-3"></i> <!-- Blue Icon -->
+                    <i class="fas fa-users fa-3x icon-blue mb-3"></i>
                     <h5>Total Candidates</h5>
-                    <h3>12</h3>
+                    <h3 id="total-candidates"></h3>
                 </div>
             </div>
         
             <!-- Total Job Posted Card -->
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="200">
                 <div class="p-3 bg-light rounded shadow-sm hover-effect">
-                    <i class="fas fa-clipboard-list  fa-3x icon-blue mb-3"></i> <!-- Blue Icon -->
+                    <i class="fas fa-clipboard-list  fa-3x icon-blue mb-3"></i>
                     <h5>Total Job Posted</h5>
-                    <h3>22</h3>
+                    <h3 id="total-job-posted"></h3>
                 </div>
             </div>
         
             <!-- Active Job Listings Card -->
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="300">
                 <div class="p-3 bg-light rounded shadow-sm hover-effect">
-                    <i class="fas fa-file-alt fa-3x icon-blue mb-3"></i> <!-- Blue Icon -->
+                    <i class="fas fa-file-alt fa-3x icon-blue mb-3"></i>
                     <h5>Active Job Listings</h5>
-                    <h3>15</h3>
+                    <h3 id="active-job-listings"></h3>
                 </div>
             </div>
         
             <!-- Successful Hires Card -->
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="400">
                 <div class="p-3 bg-light rounded shadow-sm hover-effect">
-                    <i class="fas fa-check-circle fa-3x icon-blue mb-3"></i> <!-- Blue Icon -->
+                    <i class="fas fa-check-circle fa-3x icon-blue mb-3"></i>
                     <h5>Successful Hires</h5>
-                    <h3>85</h3>
+                    <h3 id="successful-hires"></h3>
                 </div>
             </div>
         </div>
     
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                fetch('/employer/api/dashboard_data')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('total-candidates').innerText = data.total_candidates;
+                    document.getElementById('total-job-posted').innerText = data.total_job_posted;
+                    document.getElementById('active-job-listings').innerText = data.active_job_listings;
+                    document.getElementById('successful-hires').innerText = data.successful_hires;
+                });
+            });
+        </script>
         
         <div class="row mt-4">
             

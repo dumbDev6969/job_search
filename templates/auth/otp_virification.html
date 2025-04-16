@@ -78,48 +78,59 @@
     </style>
 </head>
 <body>
-    <input type="hidden" id="uuid">
-    <input type="hidden" id="email" value="{{email}}">
-
-    <div class="container vh-100 d-flex align-items-center justify-content-center">
-        <div class="otp-container" data-aos="fade-up">
-            <div class="otp-header text-center">
-                <img src="/assets/img/logo.svg" alt="TechSprint Logo" class="mb-4">
-                <h2 class="mb-3">Email Verification</h2>
-                <p class="text-muted">We've sent a verification code to<br><strong>{{email}}</strong></p>
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                {% include 'components/progress_steps.html' %}
             </div>
-            
-            <form id="otp-form">
-                <div class="d-flex gap-2 justify-content-center mb-4">
-                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code">
-                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
-                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
-                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
-                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
-                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
-                </div>
-                
-                <div class="row g-2">
-                    <div class="col-md-8">
-                        <button type="submit" class="btn-primary btn-verify w-100" id="verify-btn">
-                            <span class="default-text">Verify Code</span>
-                            <span class="loading-text d-none">
-                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                Verifying...
-                            </span>
-                        </button>
+            <div class="col-9">
+           
+            <input type="hidden" id="uuid">
+            <input type="hidden" id="email" value="{{email}}">
+        
+            <div class="container vh-100 d-flex align-items-center justify-content-center">
+                <div class="otp-container" data-aos="fade-up">
+                    <div class="otp-header text-center">
+                        <img src="/assets/img/logo.svg" alt="TechSprint Logo" class="mb-4">
+                        <h2 class="mb-3">Email Verification</h2>
+                        <p class="text-muted">We've sent a verification code to<br><strong>{{email}}</strong></p>
                     </div>
-                    <div class="col-md-4">
-                        <button type="button" class="btn-resend w-100">Resend</button>
-                    </div>
+                    
+                    <form id="otp-form">
+                        <div class="d-flex gap-2 justify-content-center mb-4">
+                            <input type="text" class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code">
+                            <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                            <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                            <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                            <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                            <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                        </div>
+                        
+                        <div class="row g-2">
+                            <div class="col-md-8">
+                                <button type="submit" class="btn-primary btn-verify w-100" id="verify-btn">
+                                    <span class="default-text">Verify Code</span>
+                                    <span class="loading-text d-none">
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        Verifying...
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn-resend w-100">Resend</button>
+                            </div>
+                        </div>
+                        
+                        <div class="timer text-center mt-3">
+                            Resend code in <span id="countdown">60</span>s
+                        </div>
+                    </form>
                 </div>
-                
-                <div class="timer text-center mt-3">
-                    Resend code in <span id="countdown">60</span>s
-                </div>
-            </form>
+            </div>
+            </div>
         </div>
-    </div>
+
+    
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="/assets/js/animation.js"></script>

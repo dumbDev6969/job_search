@@ -99,67 +99,7 @@
                     </form>
                 </div>
                 <div class="row job-cards vh-100">
-                    <!-- Job Card 1 -->
-                    <div  class="col-md-4 col-job-card ">
-                        <div class="job-card  p-3 mb-3 d-flex flex-column">
-                            <div class="d-flex align-items-center">
-                                <img src="/assets/img/default_profile.jpg" alt="Company Logo"
-                                    class="company-logo me-3">
-                                <div>
-                                    <h5 class="company-name">TechCorp</h5>
-                                    <p class="job-type badge ">Full-Time</p>
-                                </div>
-                            </div>
-                            <h4 class="job-title mt-3">Frontend Developer</h4>
-                            <p class="salary-range text-secondary">$50,000 - $70,000 / year</p>
-                            <p class="location"><i class="fas fa-map-marker-alt"></i> Remote</p>
-                            <div class="mt-auto d-flex justify-content-between gap-2">
-                                <button class=" btn-primary w-100 rounded">Apply Now</button>
-                                <button class=" btn-outline-secondary rounded">Save</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Job Card 2 -->
-                    <div class="col-md-4 col-job-card">
-                        <div class="job-card  p-3 mb-3 d-flex flex-column">
-                            <div class="d-flex align-items-center">
-                                <img src="/assets/img/default_profile.jpg" alt="Company Logo"
-                                    class="company-logo me-3">
-                                <div>
-                                    <h5 class="company-name">InnovateX</h5>
-                                    <p class="job-type badge">Part-Time</p>
-                                </div>
-                            </div>
-                            <h4 class="job-title mt-3">UI/UX Designer</h4>
-                            <p class="salary-range text-secondary">$30,000 - $45,000 / year</p>
-                            <p class="location"><i class="fas fa-map-marker-alt"></i> On-Site</p>
-                            <div class="mt-auto d-flex justify-content-between gap-2">
-                                <button class=" btn-primary w-100 rounded">Apply Now</button>
-                                <button class=" btn-outline-secondary rounded">Save</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 col-job-card">
-                        <div class="job-card  p-3 mb-3 d-flex flex-column">
-                            <div class="d-flex align-items-center">
-                                <img src="/assets/img/default_profile.jpg" alt="Company Logo"
-                                    class="company-logo me-3">
-                                <div>
-                                    <h5 class="company-name">TechCorp</h5>
-                                    <p class="job-type badge ">Full-Time</p>
-                                </div>
-                            </div>
-                            <h4 class="job-title mt-3">Frontend Developer</h4>
-                            <p class="salary-range text-secondary">$50,000 - $70,000 / year</p>
-                            <p class="location"><i class="fas fa-map-marker-alt"></i> Remote</p>
-                            <div class="mt-auto d-flex justify-content-between gap-2">
-                                <button class=" btn-primary w-100 rounded">Apply Now</button>
-                                <button class=" btn-outline-secondary rounded">Save</button>
-                            </div>
-                        </div>
-                    </div>
+                    
 
 
                    
@@ -173,11 +113,47 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
             <script src="/assets/js/animation.js"></script>
             <script>
+                const searchInput = document.getElementById('job-search');
+                searchInput.addEventListener('keyup', function () {
+                    const searchTerm = searchInput.value.toLowerCase();
+                    const jobCards = document.querySelectorAll('.job-card');
+                    searchJobs(searchTerm);
+
+                })
                 AOS.init({
                     duration: 1000, // Animation duration (1000ms = 1s)
                     once: true, // Run animation only once when scrolling
                 });
-            </script>
-</body>
 
-</html>
+                // Function to fetch and display jobs
+                async function fetchJobs() {
+                    try {
+                        const response = await fetch('/api/jobseeker/get-jobs');
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch jobs');
+                        }
+                        const jobCardsHtml = await response.text();
+                        document.querySelector('.job-cards').innerHTML = jobCardsHtml;
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                }
+                async function searchJobs(searchTerm) {
+                    try {
+                        const response = await fetch(`/api/jobseeker/get-jobs?search=${encodeURIComponent(searchTerm)}`);
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch jobs');
+                        }
+                        const jobCardsHtml = await response.text();
+                        document.querySelector('.job-cards').innerHTML = jobCardsHtml;
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                }
+
+                // Fetch jobs when page loads
+                document.addEventListener('DOMContentLoaded', fetchJobs);
+            </script>
+        </body>
+
+        </html>

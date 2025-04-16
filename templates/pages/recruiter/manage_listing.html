@@ -44,7 +44,7 @@
     <div class="container pt-5 mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Candidate Search</h2>
-            <div class="text-muted">Showing 24 candidates</div>
+            <div class="text-muted">Showing <span id="candidate-count"></span> candidates</div>
         </div>
         
         <!-- Search and Filters -->
@@ -143,9 +143,6 @@
 
 
 
-
-
-
     <!-- AOS JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="/assets/js/animation.js"></script>
@@ -163,9 +160,10 @@
       document.addEventListener('DOMContentLoaded', () => {
       
         fetch(`/employer/api/get_listing`)
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
-                    table.innerHTML = data;
+                    table.innerHTML = data.html;
+                    document.getElementById('candidate-count').innerText = data.total;
             })
         });
            search.addEventListener('keyup', updateTbael);
@@ -182,10 +180,11 @@
                 });     
 
                 fetch(`/employer/api/get_listing?${params}`)
-                    .then(response => response.text())
+                    .then(response => response.json())
                     .then(data => {
                         // alert(data);
-                            table.innerHTML = data;
+                            table.innerHTML = data.html;
+                            document.getElementById('candidate-count').innerText = data.total;
                             console.log("data:",data);
                     })
            }

@@ -12,9 +12,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/general.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
+    {% include 'components/job-seeker-nav.html' %}
+
+    
     <nav aria-label="breadcrumb" class="mt-2 ms-2">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -23,6 +27,9 @@
     </nav>
 
     <div class="container mt-4">
+        <div class="row">
+
+        </div>
         <div class="card p-4 shadow">
             <h3 class="mb-4">Edit Profile</h3>
             <form action="#">
@@ -47,24 +54,21 @@
                     <div data-aos="fade-right" class="col-md-6 border-end">
                         <h4 class="fw-bold">Qualifications</h4>
                         <div class="mb-3">
-                            <label for="degree" class="form-label">Degree:</label>
-                            <input type="text" class="form-control" id="degree"
-                                value="Bachelor of Science in Computer Science">
+                            <label for="degree" class="form-label">Degree</label>
+                            <input type="text" class="form-control" id="degree" name="degree" placeholder="List your degrees" required>
+                            <small class="text-muted">Example: Bachelor of Science in Computer Science, Bachelor of Science in Information Technology</small>
                         </div>
                         <div class="mb-3">
-                            <label for="school" class="form-label">School Graduated:</label>
-                            <input type="text" class="form-control" id="school"
-                                value="University of the Philippines">
+                            <label for="school" class="form-label">School Graduated</label>
+                            <input type="text" class="form-control" id="school" name="school_graduated" placeholder="Enter your school" required>
                         </div>
                         <div class="mb-3">
-                            <label for="certifications" class="form-label">Certifications:</label>
-                            <input type="text" class="form-control" id="certifications"
-                                value="Certified Java Developer">
+                            <label for="certifications" class="form-label">Certifications</label>
+                            <input type="text" class="form-control" id="certifications" name="certifications" placeholder="Enter your certifications">
                         </div>
                         <div class="mb-3">
-                            <label for="training" class="form-label">Specialized Training:</label>
-                            <input type="text" class="form-control" id="training"
-                                value="Full Stack Web Development">
+                            <label for="training" class="form-label">Specialized Training</label>
+                            <input type="text" class="form-control" id="training" name="specialized_training" placeholder="Enter your specialized training">
                         </div>
                     </div>
 
@@ -72,9 +76,13 @@
                     <div data-aos="fade-left" class="col-md-6">
                         <h4 class="fw-bold">Interests</h4>
                         <div class="mb-3">
-                            <label for="job_type" class="form-label">Flexibility</label>
-                            <select id="job_type" name="job_type" required>
-                                <option value="" selected disabled>Select flexibility</option>
+                            <label for="job_interest" class="form-label">Job Interest</label>
+                            <input type="text" class="form-control" id="job_interest" name="job_interest" placeholder="Eg. Frontend Developer, Data Scientist, etc.">
+                        </div>
+                        <div class="mb-3">
+                            <label for="job_type" class="form-label">Job Type</label>
+                            <select id="job_type" name="job_type" class="form-control" required>
+                                <option value="" selected disabled>Select job type</option>
                                 <option value="Full-time">Full-time</option>
                                 <option value="Part-time">Part-time</option>
                                 <option value="Freelance">Freelance</option>
@@ -82,15 +90,25 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="location" class="form-label">Preferred Location:</label>
-                            <input type="text" class="form-control" id="location" value="Manila, Philippines">
+                            <label for="location" class="form-label">Preferred Location</label>
+                            <select name="preferred_location" id="location" class="form-control" required>
+                                <option value="">All Locations</option>
+                                <option value="Remote">Remote</option>
+                                <option value="On-site">On-site</option>
+                                <option value="Hybrid">Hybrid</option>
+                            </select>
                         </div>
                         <div class="mb-3">
-                            <label for="salary" class="form-label">Salary Expectations:</label>
-                            <input type="text" class="form-control" id="salary" value="PHP 50,000 - PHP 70,000">
+                            <label for="salary" class="form-label">Salary Expectations</label>
+                            <select name="expected_salary_range" id="salary" class="form-control" required>
+                                <option value="" selected>All Salary Ranges</option>
+                                <option value="20,000 - 35,000">20,000 - 35,000</option>
+                                <option value="35,000 - 50,000">35,000 - 50,000</option>
+                                <option value="50,000 - 75,000">50,000 - 75,000</option>
+                                <option value="75,000+">75,000+</option>
+                            </select>
                         </div>
                     </div>
-
                     <div class=" d-flex justify-content-end align-items-center p-3">
                         <a href="#" class="me-2 text-decoration-none">Cancel</a>
                         <button type="submit" class=" ms-3 btn-primary">Save Changes</button>
@@ -104,7 +122,113 @@
             duration: 1000, // Animation duration (1000ms = 1s)
             once: true, // Run animation only once when scrolling
         });
-    </script>
+
+</script>
 </body>
 
+</html>
+
+<script>
+let initialProfile = {};
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        // Fetch profile data
+        const response = await fetch('/jobseeker/profile-data');
+        const data = await response.json();
+        const profile = data[0] || {};
+
+        // Save initial values for change detection
+        initialProfile = {
+            degree: profile.degree || '',
+            school_graduated: profile.school_graduated || '',
+            certifications: profile.certifications || '',
+            specialized_training: profile.specialized_training || '',
+            job_interest: profile.job_interest || '',
+            job_type: profile.job_type || '',
+            preferred_location: profile.preferred_location || '',
+            expected_salary_range: profile.expected_salary_range || ''
+        };
+
+        // Populate form fields
+        document.getElementById('degree').value = initialProfile.degree;
+        document.getElementById('school').value = initialProfile.school_graduated;
+        document.getElementById('certifications').value = initialProfile.certifications;
+        document.getElementById('training').value = initialProfile.specialized_training;
+        document.getElementById('job_interest').value = initialProfile.job_interest;
+
+        // Set selects
+        document.getElementById('job_type').value = initialProfile.job_type;
+        document.getElementById('location').value = initialProfile.preferred_location;
+        document.getElementById('salary').value = initialProfile.expected_salary_range;
+    } catch (error) {
+        console.error('Error fetching profile data:', error);
+    }
+
+    // Handle form submission with change detection
+    const form = document.querySelector('form');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = {
+            degree: document.getElementById('degree').value,
+            school_graduated: document.getElementById('school').value,
+            certifications: document.getElementById('certifications').value,
+            specialized_training: document.getElementById('training').value,
+            job_interest: document.getElementById('job_interest').value,
+            job_type: document.getElementById('job_type').value,
+            preferred_location: document.getElementById('location').value,
+            expected_salary_range: document.getElementById('salary').value
+        };
+
+        // Check for changes
+        let changed = false;
+        for (let key in formData) {
+            if (formData[key] !== (initialProfile[key] || '')) {
+                changed = true;
+                break;
+            }
+        }
+        if (!changed) {
+            Swal.fire({
+                icon: 'info',
+                title: 'No changes detected.',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+
+        try {
+            const response = await fetch('/jobseeker/profile-update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Profile updated successfully!',
+                    confirmButtonColor: '#3085d6'
+                });
+                initialProfile = {...formData};
+            } else {
+                throw new Error('Failed to update profile');
+            }
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed to update profile',
+                text: 'Please try again.',
+                confirmButtonColor: '#d33'
+            });
+        }
+    });
+});
+</script>
+
+</body>
 </html>
