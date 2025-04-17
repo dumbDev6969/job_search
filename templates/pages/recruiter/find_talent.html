@@ -38,33 +38,29 @@
         }
     </style>
 
-
-{% include 'components/recruiter-nav.html' %}
+    {% include 'components/recruiter-nav.html' %}
 
     <div class="container pt-5 mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Candidate Search</h2>
             <div class="text-muted" id="candidateCount">Showing candidates</div>
             <script>
-             function updateCandidateCount() {
-              fetch('/api/employer/find-talent')
-               .then(response => response.json())
-               .then(data => {
-                const totalRecords = data.total_records;
-                document.getElementById('candidateCount').textContent = `Showing ${totalRecords} candidates`;
-               })
-               .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('candidateCount').textContent = 'Error fetching candidate count';
-               });
-             }
-           
-             // Call the function when the page loads
-             window.onload = updateCandidateCount;
+                function updateCandidateCount() {
+                    fetch('/api/employer/find-talent')
+                        .then(response => response.json())
+                        .then(data => {
+                            const totalRecords = data.total_records;
+                            document.getElementById('candidateCount').textContent = `Showing ${totalRecords} candidates`;
+                        })
+                        .catch(error => {
+                            document.getElementById('candidateCount').textContent = 'Error fetching candidate count';
+                        });
+                }
+                window.onload = updateCandidateCount;
             </script>
         </div>
-          <!-- Search and Filters -->
-          <div class="card mb-4 border-0 shadow-sm" data-aos="fade-right">
+        <!-- Search and Filters -->
+        <div class="card mb-4 border-0 shadow-sm" data-aos="fade-right">
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-4">
@@ -101,13 +97,12 @@
                                     <option>AI/ML</option>
                                 </select>
                             </div>
-                          
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    
+
         <!-- Candidates Table -->
         <div class="card border-0 shadow-sm" data-aos="fade-up">
             <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
@@ -124,14 +119,11 @@
                         </tr>
                     </thead>
                     <tbody id="table-listing">
-                        <!-- Table rows remain the same as before -->
-                    
-                       
-                        <!-- Additional rows... -->
+                        <!-- Table rows will be dynamically loaded here -->
                     </tbody>
                 </table>
             </div>
-            
+
             <!-- Pagination -->
             <div class="card-footer bg-white">
                 <nav aria-label="Candidate pagination">
@@ -150,13 +142,6 @@
             </div>
         </div>
     </div>
-    
-
-
-
-
-
-
 
     <!-- AOS JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
@@ -171,38 +156,34 @@
         const salary = document.getElementById('salary');
         const selected_location = document.getElementById('location');
         const skills = document.getElementById('skills');
-        const table =  document.getElementById('table-listing');
-      document.addEventListener('DOMContentLoaded', () => {
-      
-        fetch(`/employer/api/get_listing`)
-            .then(response => response.text())
-            .then(data => {
-                    table.innerHTML = data;
-            })
+        const table = document.getElementById('table-listing');
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch(`/employer/api/get_listing`)
+                .then(response => response.json())
+                .then(data => {
+                    table.innerHTML = data.html;
+                });
         });
-           search.addEventListener('keyup', updateTbael);
-           salary.addEventListener('change', updateTbael);
-           selected_location.addEventListener('change', updateTbael);
-           skills.addEventListener('change', updateTbael);
+        search.addEventListener('keyup', updateTbael);
+        salary.addEventListener('change', updateTbael);
+        selected_location.addEventListener('change', updateTbael);
+        skills.addEventListener('change', updateTbael);
 
-           function updateTbael(){
-                const params = new URLSearchParams({
-                    search: search.value,
-                    salary: salary.value,
-                    location: selected_location.value,
-                    skills: skills.value,
-                });     
+        function updateTbael() {
+            const params = new URLSearchParams({
+                search: search.value,
+                salary: salary.value,
+                location: selected_location.value,
+                skills: skills.value,
+            });
 
-                fetch(`/employer/api/get_listing?${params}`)
-                    .then(response => response.text())
-                    .then(data => {
-                        // alert(data);
-                            table.innerHTML = data;
-                            console.log("data:",data);
-                    })
-           }
-
-
+            fetch(`/employer/api/get_listing?${params}`)
+                .then(response => response.json())
+                .then(data => {
+                    table.innerHTML = data.html;
+                    console.log("data:", data);
+                });
+        }
     </script>
 </body>
 

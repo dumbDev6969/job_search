@@ -95,7 +95,15 @@ def find_talent_api():
 
         if result['success']:
             talent_html = ""
+            print(result['output'])
             for talent in result['output']:
+                skills = talent.get('Skills', '')
+                skill_badges = ''.join(
+                    f'<span class="badge bg-light text-dark me-1">{skill.strip()}</span>'
+                    for skill in skills.split(',') if skill.strip()
+                )
+                first_skill = skills.split(',')[0] if skills else ''
+                pr
                 talent_html += f"""<tr>
                     <td><input type="checkbox" class="form-check-input"></td>
                     <td>
@@ -104,16 +112,14 @@ def find_talent_api():
                                 class="rounded-circle me-2" width="36" height="36">
                             <div>
                                 <div class="fw-bold">{talent['Name']}</div>
-                                <small class="text-muted">Senior Frontend Developer</small>
+                                <small class="text-muted">{first_skill}</small>
                             </div>
                         </div>
                     </td>
-                    <td><span class="badge bg-success">{talent['Status']}</span></td>
-                    <td>
-                        {' '.join([f'<span class="badge bg-light text-dark me-1">{skill.strip()}</span>' for skill in talent['Skills'].split(',') if skill.strip()])}
-                    </td>
+                    <td><span class="badge bg-success">Available</span></td>
+                    <td>{skill_badges}</td>
                     <td>{talent['Salary Expectation']}</td>
-                    <td>{talent['Location']}</td>
+                    <td>{talent['Location'] or 'N/A'}</td>
                     <td>
                         <button class="btn btn-sm btn-outline-primary">
                             <i class="fas fa-eye"></i>

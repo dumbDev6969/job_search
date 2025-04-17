@@ -8,66 +8,131 @@
     <link rel="stylesheet" href="/assets/fonts.css">
     <link rel="stylesheet" href="/assets/scheme.css">
     <!-- AOS CSS -->
-        <link rel="stylesheet" href="/aos-master/dist/aos.css">
-
-
+    <link rel="stylesheet" href="/aos-master/dist/aos.css">
     <link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css">
-
-      <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
-
-
+    <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/general.css">
-
 </head>
 
 <body>
 
     {% include 'components/recruiter-nav.html' %}
 
-
     <div class="container pt-5 mt-5">
+        <!-- Recruiter Dashboard Cards -->
         <h2>Recruiter Dashboard</h2>
         <div class="row text-center">
             <!-- Total Candidates Card -->
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="100">
                 <div class="p-3 bg-light rounded shadow-sm hover-effect">
-                    <i class="fas fa-users fa-3x icon-blue mb-3"></i> <!-- Blue Icon -->
+                    <i class="fas fa-users fa-3x icon-blue mb-3"></i>
                     <h5>Total Candidates</h5>
-                    <h3>12</h3>
+                    <h3 id="total-candidates">12</h3>
                 </div>
             </div>
-        
             <!-- Total Job Posted Card -->
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="200">
                 <div class="p-3 bg-light rounded shadow-sm hover-effect">
-                    <i class="fas fa-clipboard-list  fa-3x icon-blue mb-3"></i> <!-- Blue Icon -->
+                    <i class="fas fa-clipboard-list  fa-3x icon-blue mb-3"></i>
                     <h5>Total Job Posted</h5>
-                    <h3>22</h3>
+                    <h3 id="total-job-posted">22</h3>
                 </div>
             </div>
-        
             <!-- Active Job Listings Card -->
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="300">
                 <div class="p-3 bg-light rounded shadow-sm hover-effect">
-                    <i class="fas fa-file-alt fa-3x icon-blue mb-3"></i> <!-- Blue Icon -->
+                    <i class="fas fa-file-alt fa-3x icon-blue mb-3"></i>
                     <h5>Active Job Listings</h5>
-                    <h3>15</h3>
+                    <h3 id="active-job-listings">15</h3>
                 </div>
             </div>
-        
             <!-- Successful Hires Card -->
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="400">
                 <div class="p-3 bg-light rounded shadow-sm hover-effect">
-                    <i class="fas fa-check-circle fa-3x icon-blue mb-3"></i> <!-- Blue Icon -->
+                    <i class="fas fa-check-circle fa-3x icon-blue mb-3"></i>
                     <h5>Successful Hires</h5>
-                    <h3>85</h3>
+                    <h3 id="successful-hires">85</h3>
                 </div>
             </div>
         </div>
-        
-        
-        
+
+        <!-- Profile and Stats Section -->
+        <div class="row g-4 mt-4">
+            <!-- Left: Profile Info and Active Jobs -->
+            <div class="col-12 col-lg-8">
+                <!-- Profile Info -->
+                <div class="card mb-4" data-aos="fade-up">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <img id="company-logo" src="/assets/logo.png" alt="Company Logo" class="rounded-circle me-3" width="60" height="60" />
+                            <div>
+                                <h3 class="mb-0" id="company-name">TechCorp</h3>
+                                <span class="text-muted">Recruiter Profile</span>
+                            </div>
+                        </div>
+                        <h5 class="mb-3"><i class="fas fa-info-circle me-2 icon-blue"></i> Company Overview</h5>
+                        <p id="company-overview">
+                            TechCorp is a leading SaaS provider helping businesses streamline their operations. Founded in 2015, we've grown to serve over 10,000 customers worldwide.
+                        </p>
+                    </div>
+                </div>
+                <!-- Active Jobs -->
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-body">
+                        <h5 class="mb-4"><i class="fas fa-briefcase me-2 icon-blue"></i> Active Job Postings (3)</h5>
+                        <div id="active-job-postings-list">
+                            <div class="mb-3 p-3 bg-light rounded">
+                                <h6 class="mb-1">Senior Frontend Developer</h6>
+                                <small class="text-muted">Posted on: Mar 25, 2025</small><br />
+                                <span class="badge bg-success mt-2">Active</span>
+                                <a href="job-single.html" class="btn btn-sm btn-outline-primary float-end">View</a>
+                            </div>
+                            <div class="mb-3 p-3 bg-light rounded">
+                                <h6 class="mb-1">UI/UX Designer</h6>
+                                <small class="text-muted">Posted on: Feb 10, 2025</small><br />
+                                <span class="badge bg-success mt-2">Active</span>
+                                <a href="job-single.html" class="btn btn-sm btn-outline-primary float-end">View</a>
+                            </div>
+                            <div class="mb-3 p-3 bg-light rounded">
+                                <h6 class="mb-1">Product Manager</h6>
+                                <small class="text-muted">Posted on: Jan 15, 2025</small><br />
+                                <span class="badge bg-success mt-2">Active</span>
+                                <a href="job-single.html" class="btn btn-sm btn-outline-primary float-end">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Right: Contact & Stats -->
+            <div class="col-12 col-lg-4">
+                <!-- Contact Info -->
+                <div class="card mb-4" data-aos="fade-left">
+                    <div class="card-body">
+                        <h5 class="mb-3"><i class="fas fa-envelope me-2 icon-blue"></i> Contact Information</h5>
+                        <p class="mb-1"><i class="fas fa-phone-alt text-muted me-2"></i> +1 234 567 890</p>
+                        <p class="mb-1"><i class="fas fa-envelope text-muted me-2"></i> <span id="contact-email">contact@techcorp.com</span></p>
+                        <p><i class="fas fa-globe text-muted me-2"></i> <a id="contact-website" href="#" class="text-decoration-none" target="_blank">www.techcorp.com</a></p>
+                    </div>
+                </div>
+                <!-- Stats -->
+                <div class="card" data-aos="fade-left" data-aos-delay="100">
+                    <div class="card-body">
+                        <h5 class="mb-3"><i class="fas fa-chart-line me-2 icon-blue"></i> Job Statistics</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Total Jobs Posted</span>
+                            <span class="fw-bold" id="total-jobs-posted">8</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Currently Active</span>
+                            <span class="fw-bold text-success" id="currently-active-jobs">3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Chart and Recent Applications -->
         <div class="row mt-4">
             <div class="col-md-6">
                 <canvas id="candidateChart" height="200"></canvas>
@@ -83,7 +148,7 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="recent-applications-tbody">
                             <tr>
                                 <td>John Doe</td>
                                 <td>Software Engineer</td>
@@ -101,19 +166,14 @@
         </div>
     </div>
 
-
-
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- AOS JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="/assets/js/animation.js"></script>
     <script>
         AOS.init({
-            duration: 1000, // Animation duration (1000ms = 1s)
-            once: true, // Run animation only once when scrolling
+            duration: 1000,
+            once: true,
         });
 
         const ctx = document.getElementById('candidateChart').getContext('2d');
@@ -129,6 +189,7 @@
             }
         });
     </script>
+    <script src="/static/assets/js/recruiter_profile.js"></script>
 </body>
 
 </html>

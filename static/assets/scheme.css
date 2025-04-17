@@ -88,7 +88,43 @@ button,
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: var(--box-shadow);
 }
+.btn-link {
+    background: none !important;
+    border: none !important;
+    color: var(--primary-dark) !important;
+    padding: 6px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+    border-radius: var(--border-radius) !important;
+}
 
+/* Hover & Active States */
+.btn-link:hover {
+    color: var(--primary-darker) !important;
+    background-color: rgba(var(--primary-rgb), 0.08) !important;
+    transform: translateY(-1px);
+}
+
+.btn-link:active {
+    transform: translateY(0);
+    background-color: rgba(var(--primary-rgb), 0.12) !important;
+}
+
+/* With Icon */
+.btn-link .icon {
+    font-size: 14px;
+    transition: transform 0.2s ease;
+}
+
+.btn-link:hover .icon {
+    transform: translateX(2px);
+}
 .btn-danger:hover {
     background-color: var(--secondary-dark);
     transform: scale(0.98);

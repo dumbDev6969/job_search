@@ -86,51 +86,32 @@ def get_listing_api():
     if result['success'] and result['output']:
         jobs = result['output']
         total_candidates = len(jobs)
+        print("skils::::::::::::", jobs)
         for job in jobs:
-            html_content += f""" <tr>
-                            <td><input type="checkbox" class="form-check-input" data-id={job['application_id']}></td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" 
-                                         class="rounded-circle me-2" width="36" height="36">
-                                    <div>
-                                        <div class="fw-bold">{job['applicant_name']}</div>
-                                        <small class="text-muted">{job['job_title']}</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-{{
-                                'success' if job['application_status'] == 'applied' 
-                                else 'warning' if job['application_status'] == 'pending' 
-                                else 'danger'}}}}>{job['application_status'].capitalize()}</span></td>
-                            <td>
-                                <div class="d-flex flex-column">
-                                    <small>{job['skills']}</small>
-                                    
-                                </div>
-                            </td>
-                            <td>{job['salary_range']}</td>
-                            <td>{job['job_location']}</td>
-                            
-                            <td>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-sm btn-outline-primary view-application" 
-                                            data-application-id="{job['application_id']}"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="top"
-                                            title="View application details">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary schedule-interview"
-                                            data-application-id="{job['application_id']}"
-                                            data-bs-toggle="tooltip" 
-                                            data-bs-placement="top" 
-                                            title="Schedule interview with this candidate">
-                                        <i class="fas fa-calendar-check"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>"""
+            html_content += f"""<tr>
+                <td><input type="checkbox" class="form-check-input"></td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" 
+                             class="rounded-circle me-2" width="36" height="36">
+                        <div>
+                            <div class="fw-bold">{job['applicant_name']}</div>
+                            <small class="text-muted">Senior Frontend Developer</small>
+                        </div>
+                    </div>
+                </td>
+                <td><span class="badge bg-success">Available</span></td>
+                <td>
+                    <span class="badge bg-light text-dark me-1">{job['skills']}</span>
+                </td>
+                <td>{job['salary_range']}</td>
+                <td>{job['job_location'] or 'N/A'}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </td>
+            </tr>"""
         return {'html': html_content, 'total': total_candidates}
     else:
         return {'html': """
