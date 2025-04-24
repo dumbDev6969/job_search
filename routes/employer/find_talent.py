@@ -103,7 +103,7 @@ def find_talent_api():
                     for skill in skills.split(',') if skill.strip()
                 )
                 first_skill = skills.split(',')[0] if skills else ''
-                pr
+                
                 talent_html += f"""<tr>
                     <td><input type="checkbox" class="form-check-input"></td>
                     <td>

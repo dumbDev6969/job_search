@@ -582,6 +582,21 @@ ALTER TABLE `job_alerts`
   MODIFY `alert_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- Table structure for table `saved_jobs`
+--
+CREATE TABLE `saved_jobs` (
+  `saved_job_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `seeker_id` bigint(20) UNSIGNED NOT NULL,
+  `job_id` bigint(20) UNSIGNED NOT NULL,
+  `saved_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`saved_job_id`),
+  KEY `idx_seeker_id` (`seeker_id`),
+  KEY `idx_job_id` (`job_id`),
+  CONSTRAINT `fk_saved_jobs_seeker` FOREIGN KEY (`seeker_id`) REFERENCES `job_seekers` (`seeker_id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_saved_jobs_job` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
 -- AUTO_INCREMENT for table `job_interest`
 --
 ALTER TABLE `job_interest`

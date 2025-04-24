@@ -33,7 +33,13 @@ def jobseeker_find_job_api():
         db = get_db()
         search_term = request.args.get('search', '')
         
-        # Build the query with search functionality
+        # More robust parameter handling
+        job_types = request.args.get('job_types', '')
+        job_types_list = job_types.split(',') if job_types else []
+        salary_range = request.args.get('salary_range', '')
+        location = request.args.get('location', '')
+        
+        # Base query with proper parameter binding
         query = text("""
             SELECT j.*, e.company_name 
             FROM jobs j 
@@ -46,42 +52,74 @@ def jobseeker_find_job_api():
             )
         """)
         
-        # Execute query with search parameter
-        search_param = f"%{search_term.lower()}%"
-        result = db.execute_query(query, {'search': search_param})
+        params = {
+            'search': f"%{search_term.lower()}%",
+            'job_types': job_types
+        }
         
-        if not result['success']:
-            print(result['error'])
-            return jsonify({'error': 'Failed to fetch jobs'}), 500
+        # Add job types filter if provided
+        if job_types_list:
+            query = text(str(query) + " AND FIND_IN_SET(j.employment_type, :job_types)")
+        
+        if salary_range:
+            query = text(str(query) + " AND j.salary_range = :salary_range")
+            params['salary_range'] = salary_range
             
-        jobs = result['output']
-        html_cards = []
+        if location:
+            query = text(str(query) + " AND LOWER(j.location) LIKE :location")
+            params['location'] = f"%{location.lower()}%"
         
-        for job in jobs:
-            card = f"""
-            <div class="col-md-4 col-job-card">
-                <div class="job-card p-3 mb-3 d-flex flex-column">
-                    <div class="d-flex align-items-center">
-                        <img src="/assets/img/default_profile.jpg" alt="Company Logo" class="company-logo me-3">
-                        <div>
-                            <h5 class="company-name">{job['company_name']}</h5>
-                            <p class="job-type badge">{job['employment_type']}</p>
+        try:
+            result = db.execute_query(query, params)
+            print(result)
+            if not result['success']:
+                return jsonify({
+                    'error': 'Failed to fetch jobs',
+                    'details': result.get('error', 'Unknown database error')
+                }), 500
+                
+            jobs = result['output']
+      
+            if not jobs:
+                return "<div class='col-12 text-center py-5'><h4>No jobs found matching your criteria</h4><p>Try adjusting your search filters</p></div>"
+            
+            html_cards = []
+            
+            for job in jobs:
+                card = f"""
+                <div class="col-md-4 col-job-card">
+                    <div class="job-card p-3 mb-3 d-flex flex-column">
+                        <div class="d-flex align-items-center">
+                            <img src="/assets/img/default_profile.jpg" alt="Company Logo" class="company-logo me-3">
+                            <div>
+                                <h5 class="company-name">{job['company_name']}</h5>
+                                <p class="job-type badge">{job['employment_type']}</p>
+                            </div>
+                        </div>
+                        <h4 class="job-title mt-3">{job['title']}</h4>
+                        <p class="salary-range text-secondary">{job['salary_range']}</p>
+                        <p class="location"><i class="fas fa-map-marker-alt"></i> {job['location']}</p>
+                        <div class="mt-auto d-flex justify-content-between gap-2">
+                            <button class="btn-primary w-100 rounded">Apply Now</button>
+                            <button class="btn-outline-secondary rounded">Save</button>
                         </div>
                     </div>
-                    <h4 class="job-title mt-3">{job['title']}</h4>
-                    <p class="salary-range text-secondary">{job['salary_range']}</p>
-                    <p class="location"><i class="fas fa-map-marker-alt"></i> {job['location']}</p>
-                    <div class="mt-auto d-flex justify-content-between gap-2">
-                        <button class="btn-primary w-100 rounded">Apply Now</button>
-                        <button class="btn-outline-secondary rounded">Save</button>
-                    </div>
                 </div>
-            </div>
-            """
-            html_cards.append(card)
-        
-        return ''.join(html_cards)
-        
+                """
+                html_cards.append(card)
+            
+            return ''.join(html_cards)
+            
+        except Exception as db_error:
+            print(f"Database Error: {str(db_error)}")
+            return jsonify({
+                'error': 'Database operation failed',
+                'details': str(db_error)
+            }), 500
+            
     except Exception as e:
-        print(e)
-        return jsonify({'error': str(e)}), 500
+        print(f"Error: {str(e)}")   
+        return jsonify({
+            'error': 'Internal server error',
+            'details': str(e)
+        }), 500

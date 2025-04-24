@@ -49,6 +49,7 @@
                     fetch('/api/employer/find-talent')
                         .then(response => response.json())
                         .then(data => {
+                            console.log("data:", data);
                             const totalRecords = data.total_records;
                             document.getElementById('candidateCount').textContent = `Showing ${totalRecords} candidates`;
                         })
