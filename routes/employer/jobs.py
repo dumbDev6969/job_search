@@ -47,6 +47,8 @@ def post_job_api():
             'expires_at': form_data.get('expires_at'),
             'status': 'active'
         })
+
+        print("emplymernt type:", form_data.get('employment_type'))
         
         if result['success']:
             return jsonify({'message': 'Job posted successfully'}), 201
@@ -168,6 +170,15 @@ def get_job_cards():
                 # Calculate days since posting
                 posted_days = (datetime.now() - job['posted_at']).days
                 posted_text = f"{posted_days} days ago" if posted_days > 0 else "Today"
+                #  print( job['employment_type'])
+                if job['employment_type'] == 'full_time':
+                    job['employment_type']="Full Time"
+                elif job['employment_type'] == 'part_time':
+                    job['employment_type']="Part Time"
+                elif job['employment_type'] == 'contract':
+                    job['employment_type']="Contract"
+                elif job['employment_type'] == 'intern':
+                    job['employment_type']="Intern"
                 
                 # Determine status badge color
                 status_class = "bg-success" if job['status'] == 'active' else "bg-secondary"

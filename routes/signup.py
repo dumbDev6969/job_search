@@ -38,7 +38,7 @@ def signup_employer() -> Union[Response, dict]:
         form = request.form
         
         # Validate required fields
-        required_fields = ['email', 'password', 'company_name', 'industry', 'company_size']
+        required_fields = ['email', 'password', 'company_name', 'company_size']
         missing = [field for field in required_fields if not form.get(field)]
         
         if missing:

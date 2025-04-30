@@ -23,8 +23,8 @@ app.register_blueprint(routes_bp)
 print(app.url_map)
 
 # Apply rate limiting to specific routes
-limiter.limit("5/minute")(login)
-limiter.limit("3/minute")(otp)
-limiter.limit("5/minute")(signup)
+# limiter.limit("5/minute")(login)
+# limiter.limit("3/minute")(otp)
+# limiter.limit("5/minute")(signup)
 if __name__ == '__main__':
     app.run(debug=True)

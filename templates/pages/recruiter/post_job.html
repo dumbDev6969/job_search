@@ -35,7 +35,7 @@
     <div class="container mb-5 mt-5">
         <div class="row d-flex align-items-center">
             <div data-aos="fade-right" class="col-md-6">
-                <form action="#">
+                <form action="/api/post-job" method="POST">
                     <div class="mb-3">
                         <label for="title" class="form-label text-muted fw-bold">Job Title</label>
                         <input type="text" " id="title" name="title" placeholder="Enter job title" required>
@@ -61,10 +61,11 @@
                         <label for="employment_type" class="form-label text-muted fw-bold">Employment Type</label>
                         <select  id="employment_type" name="employment_type" required>
                             <option value="" selected disabled>Choose...</option>
-                            <option value="Full-Time">Full-Time</option>
-                            <option value="Part-Time">Part-Time</option>
-                            <option value="Contract">Contract</option>
-                            <option value="Freelance">Freelance</option>
+                            <option value="full_time">Full-Time</option>
+                            <option value="part_time">Part-Time</option>
+                            <option value="contract">Contract</option>
+                            <option value="freelance">Freelance</option>
+                            <option value="internship">Internship</option>
                         </select>
                     </div>
     

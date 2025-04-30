@@ -41,7 +41,7 @@ def jobseeker_find_job_api():
         
         # Base query with proper parameter binding
         query = text("""
-            SELECT j.*, e.company_name 
+            SELECT j.*, e.*
             FROM jobs j 
             JOIN employers e ON j.employer_id = e.employer_id 
             WHERE j.status = 'active'
@@ -85,7 +85,18 @@ def jobseeker_find_job_api():
             
             html_cards = []
             
+
             for job in jobs:
+                print( job['employment_type'])
+                if job['employment_type'] == 'full_time':
+                    job['employment_type']="Full Time"
+                elif job['employment_type'] == 'part_time':
+                    job['employment_type']="Part Time"
+                elif job['employment_type'] == 'contract':
+                    job['employment_type']="Contract"
+                elif job['employment_type'] == 'intern':
+                    job['employment_type']="Intern"
+               
                 card = f"""
                 <div class="col-md-4 col-job-card">
                     <div class="job-card p-3 mb-3 d-flex flex-column">
@@ -97,10 +108,16 @@ def jobseeker_find_job_api():
                             </div>
                         </div>
                         <h4 class="job-title mt-3">{job['title']}</h4>
+                        
                         <p class="salary-range text-secondary">{job['salary_range']}</p>
+                        <p class="salary-range text-secondary">{job['employment_type']}</p>
                         <p class="location"><i class="fas fa-map-marker-alt"></i> {job['location']}</p>
                         <div class="mt-auto d-flex justify-content-between gap-2">
-                            <button class="btn-primary w-100 rounded">Apply Now</button>
+                            <form class="w-100" action='/api/jobseeker/apply' method='POST'>
+                                <input type="hidden" name='job_id' value='{job['job_id']}'>
+                                <button class="btn-primary w-100 rounded" type='submit'>Apply Now</button>
+                            </form>
+                          
                             <button class="btn-outline-secondary rounded">Save</button>
                         </div>
                     </div>

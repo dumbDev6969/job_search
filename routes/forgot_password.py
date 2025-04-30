@@ -104,6 +104,8 @@ def handle_forgot_password():
                         ELSE NULL
                     END as user_type
             """)
+          
+            
             
             result = db.execute_query(check_email_query, {'email': email})
             
@@ -130,7 +132,8 @@ def handle_forgot_password():
                 return jsonify({'error': 'Failed to generate reset token'}), 500
 
             # Send reset password email
-            reset_link = url_for('forgot_password.reset_password', token=reset_token, _external=True)
+            reset_link ="http://127.0.0.1:5000/reset-password/="+reset_token
+           
             try:
                 is_email_sent = send_reset_password_email(email, reset_link)
                 if not is_email_sent:
