@@ -41,11 +41,18 @@
       <div class="col-md-6">
         <form action="" method="POST" class="p-4">
             <div class="mb-3">
-                <label for="degree" class="form-label">Degree</label>
-                <input type="text" id="degree" name="degree"  placeholder="List your degrees"
-                    required>
-                <small class="text-muted">Example: Bachelor of Science in Computer Science, Bachelor of Science in Information Technology</small>
-            </div>
+                <!-- Input Field -->
+                <input type="text" id="degreeInput"  placeholder="Enter IT degree (e.g., Bachelor of Science...)" list="degreeSuggestions"
+                >
+              
+                <!-- Datalist for Suggestions -->
+                <datalist id="degreeSuggestions"></datalist>
+              
+                <!-- Pills Container -->
+                <div id="pillContainer" class="d-flex flex-wrap mt-2"></div>
+
+                <input type="hidden" id="selectedDegrees" name="degrees">
+              </div>
 
             <div class="mb-3">
                 <label for="school_graduated" class="form-label">School Graduated</label>
@@ -72,7 +79,8 @@
       </div>
     </div>
 
-   
+   <!-- courses -->
+    <script src="/assets/js/courses.js"></script>
     <!-- AOS JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="/assets/js/animation.js"></script>
