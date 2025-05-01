@@ -15,7 +15,6 @@ jobseeker_find_job = Blueprint('jobseeker_find_job', __name__)
 def redirect_to_jobseeker_dashboard():
     return redirect("/jobseeker/find-jobs")
     
-@verify_user
 # Define your routes using the Blueprint
 @jobseeker_find_job.route('/jobseeker/find-jobs')
 @verify_user
@@ -117,8 +116,11 @@ def jobseeker_find_job_api():
                                 <input type="hidden" name='job_id' value='{job['job_id']}'>
                                 <button class="btn-primary w-100 rounded" type='submit'>Apply Now</button>
                             </form>
-                          
-                            <button class="btn-outline-secondary rounded">Save</button>
+                             <form class="w-100" action='/api/jobseeker/save-job' method='POST'>
+                                <input type="hidden" name='job_id' value='{job['job_id']}'>
+                               <button class="btn-outline-secondary rounded w-100 h-100" type='submit'>Save</button>
+                            </form>
+                            
                         </div>
                     </div>
                 </div>

@@ -110,38 +110,8 @@
                 </form>
                 
                 <ul class="list-unstyled mt-2 " style="overflow : auto; height: 80vh;">
-                    <li class="p-3 mb-3 rounded job">
-                        <div class="row align-items-center">
-                            <!-- Profile Image -->
-                            <div class="col-md-2 d-flex justify-content-center">
-                                <img class="rounded-circle" src="/assets/img/default_profile.jpg" alt="default_profile" height="100">
-                            </div>
-                            
-                            <!-- Job Details -->
-                            <div class="col-md-10">
-                                <div class="row">
-                                    <div class="col-md-12 d-flex justify-content-between align-items-center">
-                                        <div class="name d-flex align-items-center">
-                                            <h3 class="mb-0">Job Title</h3>
-                                            <p class="badge rounded-pill text-bg-primary ms-3 job-status d-flex align-items-center">Active</p>
-                                        </div>
-                                        <div class="d-flex flex-column gap-2">
-                                            <button type="button" class=" btn-danger">Remove</button>
-                                            <button type="button" class=" btn-primary">View</button>
-                                        </div>
-                                    </div>
-                    
-                                    <div class="col-md-12">
-                                        <p class="text-secondary mb-1">Company Name</p>
-                                        <div class="d-flex flex-wrap gap-2">
-                                            <span class="badge rounded-pill text-bg-primary job-info">San Carlos City Pang.</span>
-                                            <span class="badge rounded-pill text-bg-primary job-info">40k-50k</span>
-                                            <span class="badge rounded-pill text-bg-primary job-info">Full-time</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <li class="p-3 mb-3 rounded job" id="saved_jobs_container">
+                      
                     </li>
                 </ul>
                 
@@ -159,6 +129,30 @@
         });
     </script>
 <script>
+    async function fetchSavedJobs() {
+        try {
+            const searchTerm = document.getElementById('job-search').value;
+            const response = await fetch(`/api/jobseeker/get-saved-jobs?search=${encodeURIComponent(searchTerm)}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch saved jobs');
+            }
+            const jobsHtml = await response.text();
+           
+            document.getElementById('saved_jobs_container').innerHTML = jobsHtml;
+            
+            // Add event listeners to buttons
+            // document.querySelectorAll('.btn-danger').forEach(button => {
+            //     button.addEventListener('click', removeSavedJob);
+            // });
+            // document.querySelectorAll('.btn-primary').forEach(button => {
+            //     button.addEventListener('click', viewJob);
+            // });
+        } catch (error) {
+            console.error('Error fetching saved jobs:', error);
+        }
+    }
+    document.getElementById('job-search').addEventListener('keyup', fetchSavedJobs);
+    document.addEventListener('DOMContentLoaded', fetchSavedJobs);
     // Function to fetch and display profile data
     async function fetchProfileData() {
         try {
@@ -190,6 +184,36 @@
     
     // Call the function when the page loads
     document.addEventListener('DOMContentLoaded', fetchProfileData);
+
+    
+// Function to remove saved job
+function removeSavedJob(jobId) {
+    fetch('/api/jobseeker/remove-job', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `job_id=${jobId}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update UI to reflect job removal
+           fetchSavedJobs(); // Refresh the saved jobs list
+            
+            // Show success message
+            alert('Job removed from saved jobs successfully!');
+        } else {
+            // Show error message
+            alert(data.error || 'Failed to remove job');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while removing the job');
+    });
+}
+
 </script>
 </body>
 

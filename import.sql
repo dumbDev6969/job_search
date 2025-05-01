@@ -3,16 +3,10 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 25, 2025 at 04:22 AM
+-- Generation Time: May 01, 2025 at 07:24 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
-DROP DATABASE IF EXISTS job_portal_db;
 
--- Create the database again
-CREATE DATABASE job_portal_db;
-
--- Use the newly created database
-USE job_portal_db;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -62,6 +56,13 @@ CREATE TABLE `applications` (
   `applied_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `applications`
+--
+
+INSERT INTO `applications` (`application_id`, `job_id`, `seeker_id`, `resume_url`, `cover_letter`, `status`, `applied_at`) VALUES
+(123, 1, 139, 'none', 'none', 'applied', '2025-04-07 10:31:02');
+
 -- --------------------------------------------------------
 
 --
@@ -102,7 +103,7 @@ CREATE TABLE `employers` (
 
 INSERT INTO `employers` (`employer_id`, `email`, `password_hash`, `created_at`, `last_login`, `company_name`, `industry`, `company_size`, `website`, `logo_url`) VALUES
 (2, 'kamjijajajo@gmail.com', '$2b$12$EmVDH7PYPLQSpKkBqN4Mterb9N5buSsJN9WvGOAWjFkscfIsryAA.', '2025-03-21 09:01:05', NULL, 'Innovatech', 'Programming', 1, '', ''),
-(3, 'kanjijajajo@gmail.com', '$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm', '2025-03-21 09:03:05', '2025-03-24 11:18:40', 'company001', 'Programming', 1, '', '');
+(3, 'kanjijajajo@gmail.com', '$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm', '2025-03-21 09:03:05', '2025-05-01 05:13:24', 'company001', 'Programming', 1, '', '');
 
 -- --------------------------------------------------------
 
@@ -141,7 +142,9 @@ CREATE TABLE `jobs` (
 --
 
 INSERT INTO `jobs` (`job_id`, `employer_id`, `title`, `description`, `location`, `salary_range`, `employment_type`, `posted_at`, `expires_at`, `status`) VALUES
-(1, 3, 'progamming', 'a programming job', 'manila', '$20,000 -  $60,000', 'contract', '2025-03-23 03:18:19', '2025-04-22 16:00:00', 'active');
+(1, 3, 'progamming', 'a programming job', 'manila', '35,000 - 50,000', 'contract', '2025-03-23 03:18:19', '2025-04-22 16:00:00', 'active'),
+(2, 3, 'progamming', 'a programming job 1', 'manila', '35,000 - 50,000', 'contract', '2025-03-23 03:18:19', '2025-04-22 16:00:00', 'closed'),
+(3, 2, 'progamming', 'a programming job 1', 'manila', '35,000 - 50,000', 'contract', '2025-03-23 03:18:19', '2025-04-22 16:00:00', 'active');
 
 -- --------------------------------------------------------
 
@@ -178,7 +181,7 @@ CREATE TABLE `job_interest` (
 --
 
 INSERT INTO `job_interest` (`interest_id`, `user_id`, `job_interest`, `job_type`, `preferred_location`, `expected_salary_range`, `created_at`) VALUES
-(5, 139, 'programming', 'Part-time', 'manila', '200', '2025-03-25 02:50:12');
+(10, 139, 'programming', 'Freelance', 'Hybrid', '20,000 - 35,000', '2025-04-16 02:01:28');
 
 -- --------------------------------------------------------
 
@@ -206,7 +209,7 @@ CREATE TABLE `job_seekers` (
 --
 
 INSERT INTO `job_seekers` (`seeker_id`, `email`, `password_hash`, `created_at`, `last_login`, `first_name`, `last_name`, `phone`, `province`, `municipality`, `degree`, `portfolio_url`) VALUES
-(139, 'jemcarlo46@gmail.com', '$2b$12$jJsAP1.XiA4IFyrGxSCW0eeHEPop1rxc2Gz8XnKcUjDkthM1iwjRC', '2025-03-25 02:49:13', '2025-03-25 02:49:19', 'Jemcarlo', 'Austria', '09207766194', 'Pangasinan', '', 'bsit', '');
+(139, 'jemcarlo46@gmail.com', '$2b$12$jJsAP1.XiA4IFyrGxSCW0eeHEPop1rxc2Gz8XnKcUjDkthM1iwjRC', '2025-03-25 02:49:13', '2025-04-17 05:10:22', 'Jemcarlo', 'Austria', '09207766194', 'Pangasinan', '', 'bsit', '');
 
 -- --------------------------------------------------------
 
@@ -308,7 +311,7 @@ CREATE TABLE `qualifications` (
 --
 
 INSERT INTO `qualifications` (`qualification_id`, `seeker_id`, `degree`, `school_graduated`, `certifications`, `specialized_training`) VALUES
-(2, 139, 'bsit', 'bcc', 'none', 'programming');
+(6, 139, 'asd', 'asd', 'asd', 'ads');
 
 -- --------------------------------------------------------
 
@@ -327,6 +330,26 @@ CREATE TABLE `ratings` (
   `review` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `saved_jobs`
+--
+
+CREATE TABLE `saved_jobs` (
+  `saved_job_id` bigint(20) UNSIGNED NOT NULL,
+  `seeker_id` bigint(20) UNSIGNED NOT NULL,
+  `job_id` bigint(20) UNSIGNED NOT NULL,
+  `saved_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `saved_jobs`
+--
+
+INSERT INTO `saved_jobs` (`saved_job_id`, `seeker_id`, `job_id`, `saved_at`) VALUES
+(2, 139, 1, '2025-05-01 04:53:21');
 
 -- --------------------------------------------------------
 
@@ -386,7 +409,8 @@ CREATE TABLE `verified_users` (
 --
 
 INSERT INTO `verified_users` (`email`) VALUES
-('jemcarlo46@gmail.com');
+('jemcarlo46@gmail.com'),
+('kanjijajajo@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -520,6 +544,14 @@ ALTER TABLE `ratings`
   ADD KEY `idx_job_id` (`job_id`);
 
 --
+-- Indexes for table `saved_jobs`
+--
+ALTER TABLE `saved_jobs`
+  ADD PRIMARY KEY (`saved_job_id`),
+  ADD KEY `idx_seeker_id` (`seeker_id`),
+  ADD KEY `idx_job_id` (`job_id`);
+
+--
 -- Indexes for table `seeker_profiles`
 --
 ALTER TABLE `seeker_profiles`
@@ -549,7 +581,7 @@ ALTER TABLE `skills`
 -- AUTO_INCREMENT for table `applications`
 --
 ALTER TABLE `applications`
-  MODIFY `application_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `application_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
 
 --
 -- AUTO_INCREMENT for table `availability`
@@ -573,7 +605,7 @@ ALTER TABLE `interviews`
 -- AUTO_INCREMENT for table `jobs`
 --
 ALTER TABLE `jobs`
-  MODIFY `job_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `job_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `job_alerts`
@@ -582,25 +614,10 @@ ALTER TABLE `job_alerts`
   MODIFY `alert_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- Table structure for table `saved_jobs`
---
-CREATE TABLE `saved_jobs` (
-  `saved_job_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `seeker_id` bigint(20) UNSIGNED NOT NULL,
-  `job_id` bigint(20) UNSIGNED NOT NULL,
-  `saved_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`saved_job_id`),
-  KEY `idx_seeker_id` (`seeker_id`),
-  KEY `idx_job_id` (`job_id`),
-  CONSTRAINT `fk_saved_jobs_seeker` FOREIGN KEY (`seeker_id`) REFERENCES `job_seekers` (`seeker_id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_saved_jobs_job` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
 -- AUTO_INCREMENT for table `job_interest`
 --
 ALTER TABLE `job_interest`
-  MODIFY `interest_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `interest_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `job_seekers`
@@ -636,13 +653,19 @@ ALTER TABLE `password_reset_tokens`
 -- AUTO_INCREMENT for table `qualifications`
 --
 ALTER TABLE `qualifications`
-  MODIFY `qualification_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `qualification_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `ratings`
 --
 ALTER TABLE `ratings`
   MODIFY `rating_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `saved_jobs`
+--
+ALTER TABLE `saved_jobs`
+  MODIFY `saved_job_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `seeker_profiles`
@@ -717,6 +740,13 @@ ALTER TABLE `qualifications`
 --
 ALTER TABLE `ratings`
   ADD CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `saved_jobs`
+--
+ALTER TABLE `saved_jobs`
+  ADD CONSTRAINT `fk_saved_jobs_job` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_saved_jobs_seeker` FOREIGN KEY (`seeker_id`) REFERENCES `job_seekers` (`seeker_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `seeker_profiles`

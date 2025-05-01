@@ -97,63 +97,21 @@
                 <div class="card mb-4 border-0 shadow-sm" data-aos="fade-up" data-aos-delay="100">
                     <div class="card-body">
                         <h4 class="mb-4"><i class="icon-blue fas fa-file-alt  me-2"></i> Job Description</h4>
-                        <p>We're looking for an experienced Frontend Developer to join our growing team. You'll be responsible for building user interfaces and implementing features for our SaaS platform that serves thousands of customers worldwide.</p>
+                        <p>{{ job.description }}</p>
                         
                         
+                        {% if job.requirements %}
                         <h5 class="mt-4">Requirements:</h5>
                         <ul>
-                            <li>3+ years experience with modern JavaScript frameworks (React preferred)</li>
-                            <li>Proficiency in TypeScript and CSS-in-JS solutions</li>
-                            <li>Experience with responsive design principles</li>
-                            <li>Familiarity with RESTful APIs and GraphQL</li>
-                            <li>Strong problem-solving and debugging skills</li>
-                            <li>Experience with testing frameworks (Jest, Cypress)</li>
-                            <li>Knowledge of state management (Redux, Context API)</li>
+                            {% for requirement in job.requirements.split('\n') %}
+                                <li>{{ requirement }}</li>
+                            {% endfor %}
                         </ul>
+                    {% endif %}
                     </div>
                 </div>
                 
-                <!-- Application Process -->
-                <div class="card mb-4 border-0 shadow-sm" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card-body">
-                        <h4 class="mb-4"><i class=" icon-blue fas fa-tasks  me-2"></i> Hiring Process</h4>
-                        <div class="d-flex align-items-start mb-3">
-                            
-                            <div>
-                                <h6 class="mb-1">1. Application Review</h6>
-                                <p class="text-muted mb-0">Our team will review your application and portfolio</p>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-start mb-3">
-                            
-                            <div>
-                                <h6 class="mb-1">2. Technical Screening</h6>
-                                <p class="text-muted mb-0">Short coding challenge or technical questions (60 mins)</p>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-start mb-3">
-                            
-                            <div>
-                                <h6 class="mb-1">3. Technical Interview</h6>
-                                <p class="text-muted mb-0">Deep dive into your technical skills (90 mins)</p>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-start mb-3">
-                            
-                            <div>
-                                <h6 class="mb-1">4. Culture Fit Interview</h6>
-                                <p class="text-muted mb-0">Meet the team and discuss working style (60 mins)</p>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-start">
-                            
-                            <div>
-                                <h6 class="mb-1">5. Offer</h6>
-                                <p class="text-muted mb-0">Final decision and offer extended</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
             
             <!-- Sidebar -->
@@ -162,7 +120,7 @@
                 <div class="card mb-4 border-0 shadow-sm" data-aos="fade-left">
                     <div class="card-body">
                         <h4 class="mb-4"><i class="fas fa-building text-primary me-2"></i> About TechCorp</h4>
-                        <p class="mb-4">TechCorp is a leading SaaS provider helping businesses streamline their operations through innovative software solutions. Founded in 2015, we've grown to serve over 10,000 customers worldwide.</p>
+                        <p class="mb-4">{{ job.company_description }}</p>
                         
                         <div class="d-flex align-items-center mb-3">
                             <i class="fas fa-globe text-muted me-2"></i>
@@ -196,7 +154,45 @@
             once: true, // Run animation only once when scrolling
         });
 
-        
+        // Render job data from template variables
+        document.addEventListener('DOMContentLoaded', function() {
+            const job = JSON.parse('{{ job|tojson|safe }}');
+            
+            // Update job status and type
+            document.querySelector('.badge.bg-success').textContent = job.status || 'Active';
+            document.querySelector('.badge.bg-info').textContent = job.employment_type || 'Full-Time';
+            
+            // Update posted date
+            document.querySelector('.text-muted').textContent = `Posted | ${new Date(job.posted_date).toLocaleDateString()}`;
+            
+            // Update job title
+            document.querySelector('h1').textContent = job.title || 'Job Title';
+            
+            // Update company info
+            document.querySelector('h5').textContent = job.company_name || 'Company Name';
+            document.querySelector('.company-logo').src = job.company_logo || '/assets/img/default_profile.jpg';
+            document.querySelector('.fa-map-marker-alt').parentElement.textContent = job.location || 'Remote';
+            document.querySelector('.fa-users').parentElement.textContent = job.company_size || '51-200 employees';
+            
+            // Update salary, experience and deadline
+            document.querySelectorAll('.fw-bold')[0].textContent = job.salary || 'Not specified';
+            document.querySelectorAll('.fw-bold')[1].textContent = job.experience || 'Not specified';
+            document.querySelectorAll('.fw-bold')[2].textContent = job.deadline ? new Date(job.deadline).toLocaleDateString() : 'Not specified';
+            
+            // Update job description and requirements
+            document.querySelector('.card-body > p').textContent = job.description || 'Job description';
+            
+            // Update company website and LinkedIn
+            if(job.company_website) {
+                document.querySelector('.fa-globe').nextElementSibling.href = job.company_website;
+                document.querySelector('.fa-globe').nextElementSibling.textContent = job.company_website;
+            }
+            
+            if(job.linkedin_url) {
+                document.querySelector('.fa-linkedin').nextElementSibling.href = job.linkedin_url;
+                document.querySelector('.fa-linkedin').nextElementSibling.textContent = 'LinkedIn Page';
+            }
+        });
     </script>
 </body>
 

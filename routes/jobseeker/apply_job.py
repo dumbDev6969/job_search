@@ -12,6 +12,7 @@ apply_job = Blueprint('apply_job', __name__)
 
 
 @apply_job.route('/api/jobseeker/apply', methods=['POST'])
+@verify_user
 def apply():
     job_id=request.form.get('job_id')
     seeker_id =  session['user_id']
@@ -35,6 +36,6 @@ VALUES (
     results = db.execute_query(text(sql))
 
     if results['success']:
-        return {'applied':True}
+        return results
     else:
-        return {'applied':False,'result':results}
+        return results
