@@ -105,6 +105,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/assets/js/animation.js"></script>
     <script>
         const searchInput = document.getElementById('job-search');
@@ -227,7 +228,76 @@
         });
         // Initial load
         fetchJobs();
+
+       
+function setupFormWithSweetAlert(formElement) {
+   
+    formElement.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formAction = this.getAttribute('action');
+        const formMethod = this.getAttribute('method') || 'POST';
+        
+        // Show loading alert
+        Swal.fire({
+            title: 'Processing...',
+            html: 'Please wait while we process your request',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            }
+        });
+        
+        try {
+            const response = await fetch(formAction, {
+                method: formMethod,
+                body: new FormData(this)
+            });
+            
+            const result = await response.json();
+            
+            Swal.close();
+            
+            if (response.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: result.message || 'Action completed successfully'
+                }).then(() => {
+                    // Optional: Redirect if specified in response
+                    if (result.redirect) {
+                        window.location.href = result.redirect;
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: result.message || 'Action failed'
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Network error occurred'
+            });
+        }
+    });
+}
+
+// Apply to all forms on page load
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('form').forEach(form => {
+     
+        // Call the setup function for each form on page load
+        setupFormWithSweetAlert(form);
+        // setupFormWithSweetAlert(form);
+    });
+});
     </script>
+
+    
 </body>
 
 </html>

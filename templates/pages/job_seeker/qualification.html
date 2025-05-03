@@ -18,10 +18,9 @@
     </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="/assets/general.css">
-    <!-- Add SweetAlert2 CSS and JS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="/assets/general.css">
     <style>
         /* Custom styles for the carousel */
         .carousel-item {
@@ -38,15 +37,24 @@
 </head>
 
 <body>
+
+
     <div class="row d-flex align-items-center justify-content-center mt-5 p-5 ">
       <div class="col-md-6">
         <form id="qualificationForm" class="p-4">
             <div class="mb-3">
-                <label for="degree" class="form-label">Degree</label>
-                <input type="text" id="degree" name="degree"  placeholder="List your degrees"
-                    required>
-                <small class="text-muted">Example: Bachelor of Science in Computer Science, Bachelor of Science in Information Technology</small>
-            </div>
+                <!-- Input Field -->
+                <input type="text" id="degreeInput" name="degreeInput"  placeholder="Enter IT degree (e.g., Bachelor of Science...)" list="degreeSuggestions"
+                >
+              
+                <!-- Datalist for Suggestions -->
+                <datalist id="degreeSuggestions"></datalist>
+              
+                <!-- Pills Container -->
+                <div id="pillContainer" class="d-flex flex-wrap mt-2"></div>
+
+                <input type="hidden" id="selectedDegrees" name="degrees">
+              </div>
 
             <div class="mb-3">
                 <label for="school_graduated" class="form-label">School Graduated</label>
@@ -68,11 +76,13 @@
 
             <input class="" type="hidden" name="user_id" value="<!-- suer_di -->">
 
-            <button type="submit" class="btn-primary w-100 mt-3">Submit</button>
+            <button type="submit" class=" btn-primary w-100 mt-3">Submit</button>
         </form>
       </div>
     </div>
 
+   <!-- courses -->
+    <script src="/assets/js/courses.js"></script>
     <!-- AOS JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="/assets/js/animation.js"></script>
@@ -94,6 +104,7 @@
             })
             .then(response => response.json())
             .then(data => {
+               
                 if (data.success) {
                     Swal.fire({
                         icon: 'success',
@@ -121,6 +132,7 @@
             });
         });
     </script>
+
 </body>
 
 </html>

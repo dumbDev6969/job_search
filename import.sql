@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 01, 2025 at 07:24 AM
+-- Generation Time: May 03, 2025 at 11:24 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -103,7 +103,7 @@ CREATE TABLE `employers` (
 
 INSERT INTO `employers` (`employer_id`, `email`, `password_hash`, `created_at`, `last_login`, `company_name`, `industry`, `company_size`, `website`, `logo_url`) VALUES
 (2, 'kamjijajajo@gmail.com', '$2b$12$EmVDH7PYPLQSpKkBqN4Mterb9N5buSsJN9WvGOAWjFkscfIsryAA.', '2025-03-21 09:01:05', NULL, 'Innovatech', 'Programming', 1, '', ''),
-(3, 'kanjijajajo@gmail.com', '$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm', '2025-03-21 09:03:05', '2025-05-01 05:13:24', 'company001', 'Programming', 1, '', '');
+(3, 'kanjijajajo@gmail.com', '$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm', '2025-03-21 09:03:05', '2025-05-03 06:53:18', 'company001', 'Programming', 1, '', '');
 
 -- --------------------------------------------------------
 
@@ -209,7 +209,7 @@ CREATE TABLE `job_seekers` (
 --
 
 INSERT INTO `job_seekers` (`seeker_id`, `email`, `password_hash`, `created_at`, `last_login`, `first_name`, `last_name`, `phone`, `province`, `municipality`, `degree`, `portfolio_url`) VALUES
-(139, 'jemcarlo46@gmail.com', '$2b$12$jJsAP1.XiA4IFyrGxSCW0eeHEPop1rxc2Gz8XnKcUjDkthM1iwjRC', '2025-03-25 02:49:13', '2025-04-17 05:10:22', 'Jemcarlo', 'Austria', '09207766194', 'Pangasinan', '', 'bsit', '');
+(139, 'jemcarlo46@gmail.com', '$2b$12$jJsAP1.XiA4IFyrGxSCW0eeHEPop1rxc2Gz8XnKcUjDkthM1iwjRC', '2025-03-25 02:49:13', '2025-05-03 04:52:45', 'Jemcarlo', 'Austria', '09207766194', 'Pangasinan', '', 'bsit', '');
 
 -- --------------------------------------------------------
 
@@ -231,6 +231,7 @@ CREATE TABLE `job_skills` (
 CREATE TABLE `messages` (
   `message_id` bigint(20) UNSIGNED NOT NULL,
   `sender_id` bigint(20) UNSIGNED NOT NULL,
+  `conversation_id` varchar(50) NOT NULL,
   `sender_type` enum('employer','job_seeker') NOT NULL,
   `receiver_id` bigint(20) UNSIGNED NOT NULL,
   `receiver_type` enum('employer','job_seeker') NOT NULL,
@@ -238,6 +239,14 @@ CREATE TABLE `messages` (
   `sent_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `is_read` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`message_id`, `sender_id`, `conversation_id`, `sender_type`, `receiver_id`, `receiver_type`, `content`, `sent_at`, `is_read`) VALUES
+(2, 139, '098066944702696', 'employer', 2, 'employer', 'hi', '2025-05-02 23:41:38', 0),
+(3, 139, '157956719476834', 'employer', 3, 'employer', 'hello company1', '2025-05-03 01:05:57', 0);
 
 -- --------------------------------------------------------
 
@@ -311,7 +320,7 @@ CREATE TABLE `qualifications` (
 --
 
 INSERT INTO `qualifications` (`qualification_id`, `seeker_id`, `degree`, `school_graduated`, `certifications`, `specialized_training`) VALUES
-(6, 139, 'asd', 'asd', 'asd', 'ads');
+(10, 139, 'asdasdasd', 'bcc', 'none', 'programming');
 
 -- --------------------------------------------------------
 
@@ -336,20 +345,8 @@ CREATE TABLE `ratings` (
 --
 -- Table structure for table `saved_jobs`
 --
-
-CREATE TABLE `saved_jobs` (
-  `saved_job_id` bigint(20) UNSIGNED NOT NULL,
-  `seeker_id` bigint(20) UNSIGNED NOT NULL,
-  `job_id` bigint(20) UNSIGNED NOT NULL,
-  `saved_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `saved_jobs`
---
-
-INSERT INTO `saved_jobs` (`saved_job_id`, `seeker_id`, `job_id`, `saved_at`) VALUES
-(2, 139, 1, '2025-05-01 04:53:21');
+-- Error reading structure for table job_portal_db.saved_jobs: #1030 - Got error 194 &quot;Tablespace is missing for a table&quot; from storage engine InnoDB
+-- Error reading data for table job_portal_db.saved_jobs: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near &#039;FROM `job_portal_db`.`saved_jobs`&#039; at line 1
 
 -- --------------------------------------------------------
 
@@ -544,14 +541,6 @@ ALTER TABLE `ratings`
   ADD KEY `idx_job_id` (`job_id`);
 
 --
--- Indexes for table `saved_jobs`
---
-ALTER TABLE `saved_jobs`
-  ADD PRIMARY KEY (`saved_job_id`),
-  ADD KEY `idx_seeker_id` (`seeker_id`),
-  ADD KEY `idx_job_id` (`job_id`);
-
---
 -- Indexes for table `seeker_profiles`
 --
 ALTER TABLE `seeker_profiles`
@@ -629,7 +618,7 @@ ALTER TABLE `job_seekers`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `message_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -653,19 +642,13 @@ ALTER TABLE `password_reset_tokens`
 -- AUTO_INCREMENT for table `qualifications`
 --
 ALTER TABLE `qualifications`
-  MODIFY `qualification_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `qualification_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `ratings`
 --
 ALTER TABLE `ratings`
   MODIFY `rating_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `saved_jobs`
---
-ALTER TABLE `saved_jobs`
-  MODIFY `saved_job_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `seeker_profiles`
@@ -740,13 +723,6 @@ ALTER TABLE `qualifications`
 --
 ALTER TABLE `ratings`
   ADD CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE;
-
---
--- Constraints for table `saved_jobs`
---
-ALTER TABLE `saved_jobs`
-  ADD CONSTRAINT `fk_saved_jobs_job` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_saved_jobs_seeker` FOREIGN KEY (`seeker_id`) REFERENCES `job_seekers` (`seeker_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `seeker_profiles`

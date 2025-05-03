@@ -45,12 +45,15 @@ def add_qualification():
     """
     try:
         data = request.form
-        seeker_id =session['user_id'] # Assuming user_id is set by verify_user middleware
+        seeker_id =session['user_id'] 
+        degree = data.get('degree') or data.get('degreeInput')
+        print("degree:",degree)
+        
         if check_column_exists('qualifications','seeker_id',seeker_id):
             return jsonify({'error': 'Qualification already exists'}), 400
-        
+        print(data)
         # Validate required fields
-        if not data.get('degree') or not data.get('school_graduated'):
+        if not degree or not data.get('school_graduated'):
             return jsonify({'error': 'Degree and school graduated are required'}), 400
             
         # Get database connection
@@ -65,7 +68,7 @@ def add_qualification():
         
         db.execute_query(query, {
             'seeker_id': seeker_id,
-            'degree': data.get('degree'),
+            'degree':degree,
             'school_graduated': data.get('school_graduated'),
             'certifications': data.get('certifications'),
             'specialized_training': data.get('specialized_training')

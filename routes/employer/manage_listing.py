@@ -92,7 +92,7 @@ def get_listing_api():
                 <td><input type="checkbox" class="form-check-input"></td>
                 <td>
                     <div class="d-flex align-items-center">
-                        <img src="https://randomuser.me/api/portraits/men/32.jpg" 
+                        <img src="https://randomuser.me/api/portraits/men/1.jpg" 
                              class="rounded-circle me-2" width="36" height="36">
                         <div>
                             <div class="fw-bold">{job['applicant_name']}</div>

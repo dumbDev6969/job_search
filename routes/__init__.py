@@ -18,6 +18,8 @@ from utils.database import test_mysql
 from routes.jobseeker import jobseeker_bp
 from routes.employer import employer_bp
 from routes.admin import admin_bp
+from routes.messages import messages_bp
+
 
 routes_bp = Blueprint('routes', __name__)
 
@@ -41,6 +43,9 @@ if is_mysql_running:
     routes_bp.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
     routes_bp.register_blueprint(employer_bp)
     routes_bp.register_blueprint(admin_bp)
+    routes_bp.register_blueprint(messages_bp)
+  
+    
 else:
     routes_bp.register_blueprint(db_not_active)
 

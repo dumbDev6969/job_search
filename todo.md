@@ -1,7 +1,6 @@
 jobeeker:
   notifications
   skills and resume
-  saved jobs in profile
   recommendations
   filters in find jobs
 

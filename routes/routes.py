@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, current_app
+from .messages import messages
 
 # Create a Blueprint
 main = Blueprint('main', __name__)
@@ -11,3 +12,7 @@ def home():
 @main.route('/about')
 def about():
     return 'About Page'
+
+# Register the messages blueprint
+def init_app(app):
+    app.register_blueprint(messages)

@@ -9,6 +9,7 @@ dotenv==0.9.9
 Flask==3.1.0
 Flask-Limiter==3.12
 flask-swagger-ui==4.11.1
+Flask-SocketIO==5.3.6
 greenlet==3.1.1
 itsdangerous==2.2.0
 Jinja2==3.1.6

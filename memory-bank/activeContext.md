@@ -14,9 +14,11 @@
 - Added project brief and technical documentation
 
 ## Next Steps
-- Finalize progress.md documentation
-- Verify all memory bank files are complete
+- Memory bank documentation completed
 - Begin implementation of outstanding todo items by user type
+  - Jobseeker: notifications, skills and resume
+  - Employer: action/modals in find talent
+  - Admin: full system access oversight
 
 ## Important Patterns
 - Flask blueprint pattern for route organization

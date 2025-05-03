@@ -16,6 +16,8 @@
 - Core authentication and routing implemented
 - Basic job posting and application working
 - Dashboard templates created
+- Memory bank documentation completed
+- Initial setup for job expiration feature
 
 ## Known Issues
 - Some template files need completion (e.g., seeker_details.html)

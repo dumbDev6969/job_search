@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_socketio import SocketIO
 from datetime import datetime,timedelta
 from   job_search.routes.routes import main
 from   job_search.routes.database import database
@@ -17,7 +18,7 @@ from   job_search.routes.jobseeker import jobseeker
 from   job_search.routes.logout import logout
 from   job_search.routes.errors import errors
 from   job_search.routes.dashboard import dashboard
-
+from   job_search.routes.messages import messages
 
 from swagger import swagger_ui_blueprint, SWAGGER_URL
 
@@ -29,6 +30,9 @@ app = Flask(__name__)
 app.secret_key = 'your-secret-key-here'  # Replace with a secure secret key in production
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
+
+# Initialize Socket.IO
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Register the Blueprints
 app.register_blueprint(main)
@@ -48,6 +52,7 @@ app.register_blueprint(logout)
 app.register_blueprint(errors)
 app.register_blueprint(dashboard)
 app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
+app.register_blueprint(messages)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app, debug=True)
