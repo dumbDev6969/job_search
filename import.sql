@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 03, 2025 at 11:24 AM
+-- Generation Time: May 04, 2025 at 08:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -103,7 +103,7 @@ CREATE TABLE `employers` (
 
 INSERT INTO `employers` (`employer_id`, `email`, `password_hash`, `created_at`, `last_login`, `company_name`, `industry`, `company_size`, `website`, `logo_url`) VALUES
 (2, 'kamjijajajo@gmail.com', '$2b$12$EmVDH7PYPLQSpKkBqN4Mterb9N5buSsJN9WvGOAWjFkscfIsryAA.', '2025-03-21 09:01:05', NULL, 'Innovatech', 'Programming', 1, '', ''),
-(3, 'kanjijajajo@gmail.com', '$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm', '2025-03-21 09:03:05', '2025-05-03 06:53:18', 'company001', 'Programming', 1, '', '');
+(3, 'kanjijajajo@gmail.com', '$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm', '2025-03-21 09:03:05', '2025-05-04 04:28:36', 'company001', 'Programming', 1, '', '');
 
 -- --------------------------------------------------------
 
@@ -209,7 +209,7 @@ CREATE TABLE `job_seekers` (
 --
 
 INSERT INTO `job_seekers` (`seeker_id`, `email`, `password_hash`, `created_at`, `last_login`, `first_name`, `last_name`, `phone`, `province`, `municipality`, `degree`, `portfolio_url`) VALUES
-(139, 'jemcarlo46@gmail.com', '$2b$12$jJsAP1.XiA4IFyrGxSCW0eeHEPop1rxc2Gz8XnKcUjDkthM1iwjRC', '2025-03-25 02:49:13', '2025-05-03 04:52:45', 'Jemcarlo', 'Austria', '09207766194', 'Pangasinan', '', 'bsit', '');
+(139, 'jemcarlo46@gmail.com', '$2b$12$jJsAP1.XiA4IFyrGxSCW0eeHEPop1rxc2Gz8XnKcUjDkthM1iwjRC', '2025-03-25 02:49:13', '2025-05-04 05:42:15', 'Jemcarlo', 'Austria', '09207766194', 'Pangasinan', '', 'bsit', '');
 
 -- --------------------------------------------------------
 
@@ -237,16 +237,11 @@ CREATE TABLE `messages` (
   `receiver_type` enum('employer','job_seeker') NOT NULL,
   `content` text NOT NULL,
   `sent_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `is_read` tinyint(1) DEFAULT 0
+  `is_read` tinyint(1) DEFAULT 0,
+  `is_message_deleted` enum('false','true') NOT NULL,
+  `is_conversation_deleted_by_sender` enum('false','true') NOT NULL,
+  `is_conversation_deleted_by_receiver` enum('false','true') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `messages`
---
-
-INSERT INTO `messages` (`message_id`, `sender_id`, `conversation_id`, `sender_type`, `receiver_id`, `receiver_type`, `content`, `sent_at`, `is_read`) VALUES
-(2, 139, '098066944702696', 'employer', 2, 'employer', 'hi', '2025-05-02 23:41:38', 0),
-(3, 139, '157956719476834', 'employer', 3, 'employer', 'hello company1', '2025-05-03 01:05:57', 0);
 
 -- --------------------------------------------------------
 
@@ -618,7 +613,7 @@ ALTER TABLE `job_seekers`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `message_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `notifications`

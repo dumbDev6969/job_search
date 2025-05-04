@@ -20,7 +20,6 @@ limiter.init_app(app)
 
 print(app.url_map)
 app.register_blueprint(routes_bp)
-print(app.url_map)
 
 # Apply rate limiting to specific routes
 # limiter.limit("5/minute")(login)

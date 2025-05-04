@@ -1,9 +1,18 @@
-from flask import Blueprint, render_template_string, request, jsonify, session,render_template 
-from utils.database import get_db
-from middlewares.verify_user import verify_user
-from middlewares.is_email_verified import is_email_verified
-from sqlalchemy import text
 from datetime import datetime
+
+from flask import (
+    Blueprint,
+    jsonify,
+    render_template,
+    render_template_string,
+    request,
+    session,
+)
+from sqlalchemy import text
+
+from middlewares.is_email_verified import is_email_verified
+from middlewares.verify_user import verify_user
+from utils.database import get_db
 
 # Create a Blueprint
 messages = Blueprint('messages', __name__)
@@ -21,11 +30,6 @@ def generate_conversation_id():
     # Combine to make 15 digits
     return timestamp_part + random_part
 
-@messages.route('/chat', methods=['GET'])
-@verify_user
-@is_email_verified
-def chat():
-    return render_template('/pages/messaging/message.html')
 
 
 # Example: GET all messages for the current user
@@ -33,16 +37,7 @@ def chat():
 @verify_user
 @is_email_verified
 def get_messages():
-    user_id = session.get('user_id')
-    if not user_id:
-        return jsonify({'error': 'Not authenticated'}), 401
-    db = get_db()
-    query = text("""
-        SELECT * FROM messages WHERE sender_id = :user_id OR receiver_id = :user_id ORDER BY sent_at DESC
-    """)
-    result = db.execute(query, {'user_id': user_id})
-    messages_list = [dict(row) for row in result]
-    return jsonify(messages_list)
+    return render_template('/pages/messaging/message.html')
 
 # Example: POST a new message
 @messages.route('/messages', methods=['POST'])
@@ -55,19 +50,29 @@ def send_message():
     data = request.get_json()
     receiver_id = data.get('receiver_id')
     message_content = data.get('message')
+    conversation_id = data.get('conversation_id')
+    if session.get('user_type') == 'seeker':
+        sender_type ='job_seeker'
+    else:
+        sender_type ='employer'
+    # print("the sender type is :::",sender_type)
+    # return [sender_type]
+
+        # return jsonify({'error': 'Admin cannot send messages'}), 403
     if not receiver_id or not message_content:
         return jsonify({'error': 'Invalid message data'}), 400
     db = get_db()
     query = text("""
-        INSERT INTO messages (sender_id, receiver_id, content, sent_at,conversation_id)
-        VALUES (:sender_id, :receiver_id, :content, :sent_at, :conversation_id)
+        INSERT INTO messages (sender_id, receiver_id, content, sent_at,conversation_id, sender_type)
+        VALUES (:sender_id, :receiver_id, :content, :sent_at, :conversation_id, :sender_type)
     """)
     result = db.execute_query(query, {
         'sender_id': sender_id,
         'receiver_id': receiver_id,
         'content': message_content,
         'sent_at': datetime.utcnow(),
-        'conversation_id': generate_conversation_id()
+        'conversation_id': conversation_id,
+        'sender_type': sender_type
     })
     print(result)
     if not result['success']:
@@ -76,21 +81,32 @@ def send_message():
 
 # Example: GET messages between two users
 @messages.route('/messages/conversation/<string:conversation_id>', methods=['GET'])
+@messages.route('/messages/conversation/', methods=['GET'])
 @verify_user
 @is_email_verified
-def get_conversation(conversation_id):
+def get_conversation(conversation_id=None):
     user_id = session.get('user_id')
-    if not user_id:
-        return jsonify({'error': 'Not authenticated'}), 401
+    if conversation_id is None:
+        return """
+            <div class="alert alert-warning text-center">
+                <i class="bi bi-chat-dots fs-1"></i>
+                <h5 class="mt-3">No Conversation Selected</h5>
+                <p>Please select a conversation to view messages.</p>
+            </div>
+        """
     db = get_db()
     query = text("""
         SELECT m.*, 
                CASE WHEN m.sender_id = :user_id THEN 'sent' ELSE 'received' END as message_type
         FROM messages m
-        WHERE m.conversation_id = :conversation_id and (m.sender_id = :user_id OR m.receiver_id = :user_id)
+       WHERE m.conversation_id = :conversation_id and (m.sender_id = :user_id OR m.receiver_id = :user_id)
         ORDER BY m.sent_at ASC
     """)
+
+    
     result = db.execute_query(query, {'user_id': user_id, 'conversation_id': conversation_id})
+   
+    # return jsonify(result['output'])
     if result['output']:
         
         html_messages = []
@@ -98,11 +114,13 @@ def get_conversation(conversation_id):
             message_class = 'message sent mb-3 text-end' if message['message_type'] == 'sent' else 'message received mb-3'
             bubble_class = 'bubble d-inline-block p-3 rounded-4 bg-primary text-white' if message['message_type'] == 'sent' else 'bubble d-inline-block p-3 rounded-4 bg-light'
             time_class = 'small text-white-50 mt-1' if message['message_type'] == 'sent' else 'small text-muted mt-1'
-            print("message:",message)
+            
             sent_time = message['sent_at'].strftime('%d %b %Y %I:%M %p') if message['sent_at'] else ''
             
             html_messages.append(f"""
             <div class=\"{message_class}\">
+          
+
                 <div class=\"{bubble_class}\">
                     {message['content']}
                     <div class=\"{time_class}\">{sent_time}</div>
@@ -112,38 +130,6 @@ def get_conversation(conversation_id):
         return ''.join(html_messages)
     return "<div class='alert alert-info'>No messages found</div>"
 
-@messages.route('/api/messages/history/<int:other_user_id>', methods=['GET'])
-@verify_user
-@is_email_verified
-def get_message_history(other_user_id):
-    user_id = session.get('user_id')
-    db = get_db()
-    
-    query = text("""
-        SELECT m.message_id, m.sender_id, m.content, m.sent_at,
-               CASE WHEN m.sender_id = :user_id THEN 'sent' ELSE 'received' END as type
-        FROM messages m
-        WHERE (m.sender_id = :user_id AND m.receiver_id = :other_user_id)
-           OR (m.sender_id = :other_user_id AND m.receiver_id = :user_id)
-        ORDER BY m.sent_at DESC
-        LIMIT 50
-    """)
-    
-    result = db.execute_query(query, {
-        'user_id': user_id,
-        'other_user_id': other_user_id
-    })
-    
-    if result['success']:
-        messages = [{
-            'message_id': msg['message_id'],
-            'sender_id': msg['sender_id'],
-            'content': msg['content'],
-            'sent_at': msg['sent_at'].isoformat() if msg['sent_at'] else None,
-            'type': msg['type']
-        } for msg in result['output']]
-        return jsonify({'success': True, 'messages': messages})
-    return jsonify({'success': False, 'message': 'Failed to fetch messages'}), 500
 
 @messages.route('/api/messages/users/search', methods=['GET'])
 @verify_user

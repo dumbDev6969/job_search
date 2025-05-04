@@ -71,10 +71,12 @@
               class="form-control mb-3"
               placeholder="Find people and groups"
             />
+            <div id="search-results"></div>
 
-            <ul class="list-group list-group-flush" id="chat-list">
-              <!-- Example Chat Item -->
+            <ul class="list-group list-group-flush" id="chat-list" hx-get="/api/messages/chat-partners" hx-trigger="every 0.1s" >
+           
             </ul>
+            
           </div>
         </div>
         <!-- <h1>{{info}}</h1> -->
@@ -91,7 +93,11 @@
           </div>
 
           <!-- Messages -->
-          <div class="chat-body p-3"  hx-get="/messages/conversation/{{coversation_id}}" hx-trigger="every 0.1s">
+        
+           <div class="chat-body p-3" id="render-conversation" hx-get="/messages/conversation/{{coversation_id}}" hx-trigger="every 0.1s">
+           </div>
+         
+          <!-- <div class="chat-body p-3"  hx-get="/messages/conversation/{{coversation_id}}" hx-trigger="every 0.1s"> -->
             <!-- <div class="message received mb-3">
               <div class="bubble d-inline-block p-3 rounded-4 bg-light">
                 Lorem ipsum dolor sit amet...
@@ -109,7 +115,7 @@
             </div> -->
 
             <!-- Add more messages -->
-          </div>
+          <!-- </div> -->
     
           <input type="hidden" name="" id="conversation_id" value="{{coversation_id}}">
           <input type="hidden" name="" id="user_id" value="{{user_id}}">
@@ -165,41 +171,37 @@
 
 
       }
-
       document
         .querySelector('input[placeholder="Find people and groups"]')
         .addEventListener("keyup", function (e) {
           const query = e.target.value.trim();
+          const chatList = document.getElementById("chat-list");
+          const searchResults = document.getElementById("search-results");
           if (query.length > 0) {
+            chatList.style.display = "none";
             fetch(`/api/messages/users/search?q=${encodeURIComponent(query)}`)
               .then((response) => response.text())
               .then((html) => {
-                document.getElementById("chat-list").innerHTML = html;
+                searchResults.innerHTML = html;
+                searchResults.style.display = "block";
               })
               .catch((error) =>
                 console.error("Error fetching search results:", error)
               );
           } else {
-            fetch("/api/messages/chat-partners/{{coversation_id}}")
+            searchResults.innerHTML = "";
+            searchResults.style.display = "none";
+            chatList.style.display = "block";
+            fetch("/api/messages/chat-partners")
               .then((response) => response.text())
               .then((html) => {
-                document.getElementById("chat-list").innerHTML = html;
+                chatList.innerHTML = html;
               })
               .catch((error) =>
                 console.error("Error fetching chat partners:", error)
               );
           }
         });
-      document.addEventListener("DOMContentLoaded", function () {
-        fetch("/api/messages/chat-partners/{{coversation_id}}")
-          .then((response) => response.text())
-          .then((html) => {
-            document.getElementById("chat-list").innerHTML = html;
-          })
-          .catch((error) =>
-            console.error("Error fetching chat partners:", error)
-          );
-      });
 
       document.getElementById('send-message-btn').addEventListener('click', function() {
         const messageInput = document.querySelector('input[name="message"]');
@@ -213,7 +215,8 @@
             },
             body: JSON.stringify({
               receiver_id: user_to_recieve,
-              message: message
+              message: message,
+              conversation_id: document.getElementById("conversation_id").value,
             })
           })
           .then(response => {
@@ -244,6 +247,12 @@
           .catch(error => {
             console.error('Error sending message:', error);
           });
+        }
+      });
+      document.querySelector('input[name="message"]').addEventListener('keydown', function(e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          document.getElementById('send-message-btn').click();
         }
       });
     </script>

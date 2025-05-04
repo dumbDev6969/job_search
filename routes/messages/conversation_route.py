@@ -1,24 +1,27 @@
-from flask import *
-from utils.database import get_db
-from middlewares.verify_user import verify_user
-from middlewares.is_email_verified import is_email_verified
-from sqlalchemy import text
 from datetime import datetime
+
+from flask import *
+from sqlalchemy import text
+
+from middlewares.is_email_verified import is_email_verified
+from middlewares.verify_user import verify_user
 from utils.check_if_exists import check_column_exists
+from utils.database import get_db
 conversation_route = Blueprint('conversation_route', __name__)
 
 
-def get_conversation_by_receiver(receiver_id):
-    """Get conversation ID using receiver_id"""
+def get_conversation_by_receiver(user1_id, user2_id):
+    """Get conversation ID using both user IDs (sender and receiver)"""
     db = get_db()
     query = text("""
         SELECT conversation_id 
         FROM messages 
-        WHERE receiver_id = :receiver_id
+        WHERE (sender_id = :user1_id AND receiver_id = :user2_id)
+           OR (sender_id = :user2_id AND receiver_id = :user1_id)
         ORDER BY sent_at DESC
         LIMIT 1
     """)
-    result = db.execute_query(query, {"receiver_id": receiver_id})
+    result = db.execute_query(query, {"user1_id": user1_id, "user2_id": user2_id})
     return result['output'][0]['conversation_id'] if result['success'] and result['output'] else None
 
 
@@ -68,27 +71,20 @@ def generate_conversation_id():
 @is_email_verified
 def get_conversation_route(user_id=None, coversation_id=None):
     db = get_db()
-    if check_column_exists('messages', 'receiver_id ', user_id):
-        coversation_id = get_conversation_by_receiver(user_id)
-        em = check_column_exists('employers', 'employer_id ', user_id)   
-        js = check_column_exists('job_seekers', 'seeker_id ', user_id)   
-        jobseeker_info = get_user_info(user_id, 'jobseeker')
-        employer_info = get_user_info(user_id, 'employer')
-        if em:
-            name = employer_info['company_name']
-            email = employer_info['email']
-        
-            return render_template('/pages/messaging/message.html', coversation_id=coversation_id,info=employer_info, name=name, email=email,user_id=user_id)
-        elif js:
-            name = jobseeker_info['first_name'] + ' ' + jobseeker_info['last_name']
-            email = jobseeker_info['email']
-            return render_template('/pages/messaging/message.html', coversation_id=coversation_id,info=jobseeker_info, name=name, email=email, user_id=user_id)
+    #check if user_id exists in jobs_eeker or employer table
+    is_seeker = check_column_exists('job_seekers', 'seeker_id ', user_id)
+    is_employer = check_column_exists('employers', 'employer_id ', user_id)
+    if not is_seeker and not is_employer:
+        return render_template('/pages/user_not_found.html'), 404
+    
 
     if user_id:
         if not coversation_id:
+            # if not check_column_exists('messages', 'receiver_id ', user_id): 
+                
           
-            conversation_id = generate_conversation_id()
-            redirect(f'/messages/{user_id}/{conversation_id}')
+            coversation_id = get_conversation_by_receiver(user_id, session['user_id']) or generate_conversation_id()
+            return redirect(f'/messages/{user_id}/{coversation_id}')
 
     query = text("SELECT * FROM messages WHERE conversation_id = :conversation_id ORDER BY sent_at ASC")
     result = db.execute_query(query, {"conversation_id": coversation_id})
@@ -104,12 +100,28 @@ def get_conversation_route(user_id=None, coversation_id=None):
                 content = row['content']
                 sent_at = row['sent_at']
                 is_read = row['is_read']
-                print("conversation_id:", conversation_id)
+                
 
                 jobseeker_info = get_user_info(session['user_id'], 'jobseeker')
                 employer_info = get_user_info(receiver_id, 'employer')
+            em = check_column_exists('employers', 'employer_id ', user_id)   
+            js = check_column_exists('job_seekers', 'seeker_id ', user_id)   
+            jobseeker_info = get_user_info(user_id, 'jobseeker')
+            employer_info = get_user_info(user_id, 'employer')
+            if em:
+                name = employer_info['company_name']
+                email = employer_info['email']
             
+                return render_template('/pages/messaging/message.html', coversation_id=coversation_id,info=employer_info, name=name, email=email,user_id=user_id)
+            elif js:
+                name = jobseeker_info['first_name'] + ' ' + jobseeker_info['last_name']
+                email = jobseeker_info['email']
+                return render_template('/pages/messaging/message.html', coversation_id=coversation_id,info=jobseeker_info, name=name, email=email, user_id=user_id)
+
             return render_template('/pages/messaging/message.html', coversation_id=conversation_id)
+              
+        # else:
+        #     return redirect(f'/messages/{user_id}/{conversation_id}')
     em = check_column_exists('employers', 'employer_id ', user_id)   
     js = check_column_exists('job_seekers', 'seeker_id ', user_id)   
     jobseeker_info = get_user_info(user_id, 'jobseeker')
@@ -123,41 +135,41 @@ def get_conversation_route(user_id=None, coversation_id=None):
         name = jobseeker_info['first_name'] + ' ' + jobseeker_info['last_name']
         email = jobseeker_info['email']
         return render_template('/pages/messaging/message.html', coversation_id=coversation_id,info=jobseeker_info, name=name, email=email, user_id=user_id)
-    return redirect('/chat')
+    return redirect('messages')
 
 
 
 
 
-@conversation_route.route('/api/messages/chat-partners/<int:coversation_id>', methods=['GET'])
+@conversation_route.route('/api/messages/chat-partners', methods=['GET'])
+@conversation_route.route('/api/messages/chat-partners', methods=['GET'])
 @verify_user
 @is_email_verified
-def get_chat_partners(coversation_id):
+def get_chat_partners():
     user_id = session.get('user_id')
-  
-  
+
     db = get_db()
     query = text("""
         SELECT DISTINCT 
-            CASE WHEN sender_id = :user_id THEN receiver_id ELSE sender_id END as partner_id,
-            CASE WHEN sender_id = :user_id THEN 'sent' ELSE 'received' END as direction
+            CASE 
+                WHEN sender_id = :user_id THEN receiver_id 
+                ELSE sender_id 
+            END as partner_id
         FROM messages
-        WHERE sender_id = :user_id
-        ORDER BY direction DESC
+        WHERE sender_id = :user_id OR receiver_id = :user_id
     """)
     
-    result = db.execute_query(query, {'user_id': user_id, 'coversation_id': coversation_id})
+    result = db.execute_query(query, {'user_id': user_id})
     
-    print("HOSYOTRYYY",result)
+    # print("HOSYOTRYYY", result)
     if result['output']:
-        partners =result['output']
-        print('partner length:',len(partners))
+        partners = result['output']
+        # print('partner length:', len(partners))
      
         html_items = []
         for partner in partners:
-            
             partner_id = partner['partner_id']
-            print("partner:",partner)
+            # print("partner:", partner)
             query = text("""
                 SELECT 
                     js.seeker_id as user_id,
@@ -190,9 +202,7 @@ def get_chat_partners(coversation_id):
                 'user_id': partner_id,
             })
             
-            print('users:::::::',users)
-           
-
+            # print('users:::::::', users)
             for user in users['output']:
                 html_items.append(f"""
                     <li class="list-group-item d-flex align-items-center p-3" onclick="window.location.href = '/messages/{user['user_id']}';">
@@ -205,32 +215,11 @@ def get_chat_partners(coversation_id):
                         </li>
                     """
                 )
-              
-            
         return ''.join(html_items)
     return """
-    <li class="list-group-item d-flex align-items-center p-3">
-                  <img src="/assets/img/default_profile.jpg" height="50"class="rounded-circle me-3" alt="Avatar">
-                  <div class="flex-grow-1">
-                    <div class="fw-bold">TechCorp</div>
-                    <small class="text-muted">...</small>
-                  </div>
-                  <small class="text-muted">1 Dec 2020</small>
-                </li>
-                
-                <!-- Active Chat Item -->
-                <li class="list-group-item d-flex align-items-center p-3 bg-dark-subtle">
-                  <img src="/assets/img/default_profile.jpg" height="50" class="rounded-circle me-3" alt="Avatar">
-                  <div class="flex-grow-1">
-                    <div class="fw-bold">TechSprint</div>
-                    <small class="text-muted">Lorem, ipsum dolor.</small>
-                  </div>
-                  <small class="text-muted">17 Sept 2020</small>
-                </li>
+    <div class="list-group-item text-center p-4">
+        <i class="bi bi-chat-left-dots fs-1 text-muted mb-3"></i>
+        <h5 class="text-muted">No Recent Conversations</h5>
+        <p class="text-muted mb-0">Start a new conversation to connect with others</p>
+    </div>
     """
-
-
-
-
-
-
