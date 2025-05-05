@@ -31,6 +31,38 @@
     />
     <link rel="stylesheet" href="/assets/general.css" />
     <link rel="stylesheet" href="/assets/custom_card.css" />
+    <style>
+      html, body, .container-fluid, .row.g-0.vh-100 {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .sidebar {
+        height: 100vh;
+        overflow-y: auto;
+        position: relative;
+      }
+      .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+      }
+      .chat-body {
+        flex: 1;
+        overflow-y: auto;
+        min-height: 0;
+      }
+      .message.received .bubble {
+        background-color: #e9ecef;
+        border-top-left-radius: 0;
+      }
+      .message.sent .bubble {
+        background-color: var(--primary);
+        color: white;
+        border-top-right-radius: 0;
+      }
+    </style>
   </head>
   <style>
     .sidebar {
@@ -59,7 +91,12 @@
     <div class="container-fluid">
       <div class="row g-0 vh-100">
         <!-- Sidebar -->
-        <div class="col-md-4 border-end sidebar bg-white">
+        <div class="col-md-4  border-end sidebar bg-white">
+          <div class="d-flex align-items-center p-3 border-bottom">
+            <img class="me-3 rounded-circle" alt="Avatar" src="https://api.dicebear.com/7.x/initials/svg?seed={{sender_name}}" height="50" onclick="window.location.href='/{{sender_type}}/{{sender_id}}'">
+            <h4 class="mb-0 text-center">{{sender_name}}</h4>
+           
+          </div>
           <div class="d-flex align-items-center p-3 border-bottom">
             <h4 class="mb-0 text-center">Messages</h4>
             <i class="fas fa-envelope ms-auto text-primary"></i>
@@ -70,10 +107,11 @@
               type="text"
               class="form-control mb-3"
               placeholder="Find people and groups"
+              id="search-input"
             />
             <div id="search-results"></div>
 
-            <ul class="list-group list-group-flush" id="chat-list" hx-get="/api/messages/chat-partners" hx-trigger="every 0.1s" >
+            <ul class="list-group list-group-flush" id="convo-list">
            
             </ul>
             
@@ -83,18 +121,32 @@
         <!-- Chat Panel -->
         <div class="col-md-8 chat-container d-flex flex-column">
           <div class="d-flex align-items-center p-3 border-bottom bg-white">
-            <div class="flex-grow-1">
+            <div class="flex-grow-1 d-flex">
+              {%if name%}
+              <img src="https://api.dicebear.com/7.x/initials/svg?seed={{name[0]}}" height="50" class="rounded-circle me-3" alt="Avatar">
+             <div class="">
               <h5 class="mb-0" id="render-name">{{name}}</h5>
               <small class="text-body-tertiary" id="render-email"
                 >{{email}}</small
               >
+             </div>
+             {%endif%}
+            
             </div>
-            <i class="fas fa-info-circle text-primary fs-4"></i>
+            <div class="dropdown ms-2">
+              <button class="btn btn-link p-0 border-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-info-circle text-primary fs-4"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item text-danger" href="#" id="delete-convo">Delete Conversation</a></li>
+                <li><a class="dropdown-item" href="/{{user_type}}/{{user_id}}" id="view-profile">View Profile</a></li>
+              </ul>
+            </div>
           </div>
 
           <!-- Messages -->
-        
-           <div class="chat-body p-3" id="render-conversation" hx-get="/messages/conversation/{{coversation_id}}" hx-trigger="every 0.1s">
+      
+           <div class="chat-body p-3" id="render-conversation">
            </div>
          
           <!-- <div class="chat-body p-3"  hx-get="/messages/conversation/{{coversation_id}}" hx-trigger="every 0.1s"> -->
@@ -143,39 +195,22 @@
     <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="/assets/js/animation.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
     <script>
       var user_to_recieve = document.getElementById("user_id").value;
-    
+    convo_list = document.getElementById("convo-list");
+    render_conversation = document.getElementById("render-conversation");
       AOS.init({
         duration: 1000, // Animation duration (1000ms = 1s)
         once: true, // Run animation only once when scrolling
       });
-      function renderConversation() {
-        // alert("render");
-        conversation_id = document.getElementById("conversation_id").value;
-       
-        const chatBody = document.getElementById("render-conversation");
-        
-        fetch(`/messages/conversation/${conversation_id}`)
-          .then(response => response.text())
-          .then(html => {
-            console.log(html);
-            chatBody.innerHTML = html;
-          })
-          .catch(error => {
-            console.error('Error fetching conversation:', error);
-          });
 
-    //  renderConversation(conversation);
-          
-
-
-      }
       document
-        .querySelector('input[placeholder="Find people and groups"]')
-        .addEventListener("keyup", function (e) {
+        .getElementById("search-input")
+        .addEventListener("input", function (e) {
           const query = e.target.value.trim();
-          const chatList = document.getElementById("chat-list");
+          const chatList = document.getElementById("convo-list");
           const searchResults = document.getElementById("search-results");
           if (query.length > 0) {
             chatList.style.display = "none";
@@ -203,51 +238,44 @@
           }
         });
 
-      document.getElementById('send-message-btn').addEventListener('click', function() {
+      
+      const socket = io();
+
+    socket.on("connect", (data) => {
+    console.log(data);
+    });
+  
+    socket.on('refresh_conversation',function(data){
+    render_conversation.innerHTML = data.data;
+    })
+
+    socket.on('receive_message',function(data){
+      // alert("new message");
+      socket.emit("get_conversation_list");
+      socket.emit('get_conversation',document.getElementById("conversation_id").value)
+    socket.emit('get_conversations',data);
+    })
+
+    socket.on('refresh_convo_list',function(data){
+    
+        convo_list.innerHTML = data.data;
+    })
+    
+    socket.emit("get_conversation_list");
+    socket.emit('get_conversation',document.getElementById("conversation_id").value)
+    
+    document.getElementById('send-message-btn').addEventListener('click', function() {
         const messageInput = document.querySelector('input[name="message"]');
         const message = messageInput.value.trim();
         
         if (message && user_to_recieve) {
-          fetch('/messages', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              receiver_id: user_to_recieve,
-              message: message,
-              conversation_id: document.getElementById("conversation_id").value,
-            })
-          })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            // Add the sent message to the chat
-            const chatBody = document.querySelector('.chat-body');
-            const messageElement = document.createElement('div');
-            messageElement.className = 'message sent mb-3 text-end';
-            messageElement.innerHTML = `
-              <div class="bubble d-inline-block p-3 rounded-4 bg-primary text-white">
-                ${message}
-                <div class="small text-white-50 mt-1">Just now</div>
-              </div>
-            `;
-            chatBody.appendChild(messageElement);
-            
-            // Clear the input
+          
+            socket.emit('send_message',message,user_to_recieve,document.getElementById("conversation_id").value);
+          
+            socket.emit('get_conversation',document.getElementById("conversation_id").value)
             messageInput.value = '';
-            
-            // Scroll to bottom
-            chatBody.scrollTop = chatBody.scrollHeight;
-          })
-          .catch(error => {
-            console.error('Error sending message:', error);
-          });
         }
+            
       });
       document.querySelector('input[name="message"]').addEventListener('keydown', function(e) {
         if (e.key === "Enter") {

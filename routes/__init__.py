@@ -19,7 +19,7 @@ from routes.jobseeker import jobseeker_bp
 from routes.employer import employer_bp
 from routes.admin import admin_bp
 from routes.messages import messages_bp
-
+from routes.messages import *
 
 routes_bp = Blueprint('routes', __name__)
 

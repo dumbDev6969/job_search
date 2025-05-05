@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JXT</title>
+    <link rel="stylesheet" href5="/assets/fonts.css">
+    <link rel="stylesheet" href="/assets/scheme.css">
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="/aos-master/dist/aos.css">
+
+        <link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+
+
+      <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/assets/general.css">
+
+</head>
+
+<body>
+
+
+<nav aria-label="breadcrumb" class="mt-2 ms-2 sticky-top">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Candidates</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{seeker.first_name}} {{seeker.last_name}}</li>
+    </ol>
+</nav>
+
+<div class="container mt-5">
+    <div  class="row">
+        <!-- Left Column: Profile Details -->
+        <div data-aos="fade-down" class="col-md-4">
+            <div class="card text-center p-4">
+                <!-- Profile Image -->
+                                 <img class="me-3" alt="Avatar" src="https://api.dicebear.com/7.x/initials/svg?seed={{seeker.first_name[0]}}{{seeker.last_name[0]}}" height="150">
+
+                <!-- Name and Title -->
+                <h3>{{seeker.first_name}} {{seeker.last_name}}</h3>
+                <p class="text-muted">{{seeker.degree|upper}}</p>
+                <!-- Contact Button -->
+                <button class=" btn-primary w-100 mb-3">Contact Me</button>
+                <!-- Contact Info -->
+                <div class="mb-3">
+                    <p><i class="fas fa-envelope"></i> {{seeker.email}}</p>
+                    <p><i class="fas fa-phone"></i> {{seeker.phone}}</p>
+                </div>
+                <!-- Social Links -->
+                <div class="d-flex justify-content-center gap-3 mb-4">
+                    {% if seeker.portfolio_url %}
+                    <a href="{{seeker.portfolio_url}}" class="text-dark"><i class="fas fa-globe fa-2x"></i></a>
+                    {% endif %}
+                    <a href="#" class="text-dark"><i class="fab fa-linkedin fa-2x"></i></a>
+                    <a href="#" class="text-dark"><i class="fab fa-github fa-2x"></i></a>
+                </div>
+                <!-- Skills Section -->
+                <h5>Skills</h5>
+                <div class="d-flex flex-wrap justify-content-center gap-1">
+                    {% for skill in seeker.job_interest.split(',') %}
+                    <span class="badge seeker-skill">{{skill.strip()}}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Job Preferences and Experience -->
+        <div class="col-md-8">
+            <!-- About Me Section -->
+            <div data-aos="fade-left"data-aos-delay="100" class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">About Me</h4>
+                    <p class="card-text">
+                        {{seeker.degree|upper}} graduate from {{seeker.school_graduated|upper}} with specialized training in {{seeker.specialized_training}}.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Experience Section -->
+            <div data-aos="fade-left"data-aos-delay="200" class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Certifications & Training</h4>
+                    <div class="mb-3">
+                        <p>{{seeker.certifications if seeker.certifications else 'No certifications listed'}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Job Preferences Section -->
+            <div data-aos="fade-left"data-aos-delay="300" class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Job Preferences</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Job Type:</strong> {{seeker.job_type}}</p>
+                            <p><strong>Salary Range:</strong> {{seeker.expected_salary_range}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Location:</strong> {{seeker.preferred_location}}</p>
+                            <p><strong>Province:</strong> {{seeker.province}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- AOS JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="/assets/js/animation.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000, // Animation duration (1000ms = 1s)
+            once: true, // Run animation only once when scrolling
+        });
+    </script>
+</body>
+
+</html>

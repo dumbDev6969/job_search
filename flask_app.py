@@ -6,7 +6,7 @@ from flask_limiter.util import get_remote_address
 
 app = Flask(__name__)
 from routes import *
-
+socketio = init_socketio(app)
 # Configure session
 app.secret_key = os.environ.get('secret')
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -25,5 +25,8 @@ app.register_blueprint(routes_bp)
 # limiter.limit("5/minute")(login)
 # limiter.limit("3/minute")(otp)
 # limiter.limit("5/minute")(signup)
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    # app.run(debug=True)
+    socketio.run(app, debug=True)

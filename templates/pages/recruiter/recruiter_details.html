@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JXT</title>
+    <link rel="stylesheet" href="/assets/fonts.css">
+    <link rel="stylesheet" href="/assets/scheme.css">
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="/aos-master/dist/aos.css">
+    <link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/assets/general.css">
+</head>
+<body>
+    <nav aria-label="breadcrumb" class="mt-2 ms-2 sticky-top">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Companies</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{employer.company_name}}</li>
+        </ol>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Left Column: Company Details -->
+            <div data-aos="fade-down" class="col-md-4">
+                <div class="card text-center p-4">
+                    <!-- Company Logo -->
+                   
+                         <img class="me-3" alt="Avatar" src="https://api.dicebear.com/7.x/initials/svg?seed={{employer.company_name}}" height="150">
+
+                    
+                    <!-- Company Name -->
+                    <h3>{{employer.company_name}}</h3>
+                    <p class="text-muted">{{employer.industry}}</p>
+                    
+                    <!-- Contact Button -->
+                    <button class="btn-primary w-100 mb-3">Contact</button>
+                    
+                    <!-- Contact Info -->
+                    <div class="mb-3">
+                        <p><i class="fas fa-envelope"></i> {{employer.email}}</p>
+                        {% if employer.website %}
+                        <p><i class="fas fa-globe"></i> <a href="{{employer.website}}" target="_blank">{{employer.website}}</a></p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Company Stats -->
+                    <div class="text-center mt-3">
+                        <p class="text-muted">Jobs posted</p>
+                        <p>{{employer.jobs_posted}}</p>
+                    </div>
+                    
+                    <!-- Industry Tags -->
+                    <h5>Industry</h5>
+                    <div class="d-flex flex-wrap justify-content-center gap-1">
+                        <span class="badge seeker-skill">{{employer.industry}}</span>
+                        <span class="badge seeker-skill">{{employer.company_size}} employees</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Job Listings -->
+            <div class="col-md-8">
+                <!-- About Company Section -->
+                <div data-aos="fade-left" data-aos-delay="100" class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title">About {{employer.company_name}}</h4>
+                        <p class="card-text">
+                            {{employer.company_name}} is a {{employer.industry}} company with {{employer.company_size}} employees.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Job Listings Section -->
+                <div data-aos="fade-left" data-aos-delay="200" class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title">Current Job Openings</h4>
+                        <div class="row job-cards" id="job-cards">
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AOS JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="/assets/js/animation.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+        });
+        function fetchJobs() {
+          
+            fetch(`/api/employer/get-job-cards-v1?employer_id={{employer.employer_id}}`)
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    if (data.trim() === '') {
+                        document.getElementById('job-cards').innerHTML = `<div class="col-12 text-center py-5">
+                    <div class="no-data-found">
+                        <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No Jobs Found</h5>
+                        <p class="text-muted">You haven't posted any jobs yet.</p>
+                        <a href="/employer/post-job" class="btn btn-primary mt-2">
+                            <i class="fas fa-plus me-2"></i>Post a New Job
+                        </a>
+                    </div>
+                </div>`;
+                        return;
+                    }
+                    document.getElementById('job-cards').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error fetching jobs:', error);
+                });
+        }
+        fetchJobs();
+    </script>
+</body>
+</html>

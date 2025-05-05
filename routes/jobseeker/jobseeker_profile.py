@@ -4,7 +4,7 @@ from middlewares.is_email_verified import is_email_verified
 from middlewares.user_access import jobseeker as jobseeker,admin,emplyer
 from middlewares.is_setup_done import is_interests_done,is_qualification_done
 from sqlalchemy import text
-
+from utils.check_if_exists import check_column_exists
 
 # Create a Blueprint
 jobseeker_profile= Blueprint('jobseeker_profile', __name__)
@@ -63,6 +63,7 @@ def jobseeker_profile_data():
     """
     API endpoint to fetch job seeker profile data.
     """
+  
    
     try:
         db = get_db()
@@ -104,3 +105,45 @@ def jobseeker_profile_data():
         print(f"Error fetching profile data: {e}")
         return json.dumps({'message': 'Error fetching profile data'}), 500
    
+
+@jobseeker_profile.route('/jobseeker/<int:seeker_id>')
+@verify_user
+@is_email_verified
+def jobseeker_details(seeker_id):
+    """
+    Render the job seeker's details page with dynamic data.
+    """
+    if not check_column_exists('job_seekers', 'seeker_id ',seeker_id):
+        return render_template('/pages/user_not_found.html')
+    db = get_db()
+   
+    sql = text("""
+        SELECT
+            js.seeker_id,
+            js.first_name,
+            js.last_name,
+            js.email,
+            js.phone,
+            js.province,
+            js.municipality,
+            js.degree,
+            js.portfolio_url,
+            q.school_graduated,
+            q.certifications,
+            q.specialized_training,
+            ji.job_interest,
+            ji.job_type,
+            ji.preferred_location,
+            ji.expected_salary_range
+        FROM job_seekers js
+        LEFT JOIN qualifications q ON js.seeker_id = q.seeker_id
+        LEFT JOIN job_interest ji ON js.seeker_id = ji.user_id
+        WHERE js.seeker_id = :seeker_id
+    """)
+    result = db.execute_query(sql, {"seeker_id": seeker_id})
+    if not result["success"] or not result["output"]:
+        print("Error fetching job seeker details:", result)
+        return render_template('/pages/job_seeker/seeker_detals.html', error="Job seeker not found.")
+    seeker = result["output"][0]
+    print(seeker)
+    return render_template('/pages/job_seeker/seeker_detals.html', seeker=result["output"][0])
