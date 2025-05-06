@@ -44,6 +44,7 @@
         <div class="row d-flex  justify-content-center w-100">
             <div data-aos="fade-right" class="col-md-6 ">
                 <form  id="loginForm" onsubmit="handleLogin(event)">
+                    <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
                     <div class="mb-3">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="Email" />

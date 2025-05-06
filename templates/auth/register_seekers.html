@@ -89,6 +89,9 @@
             <div data-aos="fade-right" class="col-md-6 ">
                 <form id="signup-form" action="/signup/jobseeker" method="post" enctype="multipart/form-data">
                     <div class="row">
+                        <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <div class="col-md-6 mb-3">
                             <label for="first_name">Name</label>
                             <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Name" required>

@@ -40,6 +40,8 @@
         </div>
         
         <form id="editJobForm" class="job-form-card">
+            <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
+
             <!-- Basic Information Section -->
             <div class="form-section">
                 <h4 class="section-title"><i class="fas fa-info-circle"></i>Basic Information</h4>

@@ -257,3 +257,22 @@ def get_chat_partners():
 
 
 
+@messages.route('/convo', methods=['GET'])
+def get_online_users():
+    db = get_db()
+    user_id = session.get('user_id')
+    query = text("""
+        SELECT sender_id, receiver_id from messages
+        WHERE sender_id  = :user_id or receiver_id = :user_id
+    """)
+    result = db.execute_query(query, {'user_id': user_id})
+    output = result['output']
+    collected_ids = []
+    for id in output:
+        if not id['sender_id'] == user_id:
+           collected_ids.append(id['sender_id'])
+    return collected_ids
+    #    return a list od id 
+    #    [
+    #   3
+    # ]

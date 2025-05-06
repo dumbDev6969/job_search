@@ -105,6 +105,7 @@
             <div data-aos="fade-down" class="col-md-9 ">
                 <h4 class="text-secondary">Saved jobs</h4>
                 <form action="#" class="d-flex gap-2 mb-3">
+                    <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
                     <input type="search" name="job-search" id="job-search" class="form-control" placeholder="Search for jobs" aria-label="Search for jobs">
                     <button type="submit" class=" btn-primary">Search</button>
                 </form>

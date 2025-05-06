@@ -4,6 +4,7 @@ async function handleLogin(event) {
     const form = document.getElementById('loginForm');
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+    csrf_token = document.getElementById('csrf_token').value;
     
     try {
         const response = await fetch('/login', {
@@ -13,7 +14,8 @@ async function handleLogin(event) {
             },
             body: new URLSearchParams({
                 email: email,
-                password: password
+                password: password,
+                csrf_token: csrf_token
             })
         });
 

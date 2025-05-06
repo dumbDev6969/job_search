@@ -3,10 +3,12 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 04, 2025 at 08:31 AM
+-- Generation Time: May 05, 2025 at 12:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
-
+DELETE DATABASE IF EXISTS `job_portal_db`;
+CREATE DATABASE IF NOT EXISTS `job_portal_db;
+USE `job_portal_db`;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -103,7 +105,7 @@ CREATE TABLE `employers` (
 
 INSERT INTO `employers` (`employer_id`, `email`, `password_hash`, `created_at`, `last_login`, `company_name`, `industry`, `company_size`, `website`, `logo_url`) VALUES
 (2, 'kamjijajajo@gmail.com', '$2b$12$EmVDH7PYPLQSpKkBqN4Mterb9N5buSsJN9WvGOAWjFkscfIsryAA.', '2025-03-21 09:01:05', NULL, 'Innovatech', 'Programming', 1, '', ''),
-(3, 'kanjijajajo@gmail.com', '$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm', '2025-03-21 09:03:05', '2025-05-04 04:28:36', 'company001', 'Programming', 1, '', '');
+(3, 'kanjijajajo@gmail.com', '$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm', '2025-03-21 09:03:05', '2025-05-05 07:54:19', 'company001', 'Programming', 1, '', '');
 
 -- --------------------------------------------------------
 
@@ -242,6 +244,14 @@ CREATE TABLE `messages` (
   `is_conversation_deleted_by_sender` enum('false','true') NOT NULL,
   `is_conversation_deleted_by_receiver` enum('false','true') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`message_id`, `sender_id`, `conversation_id`, `sender_type`, `receiver_id`, `receiver_type`, `content`, `sent_at`, `is_read`, `is_message_deleted`, `is_conversation_deleted_by_sender`, `is_conversation_deleted_by_receiver`) VALUES
+(3, 139, '575067013220190', 'job_seeker', 3, 'employer', 'hello', '2025-05-05 02:06:30', 0, 'false', 'false', 'false'),
+(4, 3, '575067013220190', 'employer', 139, 'employer', 'hey?', '2025-05-05 02:06:41', 0, 'false', 'false', 'false');
 
 -- --------------------------------------------------------
 
@@ -613,7 +623,7 @@ ALTER TABLE `job_seekers`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `message_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `notifications`

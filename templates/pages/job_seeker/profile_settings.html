@@ -33,6 +33,8 @@
         <div class="card p-4 shadow">
             <h3 class="mb-4">Edit Profile</h3>
             <form action="#">
+                <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
+
                 <!-- Profile Photo Upload -->
                 <div data-aos="fade-down" class="row align-items-center mb-4">
                     <div class="col-md-3 text-center">

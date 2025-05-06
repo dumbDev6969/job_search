@@ -1,5 +1,4 @@
 from asyncio import BrokenBarrierError
-from flask_socketio import SocketIO,emit
 from datetime import datetime
 
 from flask import (
@@ -10,15 +9,17 @@ from flask import (
     request,
     session,
 )
+from flask_socketio import SocketIO, emit
 from sqlalchemy import text
 
 from middlewares.is_email_verified import is_email_verified
 from middlewares.verify_user import verify_user
-from utils.database import get_db
 from utils.check_if_exists import check_column_exists
+from utils.database import get_db
 
 socketio = SocketIO()
 
+clients = {}
 
 
 def get_conversation_by_receiver(user1_id, user2_id):
@@ -115,14 +116,15 @@ def handle_send_message(message_content, receiver_id, conversation_id):
 @socketio.on('get_conversations')
 def handle_get_conversations(data):
     user_id = session.get('user_id')
-    if user_id == data['receiver_id']:
-        print('event triggered')
+    receiver_id = data['receiver_id']
+    if user_id == receiver_id:
+        print(f'event triggered ===getting conversations=== user_id: {user_id} receiver_id: {receiver_id}')
         print(f"getting the latest conversation of {data['sender_id']}")
 
 @socketio.on('receive_message')
 def handle_receive_message(data):
     user_id = session.get('user_id')
-    print("event triggered")
+    print(f"event triggered ===received message=== user_id: {user_id} receiver_id: {data['receiver_id']}")
     print(data)
     if user_id == data['receiver_id']:
         print('hey fucker you have a new message!!')
@@ -131,18 +133,28 @@ def handle_receive_message(data):
 
 @socketio.on('disconnect')
 def handle_disconnect():
-    # Handle user disconnection
-    pass
+    client_id = request.sid
+    print(f'Client disconnected: {client_id}')
+    if client_id in clients:
+        del clients[client_id]
+    print(f'Client disconnected: {client_id}')
+
+
 @socketio.on('connect')
 def handle_connect():
-   email = session.get('email')
-   print(email)
-   print('connected')
-   socketio.emit('user_connected', {'email': email})
+    client_id = request.sid
+    user_id = session.get('user_id')
+    clients[user_id] = {'id': client_id}
+    print(f'Client connected: {client_id}')
+    print("connected clients: ", clients)
+    # email = session.get('email')
+    # print(email)
+    # print('connected')
+    # socketio.emit('user_connected', {'email': email})
 
 @socketio.on('get_conversation_list')
 def handle_get_conversation_list():
-    print('event triggered:gettign conversations')
+    print('event triggered === gettign conversations === user_id: {session.get("user_id")}')
     user_id = session.get('user_id')
     db = get_db()
     query = text("""
@@ -183,7 +195,7 @@ def handle_get_conversation_list():
 @socketio.on('get_conversation')
 def get_conversation(conversation_id):
     user_id = session.get('user_id')
-    print('event triggered:getting conversation:',conversation_id)
+    print('event triggered === getting conversation === conversation id:',conversation_id)
     if not conversation_id:
         return emit('refresh_conversation', {'data' : """
             <div class=\"alert alert-warning text-center\">
@@ -204,6 +216,11 @@ def get_conversation(conversation_id):
     if result['output']:
         html_messages = []
         for message in result['output']:
+            message['content'] = message['content'].replace('&', '&amp;')\
+                .replace('<', '&lt;')\
+                .replace('>', '&gt;')\
+                .replace('"', '&quot;')\
+                .replace("'", '&#039;')
             message_class = 'message sent mb-3 text-end' if message['message_type'] == 'sent' else 'message received mb-3'
             bubble_class = 'bubble d-inline-block p-3 rounded-4 bg-primary text-white' if message['message_type'] == 'sent' else 'bubble d-inline-block p-3 rounded-4 bg-light'
             time_class = 'small text-white-50 mt-1' if message['message_type'] == 'sent' else 'small text-muted mt-1'
@@ -219,3 +236,20 @@ def get_conversation(conversation_id):
         return emit('refresh_conversation', {'data': ''.join(html_messages)})
     return emit('refresh_conversation', {'data': "<div class='alert alert-info'>No messages found</div>"})
     
+@socketio.on('get_online_users')
+def get_online_users():
+    db = get_db()
+    user_id = session.get('user_id')
+    query = text("""
+        SELECT sender_id, receiver_id from messages
+        WHERE sender_id  = :user_id or receiver_id = :user_id
+    """)
+    result = db.execute_query(query, {'user_id': user_id})
+    output = result['output']
+    collected_ids = []
+    for id in output:
+        if not id['sender_id'] == user_id:
+           collected_ids.append(id['sender_id'])
+    online = [users for users in clients if users in collected_ids]
+    print('online users: ', online)
+    return emit('refresh_online_users', {'data': online})

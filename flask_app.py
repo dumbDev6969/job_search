@@ -3,8 +3,11 @@ from datetime import datetime,timedelta
 import os
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
+csrf = CSRFProtect(app)
+
 from routes import *
 socketio = init_socketio(app)
 # Configure session

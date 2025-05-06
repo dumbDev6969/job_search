@@ -43,6 +43,7 @@
        <div class="col-md-6">
         <form action="/api/jobseeker/job-interest" method="POST" class="p-4" id="interestForm">
             <div class="mb-3">
+                <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
                 <label for="job_interest" class="form-label">Job Interest</label>
                 <input type="text" id="job_interest" name="job_interest" 
                     placeholder="Eg. Frontend Developer, Data Scientist, etc." 

@@ -36,6 +36,8 @@
         <div class="row d-flex align-items-center">
             <div data-aos="fade-right" class="col-md-6">
                 <form action="/api/post-job" method="POST">
+                    <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
+
                     <div class="mb-3">
                         <label for="title" class="form-label text-muted fw-bold">Job Title</label>
                         <input type="text" " id="title" name="title" placeholder="Enter job title" required>

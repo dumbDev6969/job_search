@@ -51,6 +51,8 @@
 
             <div class="card-body p-4">
               <form>
+                <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
+
                 <!-- Enhanced Form Groups -->
                 <div class="mb-4">
                   <label for="interviewDate" class="form-label text-muted fw-bold">

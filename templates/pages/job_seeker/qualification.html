@@ -42,6 +42,8 @@
     <div class="row d-flex align-items-center justify-content-center mt-5 p-5 ">
       <div class="col-md-6">
         <form id="qualificationForm" class="p-4">
+            <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
+
             <div class="mb-3">
                 <!-- Input Field -->
                 <input type="text" id="degreeInput" name="degreeInput"  placeholder="Enter IT degree (e.g., Bachelor of Science...)" list="degreeSuggestions"

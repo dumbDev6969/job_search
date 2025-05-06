@@ -31,6 +31,8 @@
     <div style="min-width: 350px;" class="container w-50 mt-5 p-4">
     <h2>Create your profile</h2>
     <form style="min-width: 350px;">
+        <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
+
         <!-- About Section -->
         <div data-aos="fade-left" data-aos-delay="100" class="mb-2">
             <label for="about" class="form-label">About You</label>

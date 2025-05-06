@@ -76,6 +76,7 @@
         <div class="row d-flex align-items-center">
             <div data-aos="fade-right" class="col-md-6">
                 <form action="/signup/employer" method="POST">
+                    <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
 
 
                     <div class=" mb-3">
