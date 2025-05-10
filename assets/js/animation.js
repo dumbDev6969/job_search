@@ -1,4 +1,7 @@
-
+AOS.init({
+            duration: 1000, // Animation duration (1000ms = 1s)
+            once: true, // Run animation only once when scrolling
+        });
     document.addEventListener("DOMContentLoaded", function () {
         const elements = document.querySelectorAll(".fade-in");
 
