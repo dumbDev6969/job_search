@@ -25,22 +25,28 @@
     
     <div class="d-flex">
         <!-- Side Navigation -->
-        <nav data-aos="fade-up" id="sidebarMenu" class="d-md-block sidebar collapse border-end" style="min-width: 250px; height: 100vh; position: sticky; top: 0;">
-            <div class="position-sticky pt-3 px-3">
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2">
-                        <a class="nav-link d-flex align-items-center text-dark" href="/admin/dashboard.html">
-                            <i class="fas fa-home me-2"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a class="nav-link active d-flex align-items-center text-dark" href="/admin/job-approvals.html">
-                            <i class="fas fa-clipboard-check me-2"></i> Job Approvals
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <nav data-aos="fade-right" id="sidebarMenu" class="d-md-block sidebar collapse border-end" style="min-width: 250px; height: 100vh; position: sticky; top: 0;">
+        
+        <div class="position-sticky pt-3 px-3">
+            <ul class="nav flex-column">
+            <li class="nav-item mb-2">
+                <a class="nav-link active d-flex align-items-center text-dark" href="/admin/dashboard.html">
+                <i class="fas fa-home me-2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center text-dark" href="job_approval.html">
+                <i class="fas fa-clipboard-check me-2"></i> Job Approval
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center text-dark" href="recruiter_approval.html">
+                <i class="fas fa-clipboard-check me-2"></i> Recruiter Approval
+                </a>
+            </li>
+            </ul>
+        </div>
+    </nav>
 
         <!-- Main Content -->
         <div data-aos="fade-left" class="container-fluid py-5" style="flex: 1;">
@@ -245,113 +251,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="/assets/js/animation.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
-    <script>
-        // Job Approval Functions
-        function approveJob(button) {
-            const card = button.closest('.card');
-            const parentDiv = card.closest('.job-item');
-            const badge = card.querySelector('.status-badge');
-            
-            // Update status in data attribute
-            parentDiv.setAttribute('data-status', 'approved');
-            
-            // Update badge
-            badge.className = 'badge bg-success bg-opacity-10 text-success status-badge';
-            badge.innerHTML = '<i class="fas fa-check-circle me-1"></i> Approved';
-            
-            // Update buttons
-            button.className = 'btn btn-success btn-sm action-btn disabled';
-            button.innerHTML = '<i class="fas fa-check me-1"></i> Approved';
-            if (button.nextElementSibling) {
-                button.nextElementSibling.remove();
-            }
-            
-            // Update card border
-            card.classList.remove('pending', 'new');
-            card.classList.add('approved');
-        }
-
-        function rejectJob(button) {
-            const card = button.closest('.card');
-            const parentDiv = card.closest('.job-item');
-            const badge = card.querySelector('.status-badge');
-            
-            // Update status in data attribute
-            parentDiv.setAttribute('data-status', 'rejected');
-            
-            // Update badge
-            badge.className = 'badge bg-danger bg-opacity-10 text-danger status-badge';
-            badge.innerHTML = '<i class="fas fa-times-circle me-1"></i> Rejected';
-            
-            // Update buttons
-            button.className = 'btn btn-danger btn-sm action-btn disabled';
-            button.innerHTML = '<i class="fas fa-times me-1"></i> Rejected';
-            if (button.previousElementSibling) {
-                button.previousElementSibling.remove();
-            }
-            
-            // Update card border
-            card.classList.remove('pending', 'new');
-            card.classList.add('rejected');
-        }
-
-        // Filter and Search Functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('searchInput');
-            const statusFilter = document.getElementById('statusFilter');
-            const typeFilter = document.getElementById('typeFilter');
-            const filterBtn = document.getElementById('filterBtn');
-            const resetBtn = document.getElementById('resetBtn');
-            const jobsContainer = document.getElementById('jobsContainer');
-            const jobItems = document.querySelectorAll('.job-item');
-            const noResults = document.getElementById('noResults');
-
-            function filterJobs() {
-                const searchTerm = searchInput.value.toLowerCase();
-                const statusValue = statusFilter.value;
-                const typeValue = typeFilter.value;
-                
-                let visibleCount = 0;
-                
-                jobItems.forEach(item => {
-                    const title = item.getAttribute('data-title').toLowerCase();
-                    const status = item.getAttribute('data-status');
-                    const type = item.getAttribute('data-type');
-                    
-                    const matchesSearch = title.includes(searchTerm);
-                    const matchesStatus = statusValue === 'all' || status === statusValue;
-                    const matchesType = typeValue === 'all' || type === typeValue;
-                    
-                    if (matchesSearch && matchesStatus && matchesType) {
-                        item.style.display = 'block';
-                        visibleCount++;
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-                
-                // Show/hide no results message
-                if (visibleCount === 0) {
-                    noResults.style.display = 'block';
-                } else {
-                    noResults.style.display = 'none';
-                }
-            }
-            
-            // Event listeners
-            filterBtn.addEventListener('click', filterJobs);
-            resetBtn.addEventListener('click', function() {
-                searchInput.value = '';
-                statusFilter.value = 'all';
-                typeFilter.value = 'all';
-                filterJobs();
-            });
-            
-            searchInput.addEventListener('keyup', filterJobs);
-            
-            // Initial filter
-            filterJobs();
-        });
+    <script src="/assets/js/job_approval.js">
+       
     </script>
 </body>
 </html>
