@@ -15,11 +15,27 @@
 </head>
 
 <body>
-    <nav class="navbar d-flex justify-content-between flex-wrap p-3">
-        <h3>Admin dashboard</h3>
-        <a href="#" class="btn-primary">
-            Browse users
-        </a>
+    <nav data-aos="fade-right" id="sidebarMenu" class="d-md-block sidebar collapse border-end" style="min-width: 250px; height: 100vh; position: sticky; top: 0;">
+        
+        <div class="position-sticky pt-3 px-3">
+            <ul class="nav flex-column">
+            <li class="nav-item mb-2">
+                <a class="nav-link active d-flex align-items-center text-dark" href="/admin/dashboard.html">
+                <i class="fas fa-home me-2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center text-dark" href="job_approval.html">
+                <i class="fas fa-clipboard-check me-2"></i> Job Approval
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center text-dark" href="recruiter_approval.html">
+                <i class="fas fa-clipboard-check me-2"></i> Recruiter Approval
+                </a>
+            </li>
+            </ul>
+        </div>
     </nav>
 </body>
 </html>
