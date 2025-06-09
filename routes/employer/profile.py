@@ -5,6 +5,8 @@ from flask import request, jsonify
 from utils.database import get_db
 from sqlalchemy import text
 from flask import session
+from middlewares.is_requirements_done import is_requirements_done
+
 
 # Create a Blueprint
 profile = Blueprint('profile', __name__)
@@ -13,6 +15,7 @@ profile = Blueprint('profile', __name__)
 @profile.route('/employer/profile')
 @verify_user
 @is_email_verified
+@is_requirements_done
 def profile_():
     return render_template('/pages/recruiter/profile.html')
 
@@ -21,6 +24,7 @@ from flask import g
 @profile.route('/jobseeker/profile-update', methods=['POST'])
 @verify_user
 @is_email_verified
+@is_requirements_done
 def update_jobseeker_profile():
     data = request.get_json()
     db = get_db()
@@ -73,6 +77,7 @@ def update_jobseeker_profile():
 @profile.route('/api/employer/data', methods=['GET'])
 @verify_user
 @is_email_verified
+@is_requirements_done
 def get_active_job_postings():
     db = get_db()
     employer_id = 3  # Using static user ID as requested

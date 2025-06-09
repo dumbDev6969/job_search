@@ -2,6 +2,8 @@
 from flask import Blueprint,render_template
 from middlewares.verify_user import verify_user
 from middlewares.is_email_verified import is_email_verified
+from middlewares.is_requirements_done import is_requirements_done
+
 # Create a Blueprint
 dashboard = Blueprint('dashboard', __name__)
 
@@ -9,5 +11,6 @@ dashboard = Blueprint('dashboard', __name__)
 @dashboard.route('/employer/dashboard')
 @verify_user
 @is_email_verified
+@is_requirements_done
 def dashboard_():
     return render_template('/pages/recruiter/dashboard.html')

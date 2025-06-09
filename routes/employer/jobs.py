@@ -6,6 +6,8 @@ from middlewares.is_email_verified import is_email_verified
 from utils.database import get_db
 from sqlalchemy import text
 from datetime import datetime
+from middlewares.is_requirements_done import is_requirements_done
+
 # Create a Blueprint
 jobs = Blueprint('jobs', __name__)
 
@@ -13,6 +15,7 @@ jobs = Blueprint('jobs', __name__)
 @jobs.route('/employer/jobs')
 @verify_user
 @is_email_verified
+@is_requirements_done
 def jobs_():
     return render_template('/pages/recruiter/jobs.html')
 
@@ -64,12 +67,14 @@ def post_job_api():
 @jobs.route('/employer/post-job')
 @verify_user
 @is_email_verified
+@is_requirements_done
 def post_job_():
     return render_template('/pages/recruiter/post_job.html')
 
 @jobs.route('/api/employer/get-jobs')
 @verify_user
 @is_email_verified
+@is_requirements_done
 def get_jobs_api():
     try:
         db = get_db()
@@ -109,6 +114,7 @@ def get_jobs_api():
 @jobs.route('/api/employer/get-job-cards')
 @verify_user
 @is_email_verified
+@is_requirements_done
 def get_job_cards():
     try:
         db = get_db()

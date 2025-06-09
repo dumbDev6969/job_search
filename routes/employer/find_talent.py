@@ -1,6 +1,8 @@
 from flask import Blueprint,render_template,jsonify,request
 from middlewares.verify_user import verify_user
 from middlewares.is_email_verified import is_email_verified
+from middlewares.is_requirements_done import is_requirements_done
+
 from utils.database import get_db
 from sqlalchemy import text
 from datetime import datetime
@@ -11,12 +13,14 @@ find_talent = Blueprint('find_talent', __name__)
 @find_talent.route('/employer/find-talent')
 @verify_user
 @is_email_verified
+@is_requirements_done
 def find_talent_():
     return render_template('/pages/recruiter/find_talent.html')
    
 @find_talent.route('/api/employer/find-talent', methods=['GET', 'POST'])
 @verify_user
 @is_email_verified
+@is_requirements_done
 def find_talent_api():
     try:
         db = get_db()

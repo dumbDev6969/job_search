@@ -6,8 +6,8 @@
 -- Generation Time: May 05, 2025 at 12:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
-DELETE DATABASE IF EXISTS `job_portal_db`;
-CREATE DATABASE IF NOT EXISTS `job_portal_db;
+DROP DATABASE IF EXISTS `job_portal_db`;
+CREATE DATABASE IF NOT EXISTS `job_portal_db`;
 USE `job_portal_db`;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;

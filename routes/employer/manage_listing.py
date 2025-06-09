@@ -3,6 +3,8 @@ from middlewares.verify_user import verify_user
 from middlewares.is_email_verified import is_email_verified
 from utils.database import get_db
 from sqlalchemy import text
+from middlewares.is_requirements_done import is_requirements_done
+
 
 # Create a Blueprint
 manage_listing = Blueprint('manage_listing', __name__)
@@ -12,6 +14,7 @@ manage_listing = Blueprint('manage_listing', __name__)
 @manage_listing.route('/employer/manage_listing')
 @verify_user
 @is_email_verified
+@is_requirements_done
 def manage_listing_():
     return render_template('/pages/recruiter/manage_listing.html')
 
@@ -19,6 +22,7 @@ def manage_listing_():
 @manage_listing.route('/employer/api/get_listing', methods=['GET', 'POST'])
 @verify_user
 @is_email_verified
+@is_requirements_done
 def get_listing_api():
     db = get_db()
     search = request.args.get('search', '')
@@ -130,6 +134,7 @@ def get_listing_api():
 @manage_listing.route('/employer/api/dashboard_data')
 @verify_user
 @is_email_verified
+@is_requirements_done
 def get_dashboard_data():
     db = get_db()
 

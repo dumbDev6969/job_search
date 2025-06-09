@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Job Approval</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/assets/general.css">
+    <link rel="stylesheet" href="/assets/scheme.css">
+    <link rel="stylesheet" href="/assets/animation.css">
+
+    <link rel="stylesheet" href="/assets/admin.css">
+</head>
+<body>
+    <header data-aos="fade-down" class="border-bottom p-2">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <h3>Admin dashboard</h3>
+            <button class="btn d-md-none m-3" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars fa-lg"></i>
+            </button>
+        </div>
+    </header>
+    
+    <div class="d-flex">
+        <!-- Side Navigation -->
+        <nav data-aos="fade-right" id="sidebarMenu" class="d-md-block sidebar collapse border-end" style="min-width: 250px; height: 100vh; position: sticky; top: 0;">
+        
+        <div class="position-sticky pt-3 px-3">
+            <ul class="nav flex-column">
+            <li class="nav-item mb-2">
+                <a class="nav-link active d-flex align-items-center text-dark" href="/admin/dashboard.html">
+                <i class="fas fa-home me-2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center text-dark" href="job_approval.html">
+                <i class="fas fa-clipboard-check me-2"></i> Job Approval
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center text-dark" href="recruiter_approval.html">
+                <i class="fas fa-clipboard-check me-2"></i> Recruiter Approval
+                </a>
+            </li>
+            </ul>
+        </div>
+    </nav>
+
+        <!-- Main Content -->
+        <div data-aos="fade-left" class="container-fluid py-5" style="flex: 1;">
+            
+                <!-- Filter Section -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="border-0">
+                            <div class="card-body">
+                                <div class="row g-3 align-items-end">
+                                    <!-- Search -->
+                                    <div class="col-md-4">
+                                        <label for="searchInput" class="form-label">Search Job Title</label>
+                                        <input type="text"  id="searchInput" placeholder="e.g. Frontend Developer">
+                                    </div>
+            
+                                    <!-- Status Filter -->
+                                    <div class="col-md-3">
+                                        <label for="statusFilter" class="form-label">Status</label>
+                                        <select  id="statusFilter">
+                                            <option value="all">All Statuses</option>
+                                            <option value="new">New</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="approved">Approved</option>
+                                            <option value="rejected">Rejected</option>
+                                        </select>
+                                    </div>
+            
+                                    <!-- Type Filter -->
+                                    <div class="col-md-3">
+                                        <label for="typeFilter" class="form-label">Type</label>
+                                        <select  id="typeFilter">
+                                            <option value="all">All Types</option>
+                                            <option value="full-time">Full-time</option>
+                                            <option value="contract">Contract</option>
+                                            <option value="part-time">Part-time</option>
+                                        </select>
+                                    </div>
+            
+                                    <!-- Action Buttons -->
+                                    <div class="col-md-2 d-grid gap-2">
+                                        <button id="filterBtn" class="btn btn-primary">
+                                            <i class="fas fa-filter me-1"></i> Filter
+                                        </button>
+                                        <button id="resetBtn" class="btn btn-secondary">
+                                            <i class="fas fa-sync-alt me-1"></i> Reset
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jobs Container -->
+                <div  class="row mt-4" id="jobsContainer">
+                    <!-- Job Card 1 - Pending -->
+                    <div class="col-12 col-md-6 col-lg-4 mb-4 job-item" data-status="pending" data-type="full-time" data-title="Senior Frontend Developer">
+                        <div class="card job-card pending h-100 shadow-sm">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <span class="badge bg-primary bg-opacity-10 text-primary status-badge">
+                                        <i class="fas fa-clock me-1"></i> Pending Review
+                                    </span>
+                                    <small class="text-muted">job id</small>
+                                </div>
+                                
+                                <h5 class="card-title mb-3">Senior Frontend Developer</h5>
+                                
+                                <div class="job-meta mb-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-briefcase me-2"></i>
+                                        <span>Full-time</span>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-map-marker-alt me-2"></i>
+                                        <span>Remote</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-clock me-2"></i>
+                                        <span>Submitted 1 day ago</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-auto d-flex justify-content-between align-items-center">
+                                    <span class="applicant-count">
+                                        <i class="fas fa-users me-1"></i> 0 applicants
+                                    </span>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-success btn-sm action-btn" onclick="approveJob(this)">
+                                            <i class="fas fa-check me-1"></i> Approve
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-sm action-btn" onclick="rejectJob(this)">
+                                            <i class="fas fa-times me-1"></i> Reject
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job Card 2 - New -->
+                    <div class="col-12 col-md-6 col-lg-4 mb-4 job-item" data-status="new" data-type="contract" data-title="UX/UI Designer">
+                        <div class="card job-card new h-100 shadow-sm">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary status-badge">
+                                        <i class="fas fa-star me-1"></i> New Submission
+                                    </span>
+                                    <small class="text-muted">job id</small>
+                                </div>
+                                
+                                <h5 class="card-title mb-3">UX/UI Designer</h5>
+                                
+                                <div class="job-meta mb-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-briefcase me-2"></i>
+                                        <span>Contract</span>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-map-marker-alt me-2"></i>
+                                        <span>New York, NY</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-clock me-2"></i>
+                                        <span>Submitted 2 days ago</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-auto d-flex justify-content-between align-items-center">
+                                    <span class="applicant-count">
+                                        <i class="fas fa-users me-1"></i> 0 applicants
+                                    </span>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-success btn-sm action-btn" onclick="approveJob(this)">
+                                            <i class="fas fa-check me-1"></i> Approve
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-sm action-btn" onclick="rejectJob(this)">
+                                            <i class="fas fa-times me-1"></i> Reject
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job Card 3 - Approved -->
+                    <div class="col-12 col-md-6 col-lg-4 mb-4 job-item" data-status="approved" data-type="full-time" data-title="Backend Developer">
+                        <div class="card job-card approved h-100 shadow-sm">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <span class="badge bg-success bg-opacity-10 text-success status-badge">
+                                        <i class="fas fa-check-circle me-1"></i> Approved
+                                    </span>
+                                    <small class="text-muted">Job id</small>
+                                </div>
+                                
+                                <h5 class="card-title mb-3">Backend Developer</h5>
+                                
+                                <div class="job-meta mb-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-briefcase me-2"></i>
+                                        <span>Full-time</span>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-map-marker-alt me-2"></i>
+                                        <span>San Francisco, CA</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-clock me-2"></i>
+                                        <span>Submitted 3 days ago</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-auto d-flex justify-content-between align-items-center">
+                                    <span class="applicant-count">
+                                        <i class="fas fa-users me-1"></i> 5 applicants
+                                    </span>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-success btn-sm action-btn disabled">
+                                            <i class="fas fa-check me-1"></i> Approved
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- No Results Message -->
+                <div class="row no-results text-center py-5" id="noResults" style="display: none;">
+                    <div class="col-12">
+                        <i class="fas fa-search fa-3x mb-3 text-muted"></i>
+                        <h4>No jobs found</h4>
+                        <p class="text-muted">Try adjusting your search or filter criteria</p>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+    <!-- AOS JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="/assets/js/animation.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+    <script src="/assets/js/job_approval.js">
+       
+    </script>
+</body>
+</html>

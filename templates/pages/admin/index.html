@@ -12,38 +12,73 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/general.css">
+
+    <link rel="stylesheet" href="/assets/admin.css">
 </head>
 
 <body>
-    {% include'/components/admin-nav.html'%}
-    <div class="container" style="margin-top: 100px;">
+    <header data-aos="fade-down" class="border-bottom p-2">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <h3>Admin dashboard</h3>
+            <button class="btn d-md-none m-3" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars fa-lg"></i>
+            </button>
+        </div>
+    </header>
+    
+    <div class="d-flex">
+        
+    <nav data-aos="fade-right" id="sidebarMenu" class="d-md-block sidebar collapse border-end" style="min-width: 250px; height: 100vh; position: sticky; top: 0;">
+        
+        <div class="position-sticky pt-3 px-3">
+            <ul class="nav flex-column">
+            <li class="nav-item mb-2">
+                <a class="nav-link active d-flex align-items-center text-dark" href="/admin/dashboard.html">
+                <i class="fas fa-home me-2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center text-dark" href="job_approval.html">
+                <i class="fas fa-clipboard-check me-2"></i> Job Approval
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link d-flex align-items-center text-dark" href="recruiter_approval.html">
+                <i class="fas fa-clipboard-check me-2"></i> Recruiter Approval
+                </a>
+            </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-2" >
         <div class="row text-center">
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="100">
                 <div class="p-3 bg-light rounded shadow-sm">
                     <i class="fas fa-user-tie fa-3x icon-blue mb-3"></i>
                     <h5>Total Employers</h5>
-                    <h3 id="employersCount">-</h3>
+                    <h3>45</h3>
                 </div>
             </div>
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="200">
                 <div class="p-3 bg-light rounded shadow-sm">
                     <i class="fas fa-user-graduate fa-3x icon-blue mb-3"></i>
                     <h5>Registered Job Seekers</h5>
-                    <h3 id="jobseekersCount">-</h3>
+                    <h3>150</h3>
                 </div>
             </div>
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="300">
                 <div class="p-3 bg-light rounded shadow-sm">
                     <i class="fas fa-briefcase fa-3x icon-blue mb-3"></i>
                     <h5>Open Job Listings</h5>
-                    <h3 id="jobsCount">-</h3>
+                    <h3>38</h3>
                 </div>
             </div>
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="400">
                 <div class="p-3 bg-light rounded shadow-sm">
                     <i class="fas fa-handshake fa-3x icon-blue mb-3"></i>
-                    <h5>Applications</h5>
-                    <h3 id="applicationsCount">-</h3>
+                    <h5>Hired Candidates</h5>
+                    <h3>90</h3>
                 </div>
             </div>
         </div>
@@ -79,7 +114,7 @@
                         <tbody>
                             <!-- Recruiter Row -->
                             <tr>
-                                <td>TechSprint</td>
+                                <td>JobxTech</td>
                                 <td>Recruiter</td>
                                 <td><span class="badge bg-primary">Active</span></td>
                             </tr>
@@ -114,26 +149,16 @@
             </div>
         </div>
     </div>
+</div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- AOS JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="/assets/js/animation.js"></script>
     <script>
-        // Fetch statistics from API
-        fetch('/api/stats')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('employersCount').textContent = data.employers;
-                document.getElementById('jobseekersCount').textContent = data.jobseekers;
-                document.getElementById('jobsCount').textContent = data.jobs;
-                document.getElementById('applicationsCount').textContent = data.applications;
-            })
-            .catch(error => console.error('Error fetching stats:', error));
-
         AOS.init({
-            duration: 1000,
-            once: true,
+            duration: 1000, // Animation duration (1000ms = 1s)
+            once: true, // Run animation only once when scrolling
         });
 
         // Recruiter Chart Configuration
@@ -144,7 +169,7 @@
                 labels: ['Registered Recruiters', 'Job Postings', 'Active Jobs', 'Completed Hires'],
                 datasets: [{
                     label: 'Recruiter Metrics',
-                    data: [45, 120, 80, 50],
+                    data: [45, 120, 80, 50], // Example data
                     backgroundColor: ['#4A90E2', '#357ABD', '#6AA7EC', '#95bfef']
                 }]
             }

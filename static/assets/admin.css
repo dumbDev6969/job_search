@@ -1,0 +1,124 @@
+/* Sidebar active state */
+
+
+/* Hover effect */
+.nav-link:hover {
+    background-color: #f8f9fa;
+    color: #0d6efd !important;
+}
+
+/* Icon spacing and alignment */
+.nav-link i {
+    width: 20px;
+    text-align: center;
+}
+
+ .filter-section {
+           
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .job-card {
+            transition: all 0.2s ease;
+            border-radius: var(--border-radius);
+            border-left: 4px solid transparent;
+            background-color: var(--background-light);
+        }
+        
+        .job-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--box-shadow) !important;
+        }
+        
+        .job-card.pending {
+            border-left-color: var(--primary);
+        }
+        
+        .job-card.new {
+            border-left-color: var(--secondary);
+        }
+
+        .job-card.approved {
+            border-left-color: #28a745;
+        }
+
+        .job-card.rejected {
+            border-left-color: #dc3545;
+        }
+        
+        .status-badge {
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            padding: 0.35em 0.65em;
+            font-weight: 500;
+        }
+
+        .badge-pending {
+            background-color: rgba(var(--primary), 0.1);
+            color: var(--primary);
+        }
+
+        .badge-new {
+            background-color: rgba(var(--secondary), 0.1);
+            color: var(--secondary);
+        }
+        
+        .job-meta {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+        
+        .job-meta i {
+            width: 1.25rem;
+            text-align: center;
+        }
+        
+        .action-btn {
+            font-size: 0.8125rem;
+            padding: 0.25rem 0.75rem;
+            font-weight: 500;
+        }
+        
+        .applicant-count {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        
+
+        .filter-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .filter-btn:hover {
+            background-color: var(--primary-dark);
+            color: white;
+        }
+
+        .reset-btn {
+            background-color: var(--secondary-light);
+            color: var(--text-dark);
+            border: none;
+        }
+
+        .reset-btn:hover {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .status-filter .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }

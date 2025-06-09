@@ -11,6 +11,8 @@ from .profile import profile
 from .schedule_dashboard import schedule_dashboard
 from .schedule_interview import schedule_interview
 from .employer_profile import employer_profile
+from .requirements import requirements
+
 from flask import Blueprint
 
 
@@ -29,3 +31,4 @@ employer_bp.register_blueprint(profile)
 employer_bp.register_blueprint(schedule_dashboard)
 employer_bp.register_blueprint(schedule_interview)
 employer_bp.register_blueprint(employer_profile)
+employer_bp.register_blueprint(requirements)

@@ -1,6 +1,6 @@
 from flask import Blueprint,Flask
 
-
+# Import route blueprints
 from routes.database import database
 from routes.geo import geo
 from routes.login import login
@@ -23,11 +23,10 @@ from routes.messages import *
 
 routes_bp = Blueprint('routes', __name__)
 
-
-
 # Register the Blueprints
 is_mysql_running = test_mysql()
 if is_mysql_running:
+    # Core routes
     routes_bp.register_blueprint(main)
     routes_bp.register_blueprint(database)
     routes_bp.register_blueprint(geo)
@@ -41,11 +40,10 @@ if is_mysql_running:
     routes_bp.register_blueprint(jobseeker_bp)
     routes_bp.register_blueprint(forgot_password)
     routes_bp.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
+    # Employer/Admin/Messaging
     routes_bp.register_blueprint(employer_bp)
     routes_bp.register_blueprint(admin_bp)
     routes_bp.register_blueprint(messages_bp)
-  
-    
 else:
     routes_bp.register_blueprint(db_not_active)
 
