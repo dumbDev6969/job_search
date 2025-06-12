@@ -19,6 +19,10 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/general.css">
+      <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
@@ -69,6 +73,12 @@
                             <option value="freelance">Freelance</option>
                             <option value="internship">Internship</option>
                         </select>
+                        
+                  
+                    </div>
+                    <div class="mb-3">
+                         <label for="expires_at" class="form-label text-muted fw-bold">Expires At</label>
+                          <input type="date" name="expires_at" required>
                     </div>
     
                     <button class=" btn-primary 0 mt-3" type="submit">Post job</button>
@@ -93,6 +103,51 @@
         });
 
     </script>
+
+    
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const form = this;
+        const formData = new FormData(form);
+
+        fetch('/api/post-job', { // Use the form's action URL
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.getElementById('csrf_token').value // Include CSRF token
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: data.message,
+                }).then(() => {
+                    window.location.href = '/employer/jobs'; // Redirect on success
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: data.message,
+                });
+            }
+        })
+        .catch(error => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'An unexpected error occurred.',
+            });
+        });
+    });
+</script>
+
+
 </body>
 
 </html>

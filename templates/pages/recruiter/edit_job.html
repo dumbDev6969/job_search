@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JXT</title>
+    <link rel="stylesheet" href="/assets/fonts.css">
+    <link rel="stylesheet" href="/assets/scheme.css">
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/assets/general.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    {% include 'components/recruiter-nav.html' %}
+
+    <nav aria-label="breadcrumb" class="mt-2 ms-2">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Candidates</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Post job</li>
+        </ol>
+    </nav>
+
+    <div class="container mb-5 mt-5">
+        <div class="row d-flex align-items-center">
+            <div data-aos="fade-right" class="col-md-6">
+                <form method="POST" action="/employer/api/edit-job">
+                    <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <input type="hidden" name="id" value="{{ id }}">
+                    <div class="mb-3">
+                        <label for="title" class="form-label text-muted fw-bold">Job Title</label>
+                        <input type="text"  id="title" name="title" placeholder="Enter job title" required value="{%if title%} {{title}}{% endif %}"">
+                    </div>
+    
+                    <div class="mb-3">
+                        <label for="description" class="form-label text-muted fw-bold">Job Description</label>
+                        <textarea id="description" name="description" placeholder="Job description (Include tools/languages, e.g., Python, JavaScript, Adobe Creative Suite)" rows="4" required > {%if title%} {{description}}{% endif %}</textarea>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="location" class="form-label text-muted fw-bold">Location</label>
+                            <input type="text"  id="location" name="location" placeholder="Enter location" required  value="{%if title%} {{location}}{% endif %}"">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="salary_range" class="form-label text-muted fw-bold">Salary Range</label>
+                            <input type="text" id="salary_range" name="salary_range" placeholder="e.g., $50,000 - $70,000" required  value="{%if title%} {{salary_range}}{% endif %}"">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                    <div class="mb-3">
+                        <label for="status" class="form-label text-muted fw-bold">Status</label>
+                        <select id="status" name="status" required>
+                            <option value="" {% if status == '' or status == None %}selected{% endif %} disabled>Choose...</option>
+                            <option value="active" {% if status == 'active' %}selected{% endif %}>Active</option>
+                            <option value="paused" {% if status == 'paused' %}selected{% endif %}>Paused</option>
+                            <option value="closed" {% if status == 'closed' %}selected{% endif %}>Closed</option>
+                        </select>
+                    </div>
+                    </div>
+                    <label for="expires_at" class="form-label text-muted fw-bold">Expires At</label>
+                    <input type="date" name="expires_at"  value="{{ expires_at.strftime('%Y-%m-%d') }}">
+                    <label for="posted_at" class="form-label text-muted fw-bold">Posted At</label>
+                    <input type="date" name="posted_at" value="{{ posted_at.strftime('%Y-%m-%d') }}">
+
+                    <div class="mb-3">
+                        <label for="employment_type" class="form-label text-muted fw-bold">Employment Type</label>
+                        <select  id="employment_type" name="employment_type" required  value="{%if title%} {{employment_type}}{% endif %}"">
+                            <option value="" {% if employment_type == '' or employment_type == None %}selected{% endif %} disabled>Choose...</option>
+                            <option value="full_time" {% if employment_type == 'full_time' %}selected{% endif %}>Full-Time</option>
+                            <option value="part_time" {% if employment_type == 'part_time' %}selected{% endif %}>Part-Time</option>
+                            <option value="contract" {% if employment_type == 'contract' %}selected{% endif %}>Contract</option>
+                            <option value="freelance" {% if employment_type == 'freelance' %}selected{% endif %}>Freelance</option>
+                            <option value="internship" {% if employment_type == 'internship' %}selected{% endif %}>Internship</option>
+                        </select>
+                    </div>
+    
+                    <button class=" btn-primary 0 mt-3" type="submit">Update job</button>
+                </form>
+            </div>
+            <div data-aos="fade-left" class="col-md-6">
+                <img class="img-fluid" height="500" src="/assets/img/post-job.jpg" alt="Job Form">
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- AOS JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="/assets/js/animation.js"></script>
+   </body>
+   
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const form = this;
+        const formData = new FormData(form);
+
+        fetch('/employer/api/edit-job', { // Use the form's action URL
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.getElementById('csrf_token').value // Include CSRF token
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: data.message,
+                }).then(() => {
+                    window.location.href = '/employer/jobs'; // Redirect on success
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: data.message,
+                });
+            }
+        })
+        .catch(error => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'An unexpected error occurred.',
+            });
+        });
+    });
+</script>
+<script>
+    AOS.init();
+
+</script>
+   
+</html>

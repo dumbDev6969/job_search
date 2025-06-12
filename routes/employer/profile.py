@@ -167,8 +167,17 @@ def get_active_job_postings(id):
        
         # Process active job postings data
         if result["output"][0]['active_job_postings']:
-            result["output"][0]['active_job_postings'] = result["output"][0]['active_job_postings'].split('|')
-        
+            splitted =result["output"][0]['active_job_postings'].split('|')
+            result["output"][0]['active_job_postings'] = []
+            result["output"][0]['active_job_postings'].append(
+                {
+                    'job_id': splitted[0],
+                    'title': splitted[1],
+                    'posted_at': splitted[2],
+                    'status': splitted[3]
+                }
+            )
+               
         # Process chart data
         if result["output"][0]['chart_data']:
             result["output"][0]['chart_data'] = result["output"][0]['chart_data'].split('|')

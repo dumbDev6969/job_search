@@ -36,14 +36,14 @@ async function fetchAndPopulateProfile() {
       activeJobPostingsList.innerHTML = ''; // Clear existing content
       if (employerData.active_job_postings && Array.isArray(employerData.active_job_postings)) {
         employerData.active_job_postings.forEach(job => {
-            alert(job);
+          
           const jobDiv = document.createElement('div');
           jobDiv.classList.add('mb-3', 'p-3', 'bg-light', 'rounded');
           jobDiv.innerHTML = `
-            <h6 class="mb-1">${job}</h6>
-            <small class="text-muted">Posted on:  </small><br />
-            <span class="badge bg-success mt-2">Active</span>
-            <a href="job-single.html" class="btn btn-sm btn-outline-primary float-end">View</a>
+            <h6 class="mb-1">${job.title}</h6>
+            <small class="text-muted">Posted on: ${job.posted_at} </small><br />
+            <span class="badge bg-success mt-2"> ${job.status}</span>
+            <a href="/employer/job/${job.job_id}" class="btn btn-sm btn-outline-primary float-end">View</a>
           `;
           activeJobPostingsList.appendChild(jobDiv);
         });

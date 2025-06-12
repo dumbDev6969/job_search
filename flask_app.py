@@ -35,7 +35,7 @@ app.register_blueprint(routes_bp)
 
 if __name__ == '__main__':
     try:
-        socketio.run(app, debug=True)
+        socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
     except ImportError as e:
         print(f"ImportError: {e}")
         print("Please ensure all required packages are installed.")
