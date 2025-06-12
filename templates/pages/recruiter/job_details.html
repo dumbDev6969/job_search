@@ -29,10 +29,11 @@
     {% include 'components/recruiter-nav.html' %}
 
     <div class="container mb-5 mt-5 py-3">
+    
         <div class="row">
             <!-- Back Button -->
             <div class="col-12 mb-4" data-aos="fade-right">
-                <a href="/jobs" class="btn btn-outline-secondary">
+                <a href="/employer/jobs" class="btn btn-outline-secondary">
                     <i class="fas fa-arrow-left me-2"></i> Back to Jobs
                 </a>
             </div>
@@ -44,8 +45,8 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <div>
-                                <span class="badge bg-success">Active</span>
-                                <span class="badge bg-info ms-2">Full-Time</span>
+                                <span class="badge bg-success">{{job['status']}}</span>
+                                <span class="badge bg-info ms-2">{{job['employment_type']}}</span>
                             </div>
                             <div class="dropdown">
                                 <span class=" btn-link text-muted" type="button" data-bs-toggle="dropdown">
@@ -59,7 +60,7 @@
                             </div>
                         </div>
                         
-                        <h2 class="mb-3">Senior Frontend Developer</h2>
+                        <h2 class="mb-3">{{job['title']}}</h2>
                         
                         
                         <div class="d-flex align-items-center">
@@ -72,7 +73,7 @@
                 <div class="card mb-4" data-aos="fade-up" data-aos-delay="100">
                     <div class="card-body">
                         <h4 class="mb-4"><i class="icon-blue fas fa-file-alt  me-2"></i>Job Description</h4>
-                        <p>We're looking for an experienced Frontend Developer to join our growing team. You'll be responsible for building user interfaces and implementing features for our SaaS platform.</p>
+                        <p>{{job['description']}}</p>
                         
                         <!-- Job Details Summary -->
                         <div class="job-details-summary bg-light p-3 rounded mb-4">
@@ -82,7 +83,7 @@
                                         <i class=" fas fa-map-marker-alt text-muted me-2"></i>
                                         <div>
                                             <small class="text-muted">Location</small>
-                                            <div class="fw-bold">Abanon , USA 69 street</div>
+                                            <div class="fw-bold">{{job['location']}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -91,7 +92,7 @@
                                         <i class="fas fa-briefcase text-muted me-2"></i>
                                         <div>
                                             <small class="text-muted">Job Type</small>
-                                            <div class="fw-bold">Full-Time</div>
+                                            <div class="fw-bold">{{job['employment_type']}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -100,7 +101,7 @@
                                         <i class="fas fa-peso-sign text-muted me-2"></i>
                                         <div>
                                             <small class="text-muted">Salary Range</small>
-                                            <div class="fw-bold">90,000 - 120,000/month</div>
+                                            <div class="fw-bold">{{job['salary_range']}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -160,16 +161,22 @@
                 <!-- Company Info -->
                 <div class="card mb-4" data-aos="fade-left">
                     <div class="card-body">
-                        <h4 class="mb-4"><i class="icon-blue fas fa-building  me-2"></i>About TechCorp</h4>
+                        <h4 class="mb-4"><i class="icon-blue fas fa-building  me-2"></i>{{job['employer_details']['company_name']}}</h4>
                         <p>TechCorp is a leading SaaS provider helping businesses streamline their operations. Founded in 2015, we've grown to serve over 10,000 customers worldwide.</p>
                         
                         <div class="d-flex align-items-center mt-3">
                             <i class="fas fa-globe text-muted me-2"></i>
-                            <a href="#" class="text-decoration-none">techcorp.com</a>
+                            <a href="#" class="text-decoration-none">
+                                {%if job['employer_details']['website_url'] %}
+                                <span class="text-muted">{{job['employer_details']['website_url']}}</span>
+                                {%else%}
+                                <span class="text-muted">not set</span>
+                                {%endif%}
+                            </a>
                         </div>
                         <div class="d-flex align-items-center mt-2">
                             <i class="fas fa-users text-muted me-2"></i>
-                            <span class="text-muted">51-200 employees</span>
+                            <span class="text-muted">{{job['employer_details']['company_size']}} employees</span>
                         </div>
                     </div>
                 </div>
@@ -180,11 +187,11 @@
                         <h4 class="mb-4"><i class="icon-blue fas fa-calendar-alt  me-2"></i>Hiring Timeline</h4>
                         <div class="d-flex justify-content-between mb-2">
                             <span class="text-muted">Posted</span>
-                            <span class="fw-bold">May 15, 2023</span>
+                            <span class="fw-bold">{{job['posted_at']}}</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span class="text-muted">Applications close</span>
-                            <span class="fw-bold">June 15, 2023</span>
+                            <span class="fw-bold">{{job['expires_at']}}</span>
                         </div>
                     </div>
                 </div>

@@ -123,6 +123,7 @@ class DatabaseManager:
     def close(self):
         """Closes the database connection."""
         self.engine.dispose()
+is_email_already_sent = False
 
 def test_mysql():
     # Initialize the MySQL DatabaseManager
@@ -141,7 +142,10 @@ def test_mysql():
             recipients = ["jemcarlo46@gmail.com"]
 
             try:
-                my_send_email(subject, body, recipients)
+                global is_email_already_sent
+                if not is_email_already_sent:
+                    my_send_email(subject, body, recipients)
+                    is_email_already_sent = True
             except Exception as e:
                 print(str(e))
                 print("Failed to send email")

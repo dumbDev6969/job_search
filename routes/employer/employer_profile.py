@@ -6,18 +6,19 @@ from middlewares.is_email_verified import is_email_verified
 from middlewares.verify_user import verify_user
 from sqlalchemy import text
 
-employer_profile = Blueprint('employer_profile', __name__)
+employer_profile = Blueprint("employer_profile", __name__)
 
-@employer_profile.route('/employer/<int:employer_id>')
+
+@employer_profile.route("/employer/<int:employer_id>")
 def employer_details(employer_id):
     """
     Render the employer's details page with dynamic data.
     """
-    if not check_column_exists('employers', 'employer_id', employer_id):
-        return render_template('/pages/user_not_found.html')
-    
+    if not check_column_exists("employers", "employer_id", employer_id):
+        return render_template("/pages/user_not_found.html")
+
     db = get_db()
-   
+
     sql = text("""
         SELECT
             e.employer_id,
@@ -33,9 +34,13 @@ def employer_details(employer_id):
         WHERE e.employer_id = :employer_id
         GROUP BY e.employer_id
     """)
-    
+
     result = db.execute_query(sql, {"employer_id": employer_id})
     if not result["success"] or not result["output"]:
-        return render_template('/pages/recruiter/recruiter_details.html', error="Employer not found.")
-    
-    return render_template('/pages/recruiter/recruiter_details.html', employer=result["output"][0])
+        return render_template(
+            "/pages/recruiter/recruiter_details.html", error="Employer not found."
+        )
+
+    return render_template(
+        "/pages/recruiter/recruiter_details.html", employer=result["output"][0]
+    )

@@ -176,12 +176,12 @@ def handle_get_conversation_list():
             display_name = name
             user_type_str = 'job_seeker' if user_type == 'jobseeker' else 'employer'
             html_items.append(f"""
-    <li class=\"list-group-item d-flex align-items-center p-3\" onclick=\"window.location.href='/messages/{partner_id}'\">  <img src=\"https://api.dicebear.com/7.x/initials/svg?seed={display_name[0] if display_name else ''}\" height=\"50\" class=\"rounded-circle me-3\" alt=\"Avatar\">
-                    <div class=\"flex-grow-1\">
-                        <div class=\"fw-bold\">{display_name}</div>
-                        <small class=\"text-muted\">{email}</small>
+    <li class=\"list-group-item d-flex align-items-center p-3 id-{partner_id}" id="{partner_id}" data-cl-id="{partner_id}" onclick=\"window.location.href='/messages/{partner_id}'\">  <img src=\"https://api.dicebear.com/7.x/initials/svg?seed={display_name[0] if display_name else ''}\" height=\"50\" class=\"rounded-circle me-3\" alt=\"Avatar\">
+                    <div id="{partner_id}" class=\"flex-grow-1\">
+                        <div id="{partner_id}" class=\"fw-bold\">{display_name}</div>
+                        <small id="{partner_id}"  class=\"text-muted\">{email}</small>
                     </div>
-                    <small class=\"text-muted\">{user_type_str}</small>
+                    <small id="{partner_id}" class=\"text-muted\">{user_type_str}</small>
                     
                 </li>
             """)

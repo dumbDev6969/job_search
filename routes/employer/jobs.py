@@ -123,6 +123,7 @@ def get_job_cards():
         status = request.args.get('status', 'all')
         job_type = request.args.get('type', 'all')
         sort_by = request.args.get('sort', 'newest')
+        search_query = request.args.get('search', '')
         
         # Base query
         query = """
@@ -148,6 +149,8 @@ def get_job_cards():
             query += " AND j.status = :status"
         if job_type != 'all':
             query += " AND j.employment_type = :job_type"
+        if search_query:
+            query += " AND (j.title LIKE :search_query OR j.description LIKE :search_query)"
             
         query += " GROUP BY j.job_id"
         
@@ -167,6 +170,8 @@ def get_job_cards():
             params['status'] = status.lower()
         if job_type != 'all':
             params['job_type'] = job_type
+        if search_query:
+            params['search_query'] = f"%{search_query}%"
             
         result = db.execute_query(text(query), params)
         

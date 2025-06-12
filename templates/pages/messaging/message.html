@@ -284,6 +284,22 @@
           document.getElementById('send-message-btn').click();
         }
       });
+
+    
+    </script>
+    <script>
+        document.getElementById("convo-list").addEventListener("click", function (e) {
+        if (e.target.id) {
+         
+          window.location.href='/messages/'+e.target.id;
+        }else{
+          console.log("no id",e.target);
+        
+        }
+        
+
+
+      });
     </script>
   </body>
 </html>

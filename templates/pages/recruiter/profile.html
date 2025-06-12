@@ -13,6 +13,7 @@
     <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/general.css">
+    <script src="/static/assets/js/recruiter_profile.js"></script>
 </head>
 
 <body>
@@ -80,7 +81,7 @@
                 <!-- Active Jobs -->
                 <div class="card" data-aos="fade-up" data-aos-delay="100">
                     <div class="card-body">
-                        <h5 class="mb-4"><i class="fas fa-briefcase me-2 icon-blue"></i> Active Job Postings (3)</h5>
+                        <h5 class="mb-4"><i class="fas fa-briefcase me-2 icon-blue"></i> Active Job Postings (<span id="active-job-count">3</span>)</h5>
                         <div id="active-job-postings-list">
                             <div class="mb-3 p-3 bg-light rounded">
                                 <h6 class="mb-1">Senior Frontend Developer</h6>
@@ -110,7 +111,7 @@
                 <div class="card mb-4" data-aos="fade-left">
                     <div class="card-body">
                         <h5 class="mb-3"><i class="fas fa-envelope me-2 icon-blue"></i> Contact Information</h5>
-                        <p class="mb-1"><i class="fas fa-phone-alt text-muted me-2"></i> +1 234 567 890</p>
+                        <p class="mb-1" ><i class="fas fa-phone-alt text-muted me-2"></i> <span id="contact-phone"> +1 234 567 890</span></p>
                         <p class="mb-1"><i class="fas fa-envelope text-muted me-2"></i> <span id="contact-email">contact@techcorp.com</span></p>
                         <p><i class="fas fa-globe text-muted me-2"></i> <a id="contact-website" href="#" class="text-decoration-none" target="_blank">www.techcorp.com</a></p>
                     </div>

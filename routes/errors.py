@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template,jsonify
+from flask import Blueprint, render_template,jsonify,session
 
 
 # Create a Blueprint for error handlers
@@ -8,7 +8,10 @@ errors = Blueprint('errors', __name__)
 # Register the 404 error handler
 @errors.app_errorhandler(404)
 def not_found_error(error):
-    return render_template('pages/404.html'), 404
+    if session['is_database_running']:
+        return render_template('pages/db_not_active.html'), 404
+    else:
+        return render_template('pages/404.html'), 404
 
 
 @errors.app_errorhandler(429)

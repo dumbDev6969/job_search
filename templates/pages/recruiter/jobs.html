@@ -67,7 +67,7 @@
             <h2>Job Postings</h2>
             <div class="search-box" style="width: 300px;">
                 <i class="fas fa-search"></i>
-                <input type="text" class="form-control" placeholder="Search jobs...">
+                <input type="text" class="form-control" placeholder="Search jobs..." id="searchInput">
             </div>
         </div>
 
@@ -116,7 +116,8 @@
             const type = document.getElementById('typeFilter').value;
             const sort = document.getElementById('sortFilter').value;
             
-            fetch(`/api/employer/get-job-cards?status=${status}&type=${type}&sort=${sort}`)
+            const searchQuery = document.querySelector('.search-box input').value;
+            fetch(`/api/employer/get-job-cards?status=${status}&type=${type}&sort=${sort}&search=${encodeURIComponent(searchQuery)}`)
                 .then(response => response.text())
                 .then(data => {
                     console.log(data);
@@ -144,8 +145,8 @@
         document.getElementById('statusFilter').addEventListener('change', fetchJobs);
         document.getElementById('typeFilter').addEventListener('change', fetchJobs);
         document.getElementById('sortFilter').addEventListener('change', fetchJobs);
-
-        // Initial load
+        document.getElementById('searchInput').addEventListener('input', fetchJobs);
+       // Initial load
         fetchJobs();
     </script>
 

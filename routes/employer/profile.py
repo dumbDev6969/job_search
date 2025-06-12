@@ -74,13 +74,13 @@ def update_jobseeker_profile():
         return jsonify({'success': False, 'message': 'Failed to update profile.'}), 500
 
 
-@profile.route('/api/employer/data', methods=['GET'])
+@profile.route('/api/employer/data/<int:id>', methods=['GET'])
 @verify_user
 @is_email_verified
 @is_requirements_done
-def get_active_job_postings():
+def get_active_job_postings(id):
     db = get_db()
-    employer_id = 3  # Using static user ID as requested
+    employer_id = id  # Using static user ID as requested
     
     query = text("""
         WITH dashboard_summary AS (
