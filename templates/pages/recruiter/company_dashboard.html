@@ -15,12 +15,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
+        </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/general.css">
     <style>
-        
+
     </style>
 </head>
 
@@ -38,7 +38,7 @@
                     <h3 id="total-candidates"></h3>
                 </div>
             </div>
-        
+
             <!-- Total Job Posted Card -->
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="200">
                 <div class="p-3 bg-light rounded shadow-sm hover-effect">
@@ -47,7 +47,7 @@
                     <h3 id="total-job-posted"></h3>
                 </div>
             </div>
-        
+
             <!-- Active Job Listings Card -->
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="300">
                 <div class="p-3 bg-light rounded shadow-sm hover-effect">
@@ -56,7 +56,7 @@
                     <h3 id="active-job-listings"></h3>
                 </div>
             </div>
-        
+
             <!-- Successful Hires Card -->
             <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="400">
                 <div class="p-3 bg-light rounded shadow-sm hover-effect">
@@ -66,24 +66,24 @@
                 </div>
             </div>
         </div>
-    
+
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 fetch('/employer/api/dashboard_data')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('total-candidates').innerText = data.total_candidates;
-                    document.getElementById('total-job-posted').innerText = data.total_job_posted;
-                    document.getElementById('active-job-listings').innerText = data.active_job_listings;
-                    document.getElementById('successful-hires').innerText = data.successful_hires;
-                });
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('total-candidates').innerText = data.total_candidates;
+                        document.getElementById('total-job-posted').innerText = data.total_job_posted;
+                        document.getElementById('active-job-listings').innerText = data.active_job_listings;
+                        document.getElementById('successful-hires').innerText = data.successful_hires;
+                    });
             });
         </script>
-        
+
         <div class="row mt-4">
-            
+
             <div class="col-lg-8">
-                
+
                 <div class="card mb-4" data-aos="fade-right">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
                         <h5 class="mb-0"> Candidates</h5>
@@ -100,11 +100,12 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="candidates-tabel">
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle me-2" width="36" height="36">
+                                                <img src="https://randomuser.me/api/portraits/men/32.jpg"
+                                                    class="rounded-circle me-2" width="36" height="36">
                                                 <div>
                                                     <h6 class="mb-0">John Doe</h6>
                                                     <small class="text-muted">Senior Frontend Dev</small>
@@ -113,7 +114,7 @@
                                         </td>
                                         <td>Senior Frontend</td>
                                         <td><span class="badge bg-warning">Technical Review</span></td>
-                                       
+
                                         <td>
                                             <button class="btn btn-sm btn-info">View</button>
                                             <button class="btn btn-sm btn-primary">Schedule Interview</button>
@@ -122,7 +123,8 @@
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle me-2" width="36" height="36">
+                                                <img src="https://randomuser.me/api/portraits/women/44.jpg"
+                                                    class="rounded-circle me-2" width="36" height="36">
                                                 <div>
                                                     <h6 class="mb-0">Sarah Smith</h6>
                                                     <small class="text-muted">UX Designer</small>
@@ -131,7 +133,7 @@
                                         </td>
                                         <td>UX Designer</td>
                                         <td><span class="badge bg-info">Final Interview</span></td>
-                                        
+
                                         <td>
                                             <button class="btn btn-sm btn-info">View</button>
                                             <button class="btn btn-sm btn-primary">Schedule Interview</button>
@@ -140,7 +142,8 @@
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <img src="https://randomuser.me/api/portraits/men/22.jpg" class="rounded-circle me-2" width="36" height="36">
+                                                <img src="https://randomuser.me/api/portraits/men/22.jpg"
+                                                    class="rounded-circle me-2" width="36" height="36">
                                                 <div>
                                                     <h6 class="mb-0">David Kim</h6>
                                                     <small class="text-muted">Data Scientist</small>
@@ -149,7 +152,7 @@
                                         </td>
                                         <td>Data Scientist</td>
                                         <td><span class="badge bg-secondary">New Applicant</span></td>
-                                        
+
                                         <td>
                                             <button class="btn btn-sm btn-info">View</button>
                                             <button class="btn btn-sm btn-primary">Schedule Interview</button>
@@ -160,47 +163,7 @@
                         </div>
                     </div>
                 </div>
-    
-                <div class="card" data-aos="fade-right" data-aos-delay="100">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">Upcoming Interviews</h5>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="list-group list-group-flush">
-                            <div class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">Technical Interview - John Doe</h6>
-                                        <small class="text-muted">Senior Frontend Developer | 2024-03-28 2:00 PM</small>
-                                    </div>
-                                    <span class="badge bg-primary">Zoom</span>
-                                </div>
-                            </div>
-                            <div class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">Cultural Fit - Sarah Smith</h6>
-                                        <small class="text-muted">UX Designer | 2024-03-28 10:30 AM</small>
-                                    </div>
-                                    <span class="badge bg-primary">Zoom</span>
-                                </div>
-                            </div>
-                            <div class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">Final Round - Michael Chen</h6>
-                                        <small class="text-muted">Product Manager | 2024-03-28 3:00 PM</small>
-                                    </div>
-                                    <span class="badge bg-primary">On-site</span>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#" class="btn btn-outline-primary w-100 rounded-0">View All Interviews</a>
-                    </div>
-                </div>
             </div>
-    
-            <!-- Right Column - Recent Activity -->
             <div class="col-lg-4">
                 <!-- Recent Applications -->
                 <div class="card mb-4" data-aos="fade-left">
@@ -217,53 +180,51 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle me-2" width="30" height="30" title="User Avatar" alt="User Avatar">
-                                            John Doe
-                                        </div>
-                                    </td>
-                                    <td>Senior Frontend Dev</td>
-                                    <td><span class="badge bg-warning">Screening</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle me-2" width="30" height="30" title="User Avatar" alt="User Avatar">
-                                            Sarah Smith
-                                        </div>
-                                    </td>
-                                    <td>UX Designer</td>
-                                    <td><span class="badge bg-info">Interview</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://randomuser.me/api/portraits/men/75.jpg" class="rounded-circle me-2" width="30" height="30">
-                                            Michael Chen
-                                        </div>
-                                    </td>
-                                    <td>Product Manager</td>
-                                    <td><span class="badge bg-success">Hired</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://randomuser.me/api/portraits/women/68.jpg" class="rounded-circle me-2" width="30" height="30">
-                                            Emily Wilson
-                                        </div>
-                                    </td>
-                                    <td>Backend Engineer</td>
-                                    <td><span class="badge bg-danger">Rejected</span></td>
-                                </tr>
+                            <tbody id="recent-applications">
+
                             </tbody>
                         </table>
                     </div>
                 </div>
-    
-                <!-- Quick Actions -->
+
+
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4" data-aos="fade-right" data-aos-delay="100">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Upcoming Interviews</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                            <th>Type</th>
+                                            <th>link/place</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody id="upcoming-interviews-table">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                </div>
+
+            </div>
+            <div class="col-lg-4">
                 <div class="card" data-aos="fade-left" data-aos-delay="100">
                     <div class="card-header bg-white">
                         <h5 class="mb-0">Quick Actions</h5>
@@ -278,26 +239,47 @@
                     </div>
                 </div>
             </div>
+            <!-- Quick Actions -->
+
         </div>
-    </div>
 
 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- AOS JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+        <script src="/assets/js/animation.js"></script>
+        <script>
+            AOS.init({
+                duration: 1000, // Animation duration (1000ms = 1s)
+                once: true, // Run animation only once when scrolling
+            });
 
+            candidates_table = document.getElementById('candidates-tabel');
+            upcoming_interviews_table = document.getElementById('upcoming-interviews-table');
+            recent_applications = document.getElementById('recent-applications');
 
+            fetch('/api/employer/applicants')
+                .then(response => response.json())
+                .then(data => {
+                    recent_applications.innerHTML = data.applications
+                })
 
+            fetch('/api/employer/upcoming-interviews')
+                .then(response => response.json())
+                .then(data => {
+                   
+                    upcoming_interviews_table.innerHTML = data.interviews
+                })
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- AOS JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script src="/assets/js/animation.js"></script>
-    <script>
-        AOS.init({
-            duration: 1000, // Animation duration (1000ms = 1s)
-            once: true, // Run animation only once when scrolling
-        });
+            fetch('/api/employer/schedule-dashboard-no-filters')
+                .then(response => response.json())
+                .then(data => {
+                    candidates_table.innerHTML = data.interviews
+                })
 
-        
-    </script>
+                
+
+        </script>
 </body>
 
 </html>

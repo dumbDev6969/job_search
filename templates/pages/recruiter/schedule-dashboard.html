@@ -83,7 +83,7 @@
                 <th scope="col">Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="table-listing">
               <!-- Example Row -->
               <tr>
                 <th scope="row">1</th>
@@ -165,7 +165,81 @@
       </div>
     </div>
   </div>
+<script>
+    function updateTbael(page = 1) {
+        const table = document.getElementById('table-listing');
+        const pagination = document.querySelector('.pagination');
+        const apiUrl = `/api/employer/schedule-dashboard?page=${page}`;
 
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    renderTable(data.interviews);
+                    renderPagination(data.current_page, data.total_pages);
+                }
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    }
+
+    function renderTable(interviews) {
+        const table = document.getElementById('table-listing');
+        table.innerHTML = ''; // Clear existing rows
+        table.innerHTML = interviews
+
+    }
+
+    function renderPagination(currentPage, totalPages) {
+        const pagination = document.querySelector('.pagination');
+        pagination.innerHTML = ''; // Clear existing links
+
+        const prevItem = document.createElement('li');
+        prevItem.classList.add('page-item');
+        if (currentPage === 1) {
+            prevItem.classList.add('disabled');
+        }
+        prevItem.innerHTML = `<a class="page-link" href="#" tabindex="-1">Previous</a>`;
+        prevItem.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentPage > 1) {
+                updateTbael(currentPage - 1);
+            }
+        });
+        pagination.appendChild(prevItem);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const pageItem = document.createElement('li');
+            pageItem.classList.add('page-item');
+            if (i === currentPage) {
+                pageItem.classList.add('active');
+            }
+            pageItem.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+            pageItem.addEventListener('click', (e) => {
+                e.preventDefault();
+                updateTbael(i);
+            });
+            pagination.appendChild(pageItem);
+        }
+
+        const nextItem = document.createElement('li');
+        nextItem.classList.add('page-item');
+        if (currentPage === totalPages) {
+            nextItem.classList.add('disabled');
+        }
+        nextItem.innerHTML = `<a class="page-link" href="#">Next</a>`;
+        nextItem.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentPage < totalPages) {
+                updateTbael(currentPage + 1);
+            }
+        });
+        pagination.appendChild(nextItem);
+    }
+
+    updateTbael(1);
+
+
+</script>
   <!-- Bootstrap Bundle JS (includes Popper) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

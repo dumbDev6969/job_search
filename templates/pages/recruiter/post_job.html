@@ -55,11 +55,23 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="location" class="form-label text-muted fw-bold">Location</label>
-                            <input type="text"  id="location" name="location" placeholder="Enter location" required>
+                             <select name="location" title="Select a location" id="location" required>
+                                    <option value="" selected>All Locations</option>
+                                    <option>Remote</option>
+                                    <option>On-site</option>
+                                    <option>Hybrid</option>
+                                </select>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="salary_range" class="form-label text-muted fw-bold">Salary Range</label>
-                            <input type="text" id="salary_range" name="salary_range" placeholder="e.g., $50,000 - $70,000" required>
+                           
+                            <select name="salary_range" title="Select a salary range" id="salary_range" required>
+                                    <option value="" selected>All Salary Ranges</option>
+                                    <option>20,000 - 35,000</option>
+                                    <option>35,000 - 50,000</option>
+                                    <option>50,000 - 75,000</option>
+                                    <option>75,000+</option>
+                                </select>
                         </div>
                     </div>
     

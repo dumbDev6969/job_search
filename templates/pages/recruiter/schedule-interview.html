@@ -16,6 +16,10 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
+     <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="stylesheet" href="/assets/general.css">
@@ -51,6 +55,10 @@
 
             <div class="card-body p-4">
               <form>
+             
+                <input type="hidden" name="seeker_id" value="{{ application['seeker_id'] }}"">
+                <input type="hidden" name="availability_id" value="1">
+                <input type="hidden" name="application_id" value="{{ application['application_id']}}">
                 <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
 
                 <!-- Enhanced Form Groups -->
@@ -58,14 +66,14 @@
                   <label for="interviewDate" class="form-label text-muted fw-bold">
                     Interview Date
                   </label>
-                  <input type="date"  id="interviewDate" required>
+                  <input type="date" name="interview_date" id="interviewDate" required>
                 </div>
 
                 <div class="mb-4">
                   <label for="interviewTime" class="form-label text-muted fw-bold">
                      Interview Time
                   </label>
-                  <input type="time" id="interviewTime" required>
+                  <input type="time" name="interview_time" id="interviewTime" required>
                 </div>
 
                 <!-- Type with Icon -->
@@ -73,7 +81,7 @@
                   <label for="interviewType" class="form-label text-muted fw-bold">
                     Interview Type
                   </label>
-                  <select id="interviewType" required>
+                  <select name="interview_type" id="interviewType" required>
                     <option value="" selected disabled>Select type</option>
                     <option value="in-person">In-Person <i class="fas fa-map-marker-alt ms-2"></i></option>
                     <option value="remote">Remote <i class="fas fa-video ms-2"></i></option>
@@ -86,7 +94,7 @@
                   <label for="interviewLocation" class="form-label text-muted fw-bold">
                     Interview Location
                   </label>
-                  <input type="text" id="interviewLocation" placeholder="Enter location">
+                  <input type="text" name="interview_location" id="interviewLocation" placeholder="Enter location">
                 </div>
 
                 <!-- Google Meet Link -->
@@ -94,7 +102,7 @@
                 <label for="googleMeetLink" class="form-label text-muted fw-bold">
                   Google Meet Link
                 </label>
-                <input type="url" id="googleMeetLink" placeholder="Enter Google Meet URL">
+                <input type="url" name="google_meet_link" id="googleMeetLink" placeholder="Enter Google Meet URL">
               </div>
 
                 <!-- Notes with Character Counter -->
@@ -102,11 +110,24 @@
                   <label for="notes" class="form-label text-muted fw-bold">
                     Additional Notes
                   </label>
-                  <textarea  id="notes" rows="4" placeholder="Any additional instructions or notes"
+                  <textarea name="additional_notes" id="notes" rows="4" placeholder="Any additional instructions or notes"
                     maxlength="500"></textarea>
                   <small class="text-muted float-end mt-1">0/500 characters</small>
                 </div>
 
+<div class="mb-4">
+  <!-- <label for="status" class="form-label text-muted fw-bold">
+    Status -->
+  </label>
+  <input type="hidden" name="status" id="status" value="scheduled">
+  <!-- <select name="status" id="status" required>
+    <option value="" selected disabled>Select status</option>
+    <option value="scheduled">Scheduled</option>
+    <option value="confirmed">Confirmed</option>
+    <option value="completed">Completed</option>
+    <option value="cancelled">Cancelled</option>
+  </select> -->
+</div>
                 <!-- Submit Button Section -->
                 <div class="mt-4">
                   <button type="submit" class="btn-primary ">
@@ -143,6 +164,58 @@
         once: true, // Run animation only once when scrolling
       });
     </script>
+  <script>
+    document.getElementById('interviewType').addEventListener('change', function() {
+      const googleMeetLinkDiv = document.getElementById('googleMeetLink').parentElement;
+      if (this.value === 'remote') {
+        googleMeetLinkDiv.style.display = 'block';
+      } else {
+        googleMeetLinkDiv.style.display = 'none';
+      }
+    });
+  
+    document.querySelector('form').addEventListener('submit', function(event) {
+          event.preventDefault(); // Prevent default form submission
+  
+          const form = this;
+          const formData = new FormData(form);
+  
+          fetch('/employer/api/schedule_interview', { // Use the form's action URL
+              method: 'POST',
+              body: formData,
+              headers: {
+                  'X-CSRFToken': document.getElementById('csrf_token').value // Include CSRF token
+              }
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Success!',
+                      text: data.message,
+                  }).then(() => {
+                      window.location.href = '/employer/schedule_dashboard'; // Redirect on success
+                  });
+              } else {
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Error!',
+                      text: data.message,
+                  });
+              }
+          })
+          .catch(error => {
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Error!',
+                  text: 'An unexpected error occurred.',
+              });
+          });
+      });
+
+    
+  </script>
   </body>
 
 </html>

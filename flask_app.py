@@ -14,9 +14,11 @@ from routes import *
 
 socketio = init_socketio(app)
 # Configure session
-app.secret_key = os.environ.get('secret')
-app.config['SESSION_TYPE'] = 'filesystem'
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
+app.secret_key = os.environ.get("secret")
+app.config["SESSION_TYPE"] = "filesystem"
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=7)
+app.config["UPLOAD_FOLDER"] = "files"
+
 limiter = Limiter(
     key_func=get_remote_address,
     default_limits=[],
@@ -33,7 +35,7 @@ app.register_blueprint(routes_bp)
 # limiter.limit("5/minute")(signup)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
         socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
     except ImportError as e:

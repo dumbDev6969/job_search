@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, session
 from middlewares.verify_user import verify_user
 from middlewares.is_email_verified import is_email_verified
 from utils.database import get_db
@@ -130,33 +130,51 @@ def get_listing_api():
             </tr>
         """, 'total': 0}
 
-
 @manage_listing.route('/employer/api/dashboard_data')
 @verify_user
 @is_email_verified
 @is_requirements_done
 def get_dashboard_data():
     db = get_db()
+    employer_id = session.get('user_id')  # or however you retrieve the current employer's ID
 
-    # Total Candidates
-    total_candidates_query = text("SELECT COUNT(application_id) FROM applications")
-    total_candidates_result = db.execute_query(total_candidates_query)
-    total_candidates = total_candidates_result['output'][0]['COUNT(application_id)'] if total_candidates_result['success'] and total_candidates_result['output'] else 0
+    # Total Candidates (for this employer)
+    total_candidates_query = text("""
+        SELECT COUNT(a.application_id) 
+        FROM applications a
+        INNER JOIN jobs j ON a.job_id = j.job_id
+        WHERE j.employer_id = :employer_id
+    """)
+    total_candidates_result = db.execute_query(total_candidates_query, {'employer_id': employer_id})
+    total_candidates = total_candidates_result['output'][0]['COUNT(a.application_id)'] if total_candidates_result['success'] and total_candidates_result['output'] else 0
 
-    # Total Job Posted
-    total_jobs_query = text("SELECT COUNT(job_id) FROM jobs")
-    total_jobs_result = db.execute_query(total_jobs_query)
+    # Total Job Posted (by this employer)
+    total_jobs_query = text("""
+        SELECT COUNT(job_id) 
+        FROM jobs 
+        WHERE employer_id = :employer_id
+    """)
+    total_jobs_result = db.execute_query(total_jobs_query, {'employer_id': employer_id})
     total_job_posted = total_jobs_result['output'][0]['COUNT(job_id)'] if total_jobs_result['success'] and total_jobs_result['output'] else 0
 
-    # Active Job Listings
-    active_jobs_query = text("SELECT COUNT(job_id) FROM jobs WHERE expires_at > NOW() AND status = 'active'")
-    active_jobs_result = db.execute_query(active_jobs_query)
+    # Active Job Listings (by this employer)
+    active_jobs_query = text("""
+        SELECT COUNT(job_id) 
+        FROM jobs 
+        WHERE employer_id = :employer_id AND expires_at > NOW() AND status = 'active'
+    """)
+    active_jobs_result = db.execute_query(active_jobs_query, {'employer_id': employer_id})
     active_job_listings = active_jobs_result['output'][0]['COUNT(job_id)'] if active_jobs_result['success'] and active_jobs_result['output'] else 0
 
-    # Successful Hires (applications with status 'reviewed' or 'shortlisted')
-    successful_hires_query = text("SELECT COUNT(application_id) FROM applications WHERE status IN ('reviewed', 'shortlisted')")
-    successful_hires_result = db.execute_query(successful_hires_query)
-    successful_hires = successful_hires_result['output'][0]['COUNT(application_id)'] if successful_hires_result['success'] and successful_hires_result['output'] else 0
+    # Successful Hires (applications with status 'reviewed' or 'shortlisted' for this employer)
+    successful_hires_query = text("""
+        SELECT COUNT(a.application_id) 
+        FROM applications a
+        INNER JOIN jobs j ON a.job_id = j.job_id
+        WHERE j.employer_id = :employer_id AND a.status IN ('reviewed', 'shortlisted')
+    """)
+    successful_hires_result = db.execute_query(successful_hires_query, {'employer_id': employer_id})
+    successful_hires = successful_hires_result['output'][0]['COUNT(a.application_id)'] if successful_hires_result['success'] and successful_hires_result['output'] else 0
 
     return {
         'total_candidates': total_candidates,
@@ -164,8 +182,7 @@ def get_dashboard_data():
         'active_job_listings': active_job_listings,
         'successful_hires': successful_hires
     }
-    
-    
+
 @manage_listing.route('/employer/api/dashboard_tables')
 @verify_user
 @is_email_verified

@@ -163,7 +163,7 @@ def remove_saved_job():
             return jsonify({'error': 'Failed to remove job'}), 500
             
     except Exception as e:
-        db.rollback()
+      
         return jsonify({'error': str(e)}), 500
 
 @save_job.route('/api/jobseeker/save-job', methods=['POST'])
@@ -186,5 +186,5 @@ def save_job_():
         
         return jsonify({'success': True, 'message': 'Job saved successfully'})
     except Exception as e:
-        db.rollback()
+      
         return jsonify({'error': str(e)}), 500

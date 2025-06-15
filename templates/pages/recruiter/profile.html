@@ -149,17 +149,8 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody id="recent-applications-tbody">
-                            <tr>
-                                <td>John Doe</td>
-                                <td>Software Engineer</td>
-                                <td><span class="badge bg-success">Interview</span></td>
-                            </tr>
-                            <tr>
-                                <td>Jane Smith</td>
-                                <td>Project Manager</td>
-                                <td><span class="badge bg-warning">Pending</span></td>
-                            </tr>
+                        <tbody id="recent-applications">
+                            
                         </tbody>
                     </table>
                 </div>
@@ -171,6 +162,21 @@
     <!-- AOS JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="/assets/js/animation.js"></script>
+
+     <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                fetch('/employer/api/dashboard_data')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('total-candidates').innerText = data.total_candidates;
+                        document.getElementById('total-job-posted').innerText = data.total_job_posted;
+                        document.getElementById('active-job-listings').innerText = data.active_job_listings;
+                        document.getElementById('successful-hires').innerText = data.successful_hires;
+                    });
+            });
+        </script>
+
+        
     <script>
         AOS.init({
             duration: 1000,
@@ -189,6 +195,83 @@
                 }]
             }
         });
+
+         recent_applications = document.getElementById('recent-applications');
+
+            fetch('/api/employer/applicants')
+                .then(response => response.json())
+                .then(data => {
+                    recent_applications.innerHTML = data.applications
+                })
+
+
+
+
+
+
+
+                async function fetchAndPopulateProfile() {
+  try {
+    const response = await fetch('/api/employer/data/{{id}}');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+
+    if (!data.success || !data.data || data.data.length === 0) {
+      console.error('API response indicates failure or no data.');
+      return;
+    }
+
+    const employerData = data.data[0];
+
+    function setValue(elementId, value) {
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.textContent = value === null || value === '' ? 'Not Set' : value;
+      }
+    }
+
+   
+    setValue('company-name', employerData.company_name);
+    setValue('contact-email', employerData.email);
+    setValue('contact-website', employerData.company_website);
+    setValue('contact-phone', employerData.contact_website)
+     setValue('active-job-count', employerData.active_job_listings)
+     setValue('company-overview',employerData.field)
+
+    // Example of handling active job postings (assuming a simple list)
+    const activeJobPostingsList = document.getElementById('active-job-postings-list');
+    if (activeJobPostingsList) {
+      activeJobPostingsList.innerHTML = ''; // Clear existing content
+      if (employerData.active_job_postings && Array.isArray(employerData.active_job_postings)) {
+        employerData.active_job_postings.forEach(job => {
+          
+          const jobDiv = document.createElement('div');
+          jobDiv.classList.add('mb-3', 'p-3', 'bg-light', 'rounded');
+          jobDiv.innerHTML = `
+            <h6 class="mb-1">${job.title}</h6>
+            <small class="text-muted">Posted on: ${job.posted_at} </small><br />
+            <span class="badge bg-success mt-2"> ${job.status}</span>
+            <a href="/employer/job/${job.job_id}" class="btn btn-sm btn-outline-primary float-end">View</a>
+          `;
+          activeJobPostingsList.appendChild(jobDiv);
+        });
+      } else {
+        activeJobPostingsList.textContent = 'No active job postings.';
+      }
+    }
+
+  } catch (error) {
+    console.error('Error fetching or processing data:', error);
+    // Optionally, display an error message in the UI
+  }
+}
+
+// Call the function when the page loads
+document.addEventListener('DOMContentLoaded', fetchAndPopulateProfile);
+
+
     </script>
     <script src="/static/assets/js/recruiter_profile.js"></script>
 </body>

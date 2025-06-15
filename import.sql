@@ -3,12 +3,10 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2025 at 12:14 PM
+-- Generation Time: Jun 15, 2025 at 02:00 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
-DROP DATABASE IF EXISTS `job_portal_db`;
-CREATE DATABASE IF NOT EXISTS `job_portal_db`;
-USE `job_portal_db`;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -68,21 +66,6 @@ INSERT INTO `applications` (`application_id`, `job_id`, `seeker_id`, `resume_url
 -- --------------------------------------------------------
 
 --
--- Table structure for table `availability`
---
-
-CREATE TABLE `availability` (
-  `availability_id` bigint(20) UNSIGNED NOT NULL,
-  `employer_id` bigint(20) UNSIGNED NOT NULL,
-  `job_id` bigint(20) UNSIGNED NOT NULL,
-  `start_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `end_time` timestamp NULL DEFAULT NULL,
-  `timezone` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `employers`
 --
 
@@ -96,16 +79,47 @@ CREATE TABLE `employers` (
   `industry` varchar(100) DEFAULT NULL,
   `company_size` int(11) DEFAULT NULL CHECK (`company_size` > 0),
   `website` varchar(255) DEFAULT NULL,
-  `logo_url` varchar(255) DEFAULT NULL
+  `logo_url` varchar(255) DEFAULT NULL,
+  `register_id` varchar(100) NOT NULL,
+  `field` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `employers`
 --
 
-INSERT INTO `employers` (`employer_id`, `email`, `password_hash`, `created_at`, `last_login`, `company_name`, `industry`, `company_size`, `website`, `logo_url`) VALUES
-(2, 'kamjijajajo@gmail.com', '$2b$12$EmVDH7PYPLQSpKkBqN4Mterb9N5buSsJN9WvGOAWjFkscfIsryAA.', '2025-03-21 09:01:05', NULL, 'Innovatech', 'Programming', 1, '', ''),
-(3, 'kanjijajajo@gmail.com', '$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm', '2025-03-21 09:03:05', '2025-05-05 07:54:19', 'company001', 'Programming', 1, '', '');
+INSERT INTO `employers` (`employer_id`, `email`, `password_hash`, `created_at`, `last_login`, `company_name`, `industry`, `company_size`, `website`, `logo_url`, `register_id`, `field`) VALUES
+(2, 'kamjijajajo@gmail.com', '$2b$12$EmVDH7PYPLQSpKkBqN4Mterb9N5buSsJN9WvGOAWjFkscfIsryAA.', '2025-03-21 09:01:05', NULL, 'Innovatech', 'Programming', 1, '', '', '0', ''),
+(3, 'kanjijajajo@gmail.com', '$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm', '2025-03-21 09:03:05', '2025-06-15 06:20:21', 'company001', 'Programming', 1, '', '', '0', ''),
+(17, 'test_employer@gmail.com', '$2b$12$qKr1VuAdw7HuhfCcW9IrpeJ6/xek/qoolMwWpSnrix4NorqjMyHla', '2025-06-15 07:36:53', '2025-06-15 07:37:15', 'test_employer', NULL, 51, 'https:fake.com', '/uploads/logos/Screenshot_2025-05-13_185459.png', '616f99ef-9549-4078-a78d-5a7e21f7383c', 'we are a fucking morons');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employer_verification`
+--
+
+CREATE TABLE `employer_verification` (
+  `verification_id` bigint(20) UNSIGNED NOT NULL,
+  `employer_id` bigint(20) UNSIGNED NOT NULL,
+  `business_permit_url` varchar(255) NOT NULL,
+  `tax_id_number` varchar(100) NOT NULL,
+  `supporting_docs_urls` text DEFAULT NULL,
+  `linkedin_profile` varchar(255) DEFAULT NULL,
+  `facebook_profile` varchar(255) DEFAULT NULL,
+  `submitted_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  `approved_at` timestamp NULL DEFAULT NULL,
+  `admin_notes` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `employer_verification`
+--
+
+INSERT INTO `employer_verification` (`verification_id`, `employer_id`, `business_permit_url`, `tax_id_number`, `supporting_docs_urls`, `linkedin_profile`, `facebook_profile`, `submitted_at`, `status`, `approved_at`, `admin_notes`) VALUES
+(6, 3, '/files\\business_permits\\Screenshot 2025-06-01 201950.png', '12312', '/files\\supporting_docs\\Screenshot 2025-06-01 202726.png', 'https://fake.com', 'https://fake.com', '2025-06-15 06:32:08', 'pending', NULL, NULL),
+(8, 17, '/files\\business_permits\\Screenshot 2025-05-13 185447.png', '123', '/files\\supporting_docs\\Screenshot 2025-05-13 172553.png', 'https://fake.com', 'https://fake.com', '2025-06-15 07:37:08', 'pending', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -115,10 +129,22 @@ INSERT INTO `employers` (`employer_id`, `email`, `password_hash`, `created_at`, 
 
 CREATE TABLE `interviews` (
   `interview_id` bigint(20) UNSIGNED NOT NULL,
-  `availability_id` bigint(20) UNSIGNED NOT NULL,
   `seeker_id` bigint(20) UNSIGNED NOT NULL,
-  `status` enum('scheduled','confirmed','completed','cancelled') DEFAULT 'scheduled'
+  `status` enum('scheduled','confirmed','completed','cancelled') DEFAULT 'scheduled',
+  `date` date NOT NULL,
+  `time` time NOT NULL,
+  `interview_type` varchar(50) NOT NULL,
+  `location` varchar(50) DEFAULT NULL,
+  `gmeet_link` varchar(255) DEFAULT NULL,
+  `additional_notes` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `interviews`
+--
+
+INSERT INTO `interviews` (`interview_id`, `seeker_id`, `status`, `date`, `time`, `interview_type`, `location`, `gmeet_link`, `additional_notes`) VALUES
+(4, 139, 'scheduled', '2025-06-18', '04:56:00', 'in-person', 'building 100', NULL, 'find me');
 
 -- --------------------------------------------------------
 
@@ -145,8 +171,9 @@ CREATE TABLE `jobs` (
 
 INSERT INTO `jobs` (`job_id`, `employer_id`, `title`, `description`, `location`, `salary_range`, `employment_type`, `posted_at`, `expires_at`, `status`) VALUES
 (1, 3, 'progamming', 'a programming job', 'manila', '35,000 - 50,000', 'contract', '2025-03-23 03:18:19', '2025-04-22 16:00:00', 'active'),
-(2, 3, 'progamming', 'a programming job 1', 'manila', '35,000 - 50,000', 'contract', '2025-03-23 03:18:19', '2025-04-22 16:00:00', 'closed'),
-(3, 2, 'progamming', 'a programming job 1', 'manila', '35,000 - 50,000', 'contract', '2025-03-23 03:18:19', '2025-04-22 16:00:00', 'active');
+(2, 3, 'junior dev 1', '  a programming job 1', ' manila', ' 35,000 - 50,000', 'contract', '2025-03-23 03:18:19', '2025-04-22 16:00:00', 'closed'),
+(3, 2, 'progamming', 'a programming job 1', 'manila', '35,000 - 50,000', 'contract', '2025-03-23 03:18:19', '2025-04-22 16:00:00', 'active'),
+(4, 3, 'web dev', 'web dec with reactjs', 'manila', ' 35,000 - 50,000', 'part_time', '2025-06-15 05:53:50', '2025-07-10 16:00:00', 'active');
 
 -- --------------------------------------------------------
 
@@ -211,7 +238,7 @@ CREATE TABLE `job_seekers` (
 --
 
 INSERT INTO `job_seekers` (`seeker_id`, `email`, `password_hash`, `created_at`, `last_login`, `first_name`, `last_name`, `phone`, `province`, `municipality`, `degree`, `portfolio_url`) VALUES
-(139, 'jemcarlo46@gmail.com', '$2b$12$jJsAP1.XiA4IFyrGxSCW0eeHEPop1rxc2Gz8XnKcUjDkthM1iwjRC', '2025-03-25 02:49:13', '2025-05-04 05:42:15', 'Jemcarlo', 'Austria', '09207766194', 'Pangasinan', '', 'bsit', '');
+(139, 'jemcarlo46@gmail.com', '$2b$12$jJsAP1.XiA4IFyrGxSCW0eeHEPop1rxc2Gz8XnKcUjDkthM1iwjRC', '2025-03-25 02:49:13', '2025-06-15 07:58:26', 'Jemcarlo', 'Austria', '09207766194', 'Pangasinan', '', 'bsit', '');
 
 -- --------------------------------------------------------
 
@@ -222,6 +249,26 @@ INSERT INTO `job_seekers` (`seeker_id`, `email`, `password_hash`, `created_at`, 
 CREATE TABLE `job_skills` (
   `job_id` bigint(20) UNSIGNED NOT NULL,
   `skill_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `job_submissions`
+--
+
+CREATE TABLE `job_submissions` (
+  `id` int(11) NOT NULL,
+  `recruiter_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `type` enum('full-time','part-time','contract','freelance') NOT NULL,
+  `status` enum('new','pending','approved','rejected') NOT NULL DEFAULT 'new',
+  `location` varchar(255) DEFAULT NULL,
+  `salary_range` varchar(100) DEFAULT NULL,
+  `submission_date` datetime DEFAULT current_timestamp(),
+  `applicant_count` int(11) DEFAULT 0,
+  `approved_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -350,8 +397,13 @@ CREATE TABLE `ratings` (
 --
 -- Table structure for table `saved_jobs`
 --
--- Error reading structure for table job_portal_db.saved_jobs: #1030 - Got error 194 &quot;Tablespace is missing for a table&quot; from storage engine InnoDB
--- Error reading data for table job_portal_db.saved_jobs: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near &#039;FROM `job_portal_db`.`saved_jobs`&#039; at line 1
+
+CREATE TABLE `saved_jobs` (
+  `saved_job_id` bigint(20) UNSIGNED NOT NULL,
+  `seeker_id` bigint(20) UNSIGNED NOT NULL,
+  `job_id` bigint(20) UNSIGNED NOT NULL,
+  `saved_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -412,7 +464,8 @@ CREATE TABLE `verified_users` (
 
 INSERT INTO `verified_users` (`email`) VALUES
 ('jemcarlo46@gmail.com'),
-('kanjijajajo@gmail.com');
+('kanjijajajo@gmail.com'),
+('test_employer@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -434,14 +487,6 @@ ALTER TABLE `applications`
   ADD KEY `idx_status` (`status`);
 
 --
--- Indexes for table `availability`
---
-ALTER TABLE `availability`
-  ADD PRIMARY KEY (`availability_id`),
-  ADD KEY `idx_employer_id` (`employer_id`),
-  ADD KEY `idx_job_id` (`job_id`);
-
---
 -- Indexes for table `employers`
 --
 ALTER TABLE `employers`
@@ -450,11 +495,17 @@ ALTER TABLE `employers`
   ADD KEY `idx_email` (`email`);
 
 --
+-- Indexes for table `employer_verification`
+--
+ALTER TABLE `employer_verification`
+  ADD PRIMARY KEY (`verification_id`),
+  ADD UNIQUE KEY `unique_employer` (`employer_id`);
+
+--
 -- Indexes for table `interviews`
 --
 ALTER TABLE `interviews`
   ADD PRIMARY KEY (`interview_id`),
-  ADD KEY `idx_availability_id` (`availability_id`),
   ADD KEY `idx_seeker_id` (`seeker_id`);
 
 --
@@ -495,6 +546,13 @@ ALTER TABLE `job_skills`
   ADD PRIMARY KEY (`job_id`,`skill_id`),
   ADD KEY `idx_job_id` (`job_id`),
   ADD KEY `idx_skill_id` (`skill_id`);
+
+--
+-- Indexes for table `job_submissions`
+--
+ALTER TABLE `job_submissions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `recruiter_id` (`recruiter_id`);
 
 --
 -- Indexes for table `messages`
@@ -546,6 +604,14 @@ ALTER TABLE `ratings`
   ADD KEY `idx_job_id` (`job_id`);
 
 --
+-- Indexes for table `saved_jobs`
+--
+ALTER TABLE `saved_jobs`
+  ADD PRIMARY KEY (`saved_job_id`),
+  ADD KEY `seeker_id` (`seeker_id`),
+  ADD KEY `job_id` (`job_id`);
+
+--
 -- Indexes for table `seeker_profiles`
 --
 ALTER TABLE `seeker_profiles`
@@ -568,6 +634,12 @@ ALTER TABLE `skills`
   ADD UNIQUE KEY `name` (`name`);
 
 --
+-- Indexes for table `verified_users`
+--
+ALTER TABLE `verified_users`
+  ADD PRIMARY KEY (`email`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -578,28 +650,28 @@ ALTER TABLE `applications`
   MODIFY `application_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
 
 --
--- AUTO_INCREMENT for table `availability`
---
-ALTER TABLE `availability`
-  MODIFY `availability_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `employers`
 --
 ALTER TABLE `employers`
-  MODIFY `employer_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `employer_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `employer_verification`
+--
+ALTER TABLE `employer_verification`
+  MODIFY `verification_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `interviews`
 --
 ALTER TABLE `interviews`
-  MODIFY `interview_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `interview_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `jobs`
 --
 ALTER TABLE `jobs`
-  MODIFY `job_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `job_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `job_alerts`
@@ -618,6 +690,12 @@ ALTER TABLE `job_interest`
 --
 ALTER TABLE `job_seekers`
   MODIFY `seeker_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
+
+--
+-- AUTO_INCREMENT for table `job_submissions`
+--
+ALTER TABLE `job_submissions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `messages`
@@ -641,7 +719,7 @@ ALTER TABLE `otp_codes`
 -- AUTO_INCREMENT for table `password_reset_tokens`
 --
 ALTER TABLE `password_reset_tokens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `qualifications`
@@ -654,6 +732,12 @@ ALTER TABLE `qualifications`
 --
 ALTER TABLE `ratings`
   MODIFY `rating_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `saved_jobs`
+--
+ALTER TABLE `saved_jobs`
+  MODIFY `saved_job_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `seeker_profiles`
@@ -679,17 +763,15 @@ ALTER TABLE `applications`
   ADD CONSTRAINT `applications_ibfk_2` FOREIGN KEY (`seeker_id`) REFERENCES `job_seekers` (`seeker_id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `availability`
+-- Constraints for table `employer_verification`
 --
-ALTER TABLE `availability`
-  ADD CONSTRAINT `availability_ibfk_1` FOREIGN KEY (`employer_id`) REFERENCES `employers` (`employer_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `availability_ibfk_2` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE;
+ALTER TABLE `employer_verification`
+  ADD CONSTRAINT `fk_verification_employer` FOREIGN KEY (`employer_id`) REFERENCES `employers` (`employer_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `interviews`
 --
 ALTER TABLE `interviews`
-  ADD CONSTRAINT `interviews_ibfk_1` FOREIGN KEY (`availability_id`) REFERENCES `availability` (`availability_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `interviews_ibfk_2` FOREIGN KEY (`seeker_id`) REFERENCES `job_seekers` (`seeker_id`) ON DELETE CASCADE;
 
 --
@@ -728,6 +810,13 @@ ALTER TABLE `qualifications`
 --
 ALTER TABLE `ratings`
   ADD CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `saved_jobs`
+--
+ALTER TABLE `saved_jobs`
+  ADD CONSTRAINT `saved_jobs_ibfk_1` FOREIGN KEY (`seeker_id`) REFERENCES `job_seekers` (`seeker_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `saved_jobs_ibfk_2` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `seeker_profiles`

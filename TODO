@@ -1,10 +1,10 @@
 funtionality:
   notifications
 employer:
-  job view (actions and some placeholders)
-  company profile
-  company dashboard
+  company dashboard - upcoming interviews and recent applications 
   schedule
+  profile - chart,recent applications and job statistics
+  /employer/find-talent action button and pagination
 admin:
   all functionalities are not working
 jobseeker:

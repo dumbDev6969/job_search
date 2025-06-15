@@ -17,7 +17,7 @@ profile = Blueprint('profile', __name__)
 @is_email_verified
 @is_requirements_done
 def profile_():
-    return render_template('/pages/recruiter/profile.html')
+    return render_template('/pages/recruiter/profile.html',id = session.get('user_id'))
 
 from flask import g
 
@@ -106,7 +106,7 @@ def get_active_job_postings(id):
             WHERE j.employer_id = :employer_id AND a.status = 'shortlisted'
         ),
         company_profile AS (
-            SELECT company_name, logo_url, industry, company_size, website
+            SELECT company_name, logo_url, industry, company_size, website, field
             FROM employers
             WHERE employer_id = :employer_id
         ),
@@ -148,6 +148,7 @@ def get_active_job_postings(id):
             (SELECT active_job_listings FROM active_job_listings) AS active_job_listings,
             (SELECT successful_hires FROM successful_hires) AS successful_hires,
             (SELECT company_name FROM company_profile) AS company_name,
+            (SELECT field FROM company_profile) AS field,
             (SELECT logo_url FROM company_profile) AS logo_url,
             (SELECT industry FROM company_profile) AS industry,
             (SELECT company_size FROM company_profile) AS company_size,
@@ -185,6 +186,8 @@ def get_active_job_postings(id):
         # Process recent applications data
         if result["output"][0]['recent_applications']:
             result["output"][0]['recent_applications'] = result["output"][0]['recent_applications'].split('|')
+
+        print(result["output"])
         return jsonify({
             'success': True,
             'data': result["output"]

@@ -6,6 +6,10 @@ from sqlalchemy import text
 from werkzeug.utils import secure_filename
 from typing import Union
 import os
+import uuid
+
+def generate_uuid():
+    return str(uuid.uuid4())
 
 # Configure upload settings
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -18,6 +22,7 @@ signup = Blueprint('signup', __name__)
 
 # Define your routes using the Blueprint
 @signup.route('/signup', methods=['GET', 'POST'])
+@signup.route('/auth/confirm-role.html', methods=['GET', 'POST'])
 def confirm_role():
     session.clear()
     return render_template('auth/confirm-role.html')
@@ -54,6 +59,7 @@ def signup_employer() -> Union[Response, dict]:
         industry = form.get('industry')
         company_size = form.get('company_size')
         website = form.get('website')
+        field = form.get('field')
         
         # Handle file upload for logo
         logo_file = request.files.get('logo_url')
@@ -78,11 +84,12 @@ def signup_employer() -> Union[Response, dict]:
             # Insert employer data
             query = text("""
                 INSERT INTO employers 
-                (email, password_hash, company_name, industry, company_size, website, logo_url)
+                (email, password_hash, company_name, industry, company_size, website, logo_url, register_id, field)
                 VALUES 
-                (:email, :password_hash, :company_name, :industry, :company_size, :website, :logo_url)
+                (:email, :password_hash, :company_name, :industry, :company_size, :website, :logo_url, :register_id, :field)
             """)
-            
+            uuid = generate_uuid()
+            session['uuid'] = uuid
             result = db.execute_query(query, {
                 'email': email,
                 'password_hash': password_hash,
@@ -90,12 +97,19 @@ def signup_employer() -> Union[Response, dict]:
                 'industry': industry,
                 'company_size': company_size,
                 'website': website,
-                'logo_url': logo_url
+                'logo_url': logo_url,
+                'register_id':uuid,
+                'field': field
             })
             
             if result['success']:
-                return redirect("/login")
+                session['id_step_1_done'] = True
+                print("the results::::::::::::::::::::",result) 
+                return jsonify({'success': True, 'message': 'Registration successful'})
+                # return redirect("/login")
+                return redirect('/signup/requirements')
             else:
+                print(result)
                 return jsonify({'success': False, 'error': 'Registration failed', 'details': result['message']}), 400
                 
         except Exception as e:

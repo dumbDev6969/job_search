@@ -83,6 +83,7 @@ def post_job_():
 def get_jobs_api():
     try:
         db = get_db()
+        search_query = request.args.get("search", "")
 
         query = text("""
             SELECT 
@@ -102,7 +103,8 @@ def get_jobs_api():
         """)
 
         result = db.execute_query(query, {"employer_id": session.get("user_id")})
-
+        logging.debug(f"Search query: {search_query}")
+        logging.debug(f"SQL query: {query}")
         if result["success"]:
             return jsonify(result["output"]), 200
         else:
@@ -155,7 +157,7 @@ def get_job_cards():
             query += " AND j.employment_type = :job_type"
         if search_query:
             query += (
-                " AND (j.title LIKE :search_query OR j.description LIKE :search_query)"
+                " AND (j.title LIKE :search_query)"
             )
 
         query += " GROUP BY j.job_id"
@@ -307,7 +309,6 @@ def get_job_cards_public():
             params["job_type"] = job_type
 
         result = db.execute_query(text(query), params)
-
         if result["success"]:
             jobs_html = ""
             for job in result["output"]:

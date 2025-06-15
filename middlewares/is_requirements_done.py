@@ -6,8 +6,8 @@ def is_requirements_done(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'user_id' in session:
-            pass
-            # return redirect('/employer/requirements')
+            if not check_column_exists('employer_verification', 'employer_id', session['user_id']):
+                return redirect('/signup/employer/requirements')
                
         return f(*args, **kwargs)
     return decorated_function

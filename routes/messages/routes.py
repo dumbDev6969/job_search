@@ -69,6 +69,7 @@ def get_messages():
         sender_name = sender[1]['first_name'] + ' ' + sender[1]['last_name']
     sender_type = sender[0]
     sender_id = session.get('user_id')
+    
     return render_template('/pages/messaging/message.html',  sender_name=sender_name, sender_type=sender_type, sender_id=sender_id)
 
 

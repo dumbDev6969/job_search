@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JobxTech</title>
     <link rel="stylesheet" href="/assets/fonts.css">
-    
+
     <!-- AOS CSS -->
     <link rel="stylesheet" href="/aos-master/dist/aos.css">
 
@@ -17,6 +17,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/general.css">
     <link rel="stylesheet" href="/assets/custom_card.css">
+
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         /* Custom styles for the carousel */
         .carousel-item {
@@ -60,15 +66,25 @@
                         <input class="form-check-input" type="checkbox" id="internship">
                         <label class="form-check-label" for="internship">Internship</label>
                     </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="contract">
+                        <label class="form-check-label" for="contract">Contract</label>
+                    </div>
+
                 </div>
+
+
 
                 <div class="mb-3">
                     <label class="fw-bold">Salary Range</label>
-                    <div class="d-flex">
-                        <input type="number" class="form-control me-2" placeholder="Min">
-                        <input type="number" class="form-control" placeholder="Max">
-                    </div>
-                    <input type="range" class="form-range mt-2">
+                    <select ass="form-control name=" salary-range" title="Select a salary range" id="salary">
+                        <option value="" selected>All Salary Ranges</option>
+                        <option>20,000 - 35,000</option>
+                        <option>35,000 - 50,000</option>
+                        <option>50,000 - 75,000</option>
+                        <option>75,000+</option>
+                    </select>
                 </div>
 
                 <div class="mb-3">
@@ -82,10 +98,10 @@
                 </div>
 
                 <!-- Buttons -->
-                <div class="d-flex gap-2">
+                <!-- <div class="d-flex gap-2">
                     <button class="btn w-50">Clear all</button>
                     <button class="btn-primary w-50 rounded">Apply</button>
-                </div>
+                </div> -->
 
             </div>
             <div data-aos="fade-left" class="col-md-9">
@@ -114,6 +130,12 @@
             const jobCards = document.querySelectorAll('.job-card');
             searchJobs(searchTerm);
         })
+
+        salary = document.getElementById('salary');
+        salary.addEventListener('change', function () {
+            fetchFilteredJobs();
+        })
+
         AOS.init({
             duration: 1000, // Animation duration (1000ms = 1s)
             once: true, // Run animation only once when scrolling
@@ -128,6 +150,7 @@
                 }
                 const jobCardsHtml = await response.text();
                 document.querySelector('.job-cards').innerHTML = jobCardsHtml;
+                        applyToAllForms();
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -140,6 +163,7 @@
                 }
                 const jobCardsHtml = await response.text();
                 document.querySelector('.job-cards').innerHTML = jobCardsHtml;
+                        applyToAllForms();
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -148,17 +172,14 @@
         async function fetchFilteredJobs() {
             try {
                 const jobTypes = getSelectedJobTypes();
-                const salaryInputs = document.querySelectorAll('.form-control[type="number"]');
-                const minSalary = salaryInputs[0].value;
-                const maxSalary = salaryInputs[1].value;
+                const salary = document.getElementById('salary').value;
                 const location = document.querySelector('.form-select[title="Select a location"]').value;
                 const search = document.getElementById('job-search').value;
 
                 const params = new URLSearchParams();
                 if (search) params.append('search', search);
                 if (jobTypes.length > 0) params.append('job_types', jobTypes.join(','));
-                if (minSalary) params.append('min_salary', minSalary);
-                if (maxSalary) params.append('max_salary', maxSalary);
+                if (salary) params.append('salary', salary);
                 if (location && location !== 'All Locations') params.append('location', location);
 
                 const response = await fetch(`/api/jobseeker/get-jobs?${params.toString()}`);
@@ -175,6 +196,7 @@
 
         // Fetch jobs when page loads
         document.addEventListener('DOMContentLoaded', fetchJobs);
+                applyToAllForms();
     </script>
     <script>
         // Collect filter values and fetch jobs with filters
@@ -184,28 +206,27 @@
             if (document.getElementById('partTime').checked) types.push('Part-Time');
             if (document.getElementById('freelance').checked) types.push('Freelance');
             if (document.getElementById('internship').checked) types.push('Internship');
+            if (document.getElementById('contract').checked) types.push('Contract');
             return types;
         }
 
         function fetchJobs() {
             const jobTypes = getSelectedJobTypes();
-            const salaryInputs = document.querySelectorAll('.form-control[type="number"]');
-            const minSalary = salaryInputs[0].value;
-            const maxSalary = salaryInputs[1].value;
+            const salary = document.getElementById('salary').value;
             const location = document.querySelector('.form-select[title="Select a location"]').value;
             const search = document.getElementById('job-search').value;
 
             const params = new URLSearchParams();
             if (search) params.append('search', search);
             if (jobTypes.length > 0) params.append('job_types', jobTypes.join(','));
-            if (minSalary) params.append('min_salary', minSalary);
-            if (maxSalary) params.append('max_salary', maxSalary);
+            if (salary) params.append('salary', salary);
             if (location && location !== 'All Locations') params.append('location', location);
 
             fetch(`/api/jobseeker/get-jobs?${params.toString()}`)
                 .then(response => response.text())
                 .then(data => {
                     document.querySelector('.job-cards').innerHTML = data;
+                            applyToAllForms();
                 })
                 .catch(error => {
                     document.querySelector('.job-cards').innerHTML = '<div class="text-danger">Error loading jobs.</div>';
@@ -213,8 +234,8 @@
         }
 
         // Add event listeners to filters
-        ['fullTime','partTime','freelance','internship'].forEach(id => {
-          
+        ['fullTime', 'partTime', 'freelance', 'internship', 'contract'].forEach(id => {
+
             document.getElementById(id).addEventListener('change', fetchFilteredJobs);
         });
         document.querySelectorAll('.form-control[type="number"]').forEach(input => {
@@ -222,82 +243,81 @@
         });
         document.querySelector('.form-select[title="Select a location"]').addEventListener('change', fetchFilteredJobs);
         document.getElementById('job-search').addEventListener('input', fetchFilteredJobs);
-        document.getElementById('search-button').addEventListener('click', function(e) {
+        document.getElementById('search-button').addEventListener('click', function (e) {
             e.preventDefault();
             fetchFilteredJobs();
         });
         // Initial load
         fetchJobs();
 
-       
-function setupFormWithSweetAlert(formElement) {
-   
-    formElement.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const formAction = this.getAttribute('action');
-        const formMethod = this.getAttribute('method') || 'POST';
-        
-        // Show loading alert
-        Swal.fire({
-            title: 'Processing...',
-            html: 'Please wait while we process your request',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading()
-            }
-        });
-        
-        try {
-            const response = await fetch(formAction, {
-                method: formMethod,
-                body: new FormData(this)
-            });
-            
-            const result = await response.json();
-            
-            Swal.close();
-            
-            if (response.ok) {
+
+        function setupFormWithSweetAlert(formElement) {
+           
+            formElement.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const formAction = this.getAttribute('action');
+                const formMethod = this.getAttribute('method') || 'POST';
+
+                // Show loading alert
                 Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: result.message || 'Action completed successfully'
-                }).then(() => {
-                    // Optional: Redirect if specified in response
-                    if (result.redirect) {
-                        window.location.href = result.redirect;
+                    title: 'Processing...',
+                    html: 'Please wait while we process your request',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading()
                     }
                 });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: result.message || 'Action failed'
-                });
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Network error occurred'
+
+                try {
+                    const response = await fetch(formAction, {
+                        method: formMethod,
+                        body: new FormData(this)
+                    });
+
+                    const result = await response.json();
+
+                    Swal.close();
+
+                    if (response.ok) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: result.message || 'Action completed successfully'
+                        }).then(() => {
+                            // Optional: Redirect if specified in response
+                            if (result.redirect) {
+                                window.location.href = result.redirect;
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: result.message || 'Action failed'
+                        });
+                    }
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Network error occurred'
+                    });
+                }
             });
         }
-    });
-}
 
-// Apply to all forms on page load
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('form').forEach(form => {
-     
-        // Call the setup function for each form on page load
-        setupFormWithSweetAlert(form);
-        // setupFormWithSweetAlert(form);
-    });
-});
+        // Apply to all forms on page load
+        function applyToAllForms() {
+
+            
+                document.querySelectorAll('form').forEach(form => {
+
+                    // Call the setup function for each form on page load
+                    setupFormWithSweetAlert(form);
+                    // setupFormWithSweetAlert(form);
+                });
+           
+        }
+        applyToAllForms();
     </script>
-
-    
-</body>
-
-</html>
