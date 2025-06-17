@@ -3,6 +3,7 @@ from middlewares.verify_user import verify_user
 from middlewares.is_email_verified import is_email_verified
 from middlewares.user_access import jobseeker as jobseeker,admin,emplyer
 from middlewares.is_setup_done import is_interests_done,is_qualification_done
+from middlewares.skills_and_resume import is_skills_and_resume_done
 
 # Create a Blueprint
 jobseeker_skill_and_resume = Blueprint('jobseeker_profile', __name__)

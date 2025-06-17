@@ -3,6 +3,7 @@ from middlewares.verify_user import verify_user
 from middlewares.is_email_verified import is_email_verified
 from middlewares.user_access import jobseeker as job_seeker_middleware,admin,emplyer
 from middlewares.is_setup_done import is_interests_done,is_qualification_done
+from middlewares.skills_and_resume import is_skills_and_resume_done
 
 # Create a Blueprint
 jobseeker_post_job = Blueprint('jobseeker_post_job', __name__)
@@ -14,6 +15,7 @@ jobseeker_post_job = Blueprint('jobseeker_post_job', __name__)
 @is_qualification_done
 @is_interests_done
 @job_seeker_middleware
+@is_skills_and_resume_done
 def jobseeker_post_job_():
     """Render the job seeker's post job page.
 

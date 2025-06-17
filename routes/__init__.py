@@ -71,7 +71,9 @@
 from flask import Blueprint, render_template, redirect, request, url_for,session
 from utils.database import test_mysql
 
-
+from middlewares.is_employer_verified import is_employer_verified
+from utils.database import get_db
+from utils.check_if_exists import check_column_exists
 # Import route blueprints
 from routes.database import database
 from routes.geo import geo
@@ -134,7 +136,41 @@ def before_request():
         session['is_database_running'] = False
         if request.endpoint != 'routes.retry' and not request.path.startswith('/static'):
             return redirect(url_for('routes.retry'))
+    if 'user_id' in session:
+            logging.info(f"Checking if user with id {session['user_id']} is verified")
+            if  check_column_exists('employers', 'employer_id ', session['user_id']):
+                logging.info(f"Checking if employer with id {session['user_id']} is verified")
+                if not check_column_exists('employer_verification', 'employer_id', session['user_id']):
+                    logging.info(f"Employer with id {session['user_id']} is not verified")
+                    return redirect('/signup/employer/requirements')
+                db= get_db()
+                sql = text("SELECT * FROM employer_verification WHERE employer_id  = :employer_id")
+                result = db.execute_query(sql, {'employer_id': session['user_id'], 'status': 'approved'})
+                if result:
+                    logging.info(f"Employer with id {session['user_id']} is verified")
+                else:
+                    logging.info(f"Employer with id {session['user_id']} is not verified")
+                # return result
+                if result['output']:
+                    status = result['output'][0]['status']
+                    # return result
+                    logging.info(f"Employer with id {session['user_id']} has status {status}")
+                    if status == 'approved':
+                        logging.info(f"Employer with id {session['user_id']} is verified")
+                        session['is_employer_verified'] = True
+                        pass
+                    elif status == 'pending':
+                        logging.info(f"Employer with id {session['user_id']} is not verified")
+                        session['is_employer_verified'] = False
+                        return render_template('/pages/account_pending.html')
+                    elif status == 'rejected':
+                        logging.info(f"Employer with id {session['user_id']} is not verified")
+                        session['is_employer_verified'] = False
+                        return render_template('/pages/account_rejected.html')
 
+
+
+   
 # Retry route
 @routes_bp.route('/retry')
 def retry():

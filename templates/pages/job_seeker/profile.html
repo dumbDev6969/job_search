@@ -10,16 +10,16 @@
     <!-- AOS CSS -->
     <link rel="stylesheet" href="/aos-master/dist/aos.css">
 
-        <link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css">
 
 
-      <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
 
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/general.css">
     <style>
-       
+
     </style>
 </head>
 
@@ -30,7 +30,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Resume</h1>
-                    <button type="button" class="btn-close custom-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close custom-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
                     <img src="/assets/img/default_resume.jpg" alt="Default resume" class="img-fluid rounded shadow">
@@ -43,7 +44,7 @@
             </div>
         </div>
     </div>
-    
+
     {% include 'components/job-seeker-nav.html' %}
 
     <div class="container  mt-5 ">
@@ -55,12 +56,12 @@
                     <p>useremail@gmail,com</p>
                 </div>
                 <!-- Trigger Button -->
-                 <!-- Button trigger modal -->
-                 <button type="button" class="btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Resume
                 </button>
 
-                
+
             </div>
             <div data-aos="fade-up" class="col-md-2 d-flex  gap-4 flex-column">
                 <div class="qualifications">
@@ -93,7 +94,8 @@
                         </li>
                         <li class="mb-3">
                             <span class="d-block text-dark fw-medium">Preferred location:</span>
-                            <span class="text-secondary" data-block="preferred_location">[Your preferred location]</span>
+                            <span class="text-secondary" data-block="preferred_location">[Your preferred
+                                location]</span>
                         </li>
                         <li class="mb-3">
                             <span class="d-block text-dark fw-medium">Salary expectations:</span>
@@ -105,17 +107,18 @@
             <div data-aos="fade-down" class="col-md-9 ">
                 <h4 class="text-secondary">Saved jobs</h4>
                 <form action="#" class="d-flex gap-2 mb-3">
-                    <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
-                    <input type="search" name="job-search" id="job-search" class="form-control" placeholder="Search for jobs" aria-label="Search for jobs">
+                    <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" />
+                    <input type="search" name="job-search" id="job-search" class="form-control"
+                        placeholder="Search for jobs" aria-label="Search for jobs">
                     <button type="submit" class=" btn-primary">Search</button>
                 </form>
-                
+
                 <ul class="list-unstyled mt-2 " style="overflow : auto; height: 80vh;">
                     <li class="p-3 mb-3 rounded job" id="saved_jobs_container">
-                      
+
                     </li>
                 </ul>
-                
+
             </div>
 
         </div>
@@ -129,93 +132,107 @@
             once: true, // Run animation only once when scrolling
         });
     </script>
-<script>
-    async function fetchSavedJobs() {
-        try {
-            const searchTerm = document.getElementById('job-search').value;
-            const response = await fetch(`/api/jobseeker/get-saved-jobs?search=${encodeURIComponent(searchTerm)}`);
-            if (!response.ok) {
-                throw new Error('Failed to fetch saved jobs');
-            }
-            const jobsHtml = await response.text();
-           
-            document.getElementById('saved_jobs_container').innerHTML = jobsHtml;
-            
-            // Add event listeners to buttons
-            // document.querySelectorAll('.btn-danger').forEach(button => {
-            //     button.addEventListener('click', removeSavedJob);
-            // });
-            // document.querySelectorAll('.btn-primary').forEach(button => {
-            //     button.addEventListener('click', viewJob);
-            // });
-        } catch (error) {
-            console.error('Error fetching saved jobs:', error);
-        }
-    }
-    document.getElementById('job-search').addEventListener('keyup', fetchSavedJobs);
-    document.addEventListener('DOMContentLoaded', fetchSavedJobs);
-    // Function to fetch and display profile data
-    async function fetchProfileData() {
-        try {
-            const response = await fetch('/jobseeker/profile-data');
-            const data = await response.json();
-            
-            if (data && data.length > 0) {
-                const profile = data[0];
-                
-                // Update name and email
-                document.querySelector('h2').textContent = `${profile.first_name} ${profile.last_name}`;
-                document.querySelector('p').textContent = profile.email;
-                
-                // Update qualifications
-                document.querySelector('[data-block="degree"]').textContent = profile.degree;
-                document.querySelector('[data-block="school_graduated"]').textContent = profile.school_graduated;
-                document.querySelector('[data-block="certifications"]').textContent = profile.certifications;
-                document.querySelector('[data-block="specialized_training"]').textContent = profile.specialized_training;
-                
-                // Update interests
-                document.querySelector('[data-block="job_type"]').textContent = profile.job_type;
-                document.querySelector('[data-block="preferred_location"]').textContent = profile.preferred_location;
-                document.querySelector('[data-block="expected_salary_range"]').textContent = profile.expected_salary_range;
-            }
-        } catch (error) {
-            console.error('Error fetching profile data:', error);
-        }
-    }
-    
-    // Call the function when the page loads
-    document.addEventListener('DOMContentLoaded', fetchProfileData);
+    <script>
+        async function fetchSavedJobs() {
+            try {
+                const searchTerm = document.getElementById('job-search').value;
+                const response = await fetch(`/api/jobseeker/get-saved-jobs?search=${encodeURIComponent(searchTerm)}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch saved jobs');
+                }
+                const jobsHtml = await response.text();
 
-    
-// Function to remove saved job
-function removeSavedJob(jobId) {
-    fetch('/api/jobseeker/remove-job', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `job_id=${jobId}`
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Update UI to reflect job removal
-           fetchSavedJobs(); // Refresh the saved jobs list
-            
-            // Show success message
-            alert('Job removed from saved jobs successfully!');
-        } else {
-            // Show error message
-            alert(data.error || 'Failed to remove job');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while removing the job');
-    });
-}
+                document.getElementById('saved_jobs_container').innerHTML = jobsHtml;
 
-</script>
+                // Add event listeners to buttons
+                // document.querySelectorAll('.btn-danger').forEach(button => {
+                //     button.addEventListener('click', removeSavedJob);
+                // });
+                // document.querySelectorAll('.btn-primary').forEach(button => {
+                //     button.addEventListener('click', viewJob);
+                // });
+            } catch (error) {
+                console.error('Error fetching saved jobs:', error);
+            }
+        }
+        document.getElementById('job-search').addEventListener('keyup', fetchSavedJobs);
+        document.addEventListener('DOMContentLoaded', fetchSavedJobs);
+        // Function to fetch and display profile data
+        async function fetchProfileData() {
+            try {
+                const response = await fetch('/jobseeker/profile-data');
+                const data = await response.json();
+
+                if (data && data.length > 0) {
+                    const profile = data[0];
+
+                    // Update name and email
+                    document.querySelector('h2').textContent = `${profile.first_name} ${profile.last_name}`;
+                    document.querySelector('p').textContent = profile.email;
+
+                    // Update qualifications
+                    document.querySelector('[data-block="degree"]').textContent = profile.degree;
+                    document.querySelector('[data-block="school_graduated"]').textContent = profile.school_graduated;
+                    document.querySelector('[data-block="certifications"]').textContent = profile.certifications;
+                    document.querySelector('[data-block="specialized_training"]').textContent = profile.specialized_training;
+
+                    // Update interests
+                    document.querySelector('[data-block="job_type"]').textContent = profile.job_type;
+                    document.querySelector('[data-block="preferred_location"]').textContent = profile.preferred_location;
+                    document.querySelector('[data-block="expected_salary_range"]').textContent = profile.expected_salary_range;
+                }
+            } catch (error) {
+                console.error('Error fetching profile data:', error);
+            }
+        }
+
+        // Call the function when the page loads
+        document.addEventListener('DOMContentLoaded', fetchProfileData);
+
+
+        // Function to remove saved job
+        function removeSavedJob(jobId) {
+            if (!jobId) {
+                alert('Job ID is missing');
+                return;
+            }
+
+            const csrfToken = document.getElementById('csrf_token');
+            if (!csrfToken) {
+                alert('CSRF token is missing');
+                return;
+            }
+
+            fetch('/api/jobseeker/remove-job', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken.value
+                },
+                body: new URLSearchParams({ 'job_id': jobId })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update UI to reflect job removal
+                        fetchSavedJobs(); // Refresh the saved jobs list
+
+                        // Show success message
+                        alert('Job removed from saved jobs successfully!');
+                    } else {
+                        // Show error message
+                        alert(data.error || 'Failed to remove job');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while removing the job');
+                });
+        }
+
+
+
+    </script>
 </body>
 
 </html>

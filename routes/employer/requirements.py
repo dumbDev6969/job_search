@@ -15,21 +15,29 @@ requirements = Blueprint("requirements", __name__)
 @requirements.route("/signup/employer/requirements")
 @requirements.route("/signup/requirements")
 def requirements_():
-    if  session.get('user_id'):
-        if not session.get('id_step_1_done') and not session.get('user_id'):
+    if session.get("user_id"):
+        if not session.get("id_step_1_done") and not session.get("user_id"):
+            logger.info("User is not logged in, redirecting to signup page.")
             return redirect("/signup/employer")
     else:
-        if not session.get('id_step_1_done'):
+        if not session.get("id_step_1_done"):
+            logger.info("User has not completed step 1, redirecting to signup page.")
             return redirect("/signup/employer")
+    logger.info("Rendering requirements page.")
     return render_template("/pages/recruiter/requirement.html")
+
+
 
 
 @requirements.route("/submit_requirements", methods=["POST"])
 def submit_requirements():
     """Handles the submission of recruiter requirements form."""
+  
+
     try:
         db = get_db()
-        print("accpting from")
+        logger.info("Submitting recruiter requirements form.")
+
         # Retrieve form data
         business_permit = request.files.get("business_permit")
         tax_id = request.form.get("tax_id")
@@ -39,25 +47,26 @@ def submit_requirements():
 
         # Validate data (basic validation - you might want to add more)
         if not tax_id:
-            print("Tax ID is required.", "error")
+            logger.warning("Tax ID is required.")
             return redirect("/signup/requirements")  # Redirect back to the form
 
         # Get the employer_id from the session (assuming user is logged in)
         # employer_id = session.get("user_id")  # Or however you store the user ID
 
         if session['id_step_1_done'] and not session['uuid']:
-            print("User not logged in.", "error")
+            logger.warning("User not logged in.")
             return redirect("/login")  # Redirect to login
         is_uuid_valid = check_column_exists("employers", "register_id", session['uuid'])
-        print("thr giveen uuid is:", session['uuid'],is_uuid_valid)
+        logger.info("Given UUID is: %s", session['uuid'])
+        logger.info("UUID is valid: %s", is_uuid_valid)
         if is_uuid_valid:
             employer_id_query = text(f"SELECT employer_id FROM employers WHERE register_id = '{session['uuid']}'")
             result = db.execute_query(employer_id_query)
             if result["success"]:
                 employer_id = result["output"][0]["employer_id"]
-                print("the employer id was found")
+                logger.info("Employer ID was found: %s", employer_id)
         if not employer_id:
-            print("Employer ID not found.", "error")
+            logger.warning("Employer ID not found.")
             return redirect("/signup/requirements")
 
         # Handle file uploads and get URLs
@@ -91,25 +100,25 @@ def submit_requirements():
         )
 
         # Execute the query
- 
         result = db.execute_query(query, params)
 
         if result["success"]:
-            print("the data was inserted/n")
+            logger.info("Data was inserted.")
             return redirect("/login")  # Redirect to a success page
         else:
-            print("the data was not inserted/n")
-            print(result)
+            logger.warning("Data was not inserted.")
+            logger.warning(result)
             return redirect("/signup/requirements")  # Redirect back to the form
 
     except Exception as e:
-        print(f"Error submitting requirements: {str(e)}/n")
+        logger.exception("Error submitting requirements: %s", str(e))
         return redirect("/signup/requirements")  # Redirect back to the form
 
 
 def save_file(file, upload_folder):
     """Saves a file to the server and returns its URL."""
     if not file:
+        logger.info("No file provided for upload.")
         return None
 
     try:
@@ -123,10 +132,11 @@ def save_file(file, upload_folder):
 
         # Save the file
         file.save(file_path)
+        logger.info("File saved successfully: %s", file_path)
 
         # Return the file path (or URL, depending on your setup)
         return "/" + file_path  # Assuming files are served from the root
 
     except Exception as e:
-        print(f"Error saving file: {str(e)}")
+        logger.error("Error saving file: %s", str(e))
         return None

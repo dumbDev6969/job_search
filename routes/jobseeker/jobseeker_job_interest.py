@@ -6,12 +6,14 @@ from utils.database import get_db
 from sqlalchemy import text
 from utils.check_if_exists import check_column_exists
 jobseeker_job_interest = Blueprint('jobseeker_job_interest', __name__)
+from middlewares.skills_and_resume import is_skills_and_resume_done
 
 # Define your routes using the Blueprint
 @jobseeker_job_interest.route('/jobseeker/job-interest' , methods=['GET'])
 @verify_user
 @is_email_verified
 @interests_done
+@is_skills_and_resume_done
 def jobseeker_job_interest_():
     """Render the job seeker's job interest page.
 

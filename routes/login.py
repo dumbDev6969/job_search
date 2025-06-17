@@ -1,12 +1,12 @@
-import logging
-from flask import Blueprint, request, render_template, jsonify, session,redirect
+from flask import Blueprint, request, render_template, jsonify, session, redirect
 from utils.database import get_db
 from utils.pasword_hash import verify_password
 from utils.email_utils import check_email_exists
-from utils.otp_utils import generate_otp,send_otp_email
+from utils.otp_utils import generate_otp, send_otp_email
 from sqlalchemy import text
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
 from middlewares.is_user_logged_in import is_user_logged_in
+
 # Create a Blueprint
 login = Blueprint('login', __name__)
 
@@ -35,11 +35,13 @@ def login_user():
         password = form.get('password')
         
         if not email or not password:
+            logging.error('Email and password are required but not provided')
             return jsonify({'error': 'Email and password are required'}), 400
             
         try:
             # Get database connection
             db = get_db()
+            logging.info('Checking if email exists in the database')
             check_email_query = text("""
                 SELECT 
                     CASE    
@@ -53,21 +55,16 @@ def login_user():
             email_check_result = db.execute_query(check_email_query, {'email': email})
             logging.info(f"Email check result: {email_check_result}")
             if not email_check_result['success'] or not email_check_result['output'][0]['email_exists']:
-                
+                logging.warning(f"Email {email} does not exist")
                 return jsonify({'error': 'Email does not exist'}), 404
-            # Check if user is verified
+            
+            logging.info('Checking if user is verified')
             verify_query = text("SELECT COUNT(*) as count FROM verified_users WHERE email = :email")
             verify_result = db.execute_query(verify_query, {'email': email})
             
-            # if not verify_result['success'] or verify_result['output'][0]['count'] == 0:
-            #     return redirect('/verify-account')
-            #     return jsonify({'error': 'Email not verified', 'email': email}), 401
-            
             # First check if email exists in either table
-           
-            
-            
             # First check job seekers table
+            logging.info('Checking for job seeker login')
             seeker_query = text("""
                 SELECT seeker_id, email, password_hash, first_name, last_name, 
                        phone, province, municipality, degree, portfolio_url 
@@ -78,6 +75,7 @@ def login_user():
             seeker_result = db.execute_query(seeker_query, {'email': email})
             
             # Then check employers table
+            logging.info('Checking for employer login')
             employer_query = text("""
                 SELECT employer_id, email, password_hash, company_name, 
                        industry, company_size, website, logo_url
@@ -92,6 +90,7 @@ def login_user():
                 user = seeker_result['output'][0]
                 
                 if verify_password(password, user['password_hash'].encode('utf-8')):
+                    logging.info(f"Job seeker {user['email']} verified")
                     # Update last_login timestamp
                     update_query = text("""
                         UPDATE job_seekers 
@@ -118,14 +117,15 @@ def login_user():
                         'portfolio_url': user['portfolio_url']
                     }
                     session.permanent = True
+                    logging.info('Redirecting to job seeker dashboard')
                     return redirect("/dashboard")
-                    return redirect('/jobseeker/find-jobs')
                     
             # Handle employer login
             elif employer_result['success'] and employer_result['output']:
                 user = employer_result['output'][0]
                 
                 if verify_password(password, user['password_hash'].encode('utf-8')):
+                    logging.info(f"Employer {user['email']} verified")
                     # Update last_login timestamp
                     update_query = text("""
                         UPDATE employers 
@@ -150,10 +150,11 @@ def login_user():
                         'logo_url': user['logo_url']
                     }
                     session.permanent = True
+                    logging.info('Redirecting to employer dashboard')
                     return redirect("/dashboard")
-                    return redirect("/pages/recruiter/dashboard.html")
+            
             else:
-                print("checking admin")
+                logging.info("Checking admin credentials")
                 admin_query = text("""
                     SELECT username, email, password
                     FROM admin 
@@ -161,35 +162,30 @@ def login_user():
                 """)
     
                 admin_result = db.execute_query(admin_query, {'email': email})
-                print("admin result", admin_result)
+                logging.info(f"Admin result: {admin_result}")
                 
                 if admin_result['success'] and admin_result['output']:
                     user = admin_result['output'][0]
-                    print("ad",password,user,user['password'])
-                    print("verifyin password:::",verify_password(password, user['password']))
+                    logging.info(f"Admin login attempt with email: {email}")
                     
                     if verify_password(password, user['password']):
-                        print("admin verified")
+                        logging.info("Admin verified")
                         # Set session data for admin
                         session['user_id'] = user['username']
                         session['email'] = user['email']
                         session['username'] = user['username']
                         session['user_type'] = 'admin'
                         session.permanent = True
+                        logging.info('Redirecting to admin index')
                         return redirect("/admin/index")
-                    # return jsonify({'error': 'Invalid credentials'}), 401
-                # return jsonify({'error': 'Invalid credentials'}), 401
-                       
+                
+            logging.error('Invalid credentials provided')
             return jsonify({'error': 'Invalid credentials'}), 401
-            # return render_template("/auth/otp_virification.html",email=email,error='Invalid credentials')
-                            
+            
         except Exception as e:
-            print("errrrrrrrrrrrrrrrrr",str(e))
+            logging.error(f"Login failed with error: {str(e)}")
             return jsonify({'error': 'Login failed', 'details': str(e)}), 500
             
-            
     else:
-        # Render the login form
-        print("rendering login form")
+        logging.info("Rendering login form")
         return render_template('auth/login.html')
-logging.basicConfig(level=logging.INFO)

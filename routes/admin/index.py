@@ -9,6 +9,8 @@ index = Blueprint('index', __name__)
 @index.route('/admin/')
 @index.route('/admin/index')
 @index.route('/admin/dashboard.html')
+@index.route('/admin/dashboard')
+@index.route('/admin/dashboard/')
 @verify_user
 def index_():
     return render_template('/pages/admin/index.html')

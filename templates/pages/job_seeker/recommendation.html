@@ -1,74 +1,482 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobxTech</title>
-    <link rel="stylesheet" href="/assets/fonts.css">
-    <link rel="stylesheet" href="/assets/scheme.css">
-    <!-- AOS CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
-
-    <link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css">
-    <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
-
+    <title>JobxTech - Enhanced Job Cards</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="/assets/general.css">
-    <link rel="stylesheet" href="/assets/custom_card.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --dark: #1d3557;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border: #dee2e6;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --card-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 100px auto 40px;
+            padding: 0 15px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h2 {
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 2.2rem;
+        }
+        
+        .header p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        .view-options {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 25px;
+        }
+        
+        .view-btn {
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--gray);
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        
+        .view-btn:first-child {
+            border-radius: 30px 0 0 30px;
+            border-right: none;
+        }
+        
+        .view-btn:last-child {
+            border-radius: 0 30px 30px 0;
+            border-left: none;
+        }
+        
+        .view-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .view-btn:hover:not(.active) {
+            background: var(--light-gray);
+        }
+        
+        .job-cards-container {
+            transition: var(--transition);
+        }
+        
+        /* Grid View */
+        .grid-view {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        
+        /* List View */
+        .list-view {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .job-card {
+            background: white;
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+        
+        .job-card.grid-view-card {
+            max-width: 100%;
+        }
+        
+        .job-card.list-view-card {
+            flex-direction: row;
+        }
+        
+        .job-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--light-gray);
+            flex: 1;
+        }
+        
+        .job-card.list-view-card .job-header {
+            flex: 1;
+            border-bottom: none;
+            border-right: 1px solid var(--light-gray);
+        }
+        
+        .company-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 24px;
+            color: var(--primary);
+            overflow: hidden;
+        }
+        
+        .company-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .job-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .company-name {
+            color: var(--primary);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .job-details {
+            margin: 15px 0;
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .detail-item i {
+            width: 24px;
+            color: var(--gray);
+            margin-right: 10px;
+            text-align: center;
+        }
+        
+        .salary {
+            font-weight: 600;
+            color: #2a9d8f;
+            font-size: 1.1rem;
+        }
+        
+        .job-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .tag {
+            background: var(--light);
+            color: var(--gray);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        .job-actions {
+            padding: 15px 20px;
+            background: #f9fafb;
+        }
+        
+        .job-card.list-view-card .job-actions {
+            width: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+        
+        .btn-accept {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-accept:hover {
+            background: var(--secondary);
+        }
+        
+        .btn-reject {
+            background: white;
+            color: var(--gray);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-reject:hover {
+            background: var(--light-gray);
+        }
+        
+        .job-date {
+            text-align: center;
+            margin-top: 12px;
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .job-card.list-view-card {
+                flex-direction: column;
+            }
+            
+            .job-card.list-view-card .job-header {
+                border-right: none;
+                border-bottom: 1px solid var(--light-gray);
+            }
+            
+            .job-card.list-view-card .job-actions {
+                width: 100%;
+            }
+            
+            .grid-view {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .no-jobs {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .no-jobs i {
+            font-size: 3rem;
+            color: var(--light-gray);
+            margin-bottom: 20px;
+        }
+        
+        .no-jobs h3 {
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+        
+        .no-jobs p {
+            color: var(--gray);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
-
 <body>
-
-
-
-    {% include 'components/job-seeker-nav.html' %}
-
-
-    <div data-aos="fade-up" class="container" style="margin-top: 100px;">
-        <div class="row justify-content-center">
-            <div class="col-md-10 col-lg-8">
-                <h2 class="text-center mb-4">Job Recommendations</h2>
-
-                <!-- Job Cards -->
-                <div class="bg-white rounded-3 shadow-sm p-4 mb-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <img src="/assets/img/default_profile.jpg" class="rounded-circle me-3 img-fluid"
-                            style="width: 60px; height: 60px;">
-                            
-                        <div>
-                            <h5 class="mb-0">TechCorp</h5>
-                            <small class="text-muted">Frontend Developer</small>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <p class="text-secondary mb-1"><i class="fas fa-map-marker-alt me-2"></i> Remote</p>
-                        <p class="h5 text-primary">50,000 - 70,000</p>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <button class="btn-outline-primary rounded-pill">
-                            <i class="fas fa-check me-2"></i> Accept
-                        </button>
-                        <button class="btn-outline-secondary rounded-pill">
-                            <i class="fas fa-times me-2"></i> Reject
-                        </button>
-                    </div>
-                </div>
-
-                
+       {% include 'components/job-seeker-nav.html' %}
+    <div class="container">
+        <div class="header" data-aos="fade-up">
+            <h2>Job Recommendations</h2>
+            <p>Discover your next career opportunity with our personalized recommendations</p>
+        </div>
+        
+        <div class="view-options" data-aos="fade-up">
+            <div class="btn-group">
+                <button id="grid-view-btn" class="view-btn active">
+                    <i class="fas fa-th-large"></i> Grid View
+                </button>
+                <button id="list-view-btn" class="view-btn">
+                    <i class="fas fa-list"></i> List View
+                </button>
             </div>
         </div>
-    </div>
+        
+        <div id="job-cards-container" class="job-cards-container grid-view" data-aos="fade-up">
+            <!-- Job cards will be inserted here dynamically -->
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script src="/assets/js/animation.js"></script>
     <script>
+        // Initialize AOS
         AOS.init({
-            duration: 1000, // Animation duration (1000ms = 1s)
-            once: true, // Run animation only once when scrolling
+            duration: 800,
+            once: true
         });
+        let jobs = [];
+        // Sample job data
+        fetch('/jobseeker/get-recomendations')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        jobs = data.jobs;
+                         getRecommendations();
+                       
+                       
+                    } else {
+                       alert("Failed to fetch job recommendations");
+                    }
+                })
+                .catch(error => {
+                  alert("An error occurred while fetching job recommendations");
+                });
+        
+        // DOM Elements
+        const jobCardsContainer = document.getElementById('job-cards-container');
+        const gridViewBtn = document.getElementById('grid-view-btn');
+        const listViewBtn = document.getElementById('list-view-btn');
+        
+        // Set initial view
+        let currentView = 'grid';
+        
+        // Render job cards based on current view
+        function renderJobCards() {
+            jobCardsContainer.innerHTML = '';
+            
+            if (!jobs) {
+                jobCardsContainer.innerHTML = `
+                    <div class="no-jobs">
+                        <i class="fas fa-folder-open"></i>
+                        <h3>No Job Recommendations Available</h3>
+                        <p>We couldn't find any job recommendations based on your profile. Please check back later or update your profile preferences.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            jobs.forEach(job => {
+                const jobCard = document.createElement('div');
+                jobCard.className = `job-card ${currentView === 'grid' ? 'grid-view-card' : 'list-view-card'}`;
+                
+                jobCard.innerHTML = `
+                    <div class="job-header">
+                        <div class="company-info">
+                            <div class="company-logo">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div>
+                                <div class="job-title">${job.title}</div>
+                                <div class="company-name">${job.employer}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="job-details">
+                            <div class="detail-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${job.location}</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-dollar-sign"></i>
+                                <span class="salary">${job.salary_range}</span>
+                            </div>
+                        </div>
+                        
+                       
+                    </div>
+                    
+                    <div class="job-actions">
+                        <div class="action-buttons">
+                            <button class="btn btn-accept" onclick='window.location.href="/job/view/${job.id}"'>View Job</button>
+                        </div>
+                      
+                    </div>
+                `;
+                
+                jobCardsContainer.appendChild(jobCard);
+            });
+        }
+        
+        // Toggle view function
+        function toggleView(view) {
+            currentView = view;
+            jobCardsContainer.className = `job-cards-container ${view}-view`;
+            
+            // Update active button
+            if (view === 'grid') {
+                gridViewBtn.classList.add('active');
+                listViewBtn.classList.remove('active');
+            } else {
+                listViewBtn.classList.add('active');
+                gridViewBtn.classList.remove('active');
+            }
+            
+            renderJobCards();
+        }
+        
+        // Event listeners for view toggles
+        gridViewBtn.addEventListener('click', () => toggleView('grid'));
+        listViewBtn.addEventListener('click', () => toggleView('list'));
+        
+        // Initialize the page
+        renderJobCards();
+        
+        // Simulate fetching job recommendations
+        function getRecommendations() {
+            // This would be your fetch call to the server
+            // For demo purposes, we're using the sample jobs array
+            renderJobCards();
+        }
+        
+        // Initialize job recommendations
+        getRecommendations();
     </script>
 </body>
-
 </html>

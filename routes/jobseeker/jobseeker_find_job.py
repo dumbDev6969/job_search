@@ -6,6 +6,7 @@ from middlewares.user_access import jobseeker as job_seeker_middleware, admin, e
 from utils.database import get_db
 from sqlalchemy import text
 from flask_wtf.csrf import generate_csrf
+from middlewares.skills_and_resume import is_skills_and_resume_done
 
 # Create a Blueprint
 jobseeker_find_job = Blueprint("jobseeker_find_job", __name__)
@@ -24,6 +25,7 @@ def redirect_to_jobseeker_dashboard():
 @is_qualification_done
 @is_interests_done
 @job_seeker_middleware
+@is_skills_and_resume_done
 def jobseeker_find_job_():
     return render_template("/pages/job_seeker/find_jobs.html")
 

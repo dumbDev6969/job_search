@@ -6,6 +6,7 @@ from utils.database import get_db
 from sqlalchemy import text
 from middlewares.is_setup_done  import qualification_done
 from utils.check_if_exists import check_column_exists
+from middlewares.skills_and_resume import is_skills_and_resume_done
 
 # Create a Blueprint
 jobseeker_qualification = Blueprint('jobseeker_qualification', __name__)
@@ -15,6 +16,7 @@ jobseeker_qualification = Blueprint('jobseeker_qualification', __name__)
 @verify_user
 @is_email_verified
 @qualification_done
+@is_skills_and_resume_done
 def jobseeker_qualification_():
     """Render the job seeker's qualification page.
 

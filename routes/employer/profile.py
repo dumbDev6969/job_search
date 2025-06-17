@@ -17,61 +17,23 @@ profile = Blueprint('profile', __name__)
 @is_email_verified
 @is_requirements_done
 def profile_():
+    """
+    Render the employer profile page.
+
+    This route displays the profile page for employers where they can view their
+    personal information and profile details. Access requires user authentication
+    and email verification.
+
+    Decorators:
+        @verify_user: Ensures the user is authenticated
+        @is_email_verified: Ensures the user's email is verified
+        @is_requirements_done: Ensures the user has completed the requirements
+
+    Returns:
+        rendered template: The employer profile HTML page
+    """
     return render_template('/pages/recruiter/profile.html',id = session.get('user_id'))
 
-from flask import g
-
-@profile.route('/jobseeker/profile-update', methods=['POST'])
-@verify_user
-@is_email_verified
-@is_requirements_done
-def update_jobseeker_profile():
-    data = request.get_json()
-    db = get_db()
-    seeker_id = session.get('user_id')
-    if seeker_id is None:
-        return jsonify({'success': False, 'message': 'User not logged in.'}), 401
-
-    # Update qualifications
-    qual_query = text("""
-        UPDATE qualifications
-        SET degree = :degree,
-            school_graduated = :school_graduated,
-            certifications = :certifications,
-            specialized_training = :specialized_training
-        WHERE seeker_id = :seeker_id
-    """)
-    qual_params = {
-        "seeker_id": seeker_id,
-        "degree": data.get("degree", ""),
-        "school_graduated": data.get("school_graduated", ""),
-        "certifications": data.get("certifications", ""),
-        "specialized_training": data.get("specialized_training", "")
-    }
-    qual_result = db.execute_query(qual_query, qual_params)
-
-    # Update job interest
-    interest_query = text("""
-        UPDATE job_interest
-        SET job_interest = :job_interest,
-            job_type = :job_type,
-            preferred_location = :preferred_location,
-            expected_salary_range = :expected_salary_range
-        WHERE user_id = :user_id
-    """)
-    interest_params = {
-        "user_id": seeker_id,
-        "job_interest": data.get("job_interest", ""),
-        "job_type": data.get("job_type", ""),
-        "preferred_location": data.get("preferred_location", ""),
-        "expected_salary_range": data.get("expected_salary_range", "")
-    }
-    interest_result = db.execute_query(interest_query, interest_params)
-
-    if qual_result["success"] and interest_result["success"]:
-        return jsonify({'success': True, 'message': 'Profile updated!'})
-    else:
-        return jsonify({'success': False, 'message': 'Failed to update profile.'}), 500
 
 
 @profile.route('/api/employer/data/<int:id>', methods=['GET'])
@@ -79,6 +41,25 @@ def update_jobseeker_profile():
 @is_email_verified
 @is_requirements_done
 def get_active_job_postings(id):
+    """
+    Retrieve active job postings and related statistics for an employer.
+
+    This function queries the database to gather various statistics and
+    information about an employer's active job postings, including the number
+    of total candidates, total jobs posted, active job listings, successful
+    hires, and company profile details. Additionally, it fetches contact
+    information, job statistics, chart data on application statuses, and
+    recent applications.
+
+    Parameters:
+        id (int): The employer's ID to query data for.
+
+    Returns:
+        JSON response containing success status and the retrieved data if
+        successful, otherwise a JSON response with an error message and
+        HTTP status 500.
+    """
+
     db = get_db()
     employer_id = id  # Using static user ID as requested
     

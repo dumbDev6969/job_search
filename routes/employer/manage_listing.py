@@ -19,6 +19,8 @@ def manage_listing_():
     return render_template('/pages/recruiter/manage_listing.html')
 
 
+import logging
+
 @manage_listing.route('/employer/api/get_listing', methods=['GET', 'POST'])
 @verify_user
 @is_email_verified
@@ -29,10 +31,10 @@ def get_listing_api():
     salary = request.args.get('salary', '')
     location = request.args.get('location', '')
     skills = request.args.get('skills', '')
-    print("search", search)
-    print("salary", salary)
-    print("location", location)
-    print("skills", skills)
+
+    logging.info(f"Requested job listing with search: {search}, salary: {salary},"
+                 f" location: {location}, skills: {skills}")
+
     query = """
     WITH filtered_applications AS (
         SELECT 
@@ -66,8 +68,8 @@ def get_listing_api():
         conditions = []
 
         if search:
-            conditions.append(f"((LOWER(applicant_name) LIKE LOWER('%{search}%')) OR "
-                              f"(LOWER(skills) LIKE LOWER('%{search}%')))")
+            conditions.append(f"(LOWER(applicant_name) LIKE LOWER('%{search}%')) OR "
+                              f"(LOWER(skills) LIKE LOWER('%{search}%'))")
 
         if salary:
             conditions.append(f"salary_range LIKE '%{salary}%'")
@@ -82,7 +84,8 @@ def get_listing_api():
         query += " ORDER BY applied_at DESC"
     else:
         query += " ORDER BY applied_at DESC"
-    print("query", query)
+
+    logging.info(f"Constructed query: {query}")
 
     result = db.execute_query(text(query))
     total_candidates = 0
@@ -90,7 +93,7 @@ def get_listing_api():
     if result['success'] and result['output']:
         jobs = result['output']
         total_candidates = len(jobs)
-        print("skils::::::::::::", jobs)
+        logging.info(f"Found {total_candidates} job applications")
         for job in jobs:
             html_content += f"""<tr>
                 <td><input type="checkbox" class="form-check-input"></td>
@@ -118,6 +121,7 @@ def get_listing_api():
             </tr>"""
         return {'html': html_content, 'total': total_candidates}
     else:
+        logging.info("No job applications found")
         return {'html': """
             <tr>
                 <td colspan="7" class="text-center py-4">
@@ -146,7 +150,11 @@ def get_dashboard_data():
         WHERE j.employer_id = :employer_id
     """)
     total_candidates_result = db.execute_query(total_candidates_query, {'employer_id': employer_id})
-    total_candidates = total_candidates_result['output'][0]['COUNT(a.application_id)'] if total_candidates_result['success'] and total_candidates_result['output'] else 0
+    if total_candidates_result['success'] and total_candidates_result['output']:
+        total_candidates = total_candidates_result['output'][0]['COUNT(a.application_id)']
+    else:
+        total_candidates = 0
+        logging.info("Failed to retrieve total candidates")
 
     # Total Job Posted (by this employer)
     total_jobs_query = text("""
@@ -155,7 +163,11 @@ def get_dashboard_data():
         WHERE employer_id = :employer_id
     """)
     total_jobs_result = db.execute_query(total_jobs_query, {'employer_id': employer_id})
-    total_job_posted = total_jobs_result['output'][0]['COUNT(job_id)'] if total_jobs_result['success'] and total_jobs_result['output'] else 0
+    if total_jobs_result['success'] and total_jobs_result['output']:
+        total_job_posted = total_jobs_result['output'][0]['COUNT(job_id)']
+    else:
+        total_job_posted = 0
+        logging.info("Failed to retrieve total jobs posted")
 
     # Active Job Listings (by this employer)
     active_jobs_query = text("""
@@ -164,7 +176,11 @@ def get_dashboard_data():
         WHERE employer_id = :employer_id AND expires_at > NOW() AND status = 'active'
     """)
     active_jobs_result = db.execute_query(active_jobs_query, {'employer_id': employer_id})
-    active_job_listings = active_jobs_result['output'][0]['COUNT(job_id)'] if active_jobs_result['success'] and active_jobs_result['output'] else 0
+    if active_jobs_result['success'] and active_jobs_result['output']:
+        active_job_listings = active_jobs_result['output'][0]['COUNT(job_id)']
+    else:
+        active_job_listings = 0
+        logging.info("Failed to retrieve active job listings")
 
     # Successful Hires (applications with status 'reviewed' or 'shortlisted' for this employer)
     successful_hires_query = text("""
@@ -174,7 +190,11 @@ def get_dashboard_data():
         WHERE j.employer_id = :employer_id AND a.status IN ('reviewed', 'shortlisted')
     """)
     successful_hires_result = db.execute_query(successful_hires_query, {'employer_id': employer_id})
-    successful_hires = successful_hires_result['output'][0]['COUNT(a.application_id)'] if successful_hires_result['success'] and successful_hires_result['output'] else 0
+    if successful_hires_result['success'] and successful_hires_result['output']:
+        successful_hires = successful_hires_result['output'][0]['COUNT(a.application_id)']
+    else:
+        successful_hires = 0
+        logging.info("Failed to retrieve successful hires")
 
     return {
         'total_candidates': total_candidates,
@@ -188,6 +208,7 @@ def get_dashboard_data():
 @is_email_verified
 def get_dashboard_tables():
     db = get_db()
+    logger = logging.getLogger('flask_app')
 
     # Candidates Table Data
     candidates_query = text("""
@@ -202,7 +223,11 @@ def get_dashboard_tables():
         ORDER BY a.applied_at DESC
     """)
     candidates_result = db.execute_query(candidates_query)
-    candidates_data = candidates_result['output'] if candidates_result['success'] else []
+    if candidates_result['success']:
+        candidates_data = candidates_result['output']
+    else:
+        logger.info("Failed to retrieve candidates data")
+        candidates_data = []
 
     # Recent Applications Data
     recent_applications_query = text("""
@@ -218,7 +243,11 @@ def get_dashboard_tables():
         LIMIT 5
     """)
     recent_applications_result = db.execute_query(recent_applications_query)
-    recent_applications_data = recent_applications_result['output'] if recent_applications_result['success'] else []
+    if recent_applications_result['success']:
+        recent_applications_data = recent_applications_result['output']
+    else:
+        logger.info("Failed to retrieve recent applications data")
+        recent_applications_data = []
 
     # Upcoming Interviews Data
     upcoming_interviews_query = text("""
@@ -236,7 +265,11 @@ def get_dashboard_tables():
         LIMIT 5
     """)
     upcoming_interviews_result = db.execute_query(upcoming_interviews_query)
-    upcoming_interviews_data = upcoming_interviews_result['output'] if upcoming_interviews_result['success'] else []
+    if upcoming_interviews_result['success']:
+        upcoming_interviews_data = upcoming_interviews_result['output']
+    else:
+        logger.info("Failed to retrieve upcoming interviews data")
+        upcoming_interviews_data = []
 
     return {
         'candidates': candidates_data,

@@ -10,15 +10,21 @@
     <!-- AOS CSS -->
     <link rel="stylesheet" href="/aos-master/dist/aos.css">
 
-        <link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.min.css">
 
 
-      <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/general.css">
     <link rel="stylesheet" href="/assets/custom_card.css">
+
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -27,72 +33,74 @@
 
     {% include 'components/job-seeker-nav.html' %}
 
-    
+
     <div style="min-width: 350px;" class="container w-50 mt-5 p-4">
-    <h2>Create your profile</h2>
-    <form style="min-width: 350px;">
-        <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
+        <h2>Create your profile</h2>
 
-        <!-- About Section -->
-        <div data-aos="fade-left" data-aos-delay="100" class="mb-2">
-            <label for="about" class="form-label">About You</label>
-            <textarea id="about" rows="4"
-                placeholder="Tell us about yourself, your skills, and your career goals..."></textarea>
-        </div>
+        <form style="min-width: 350px;" action="/api/jobseeker/skills-and-resume" method="POST" id="profileForm"
+            enctype="multipart/form-data">
+            <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" />
 
-        <!-- Experience Section -->
-        <div data-aos="fade-left" data-aos-delay="200"  class="mb-2">
-            <label for="experience" class="form-label">Experience</label>
-            <input type="text" id="experience" placeholder="e.g., Software Engineer">
-        </div>
+            <!-- About Section -->
+            <div data-aos="fade-left" data-aos-delay="100" class="mb-2">
+                <label for="about" class="form-label">About You</label>
+                <textarea id="about" name="about" rows="4"
+                    placeholder="Tell us about yourself, your skills, and your career goals..."></textarea>
+            </div>
 
-        <div data-aos="fade-left" data-aos-delay="200"  class="mb-2">
-            <label for="company" class="form-label">Company</label>
-            <input type="text" id="company" placeholder="e.g.,  XYZ Company">
-        </div>
+            <!-- Experience Section -->
+            <div data-aos="fade-left" data-aos-delay="200" class="mb-2">
+                <label for="experience" class="form-label">Experience</label>
+                <input type="text" id="experience" name="experience" placeholder="e.g., Software Engineer">
+            </div>
 
-        <div data-aos="fade-left" data-aos-delay="200"  class="mb-2">
-    <label for="experience-date" class="form-label">Experience Date</label>
-    <input type="text" id="experience-date" placeholder="e.g., Jan 20, 2020 - Present">
-</div>
+            <div data-aos="fade-left" data-aos-delay="200" class="mb-2">
+                <label for="company" class="form-label">Company</label>
+                <input type="text" id="company" name="company" placeholder="e.g., XYZ Company">
+            </div>
 
+            <div data-aos="fade-left" data-aos-delay="200" class="mb-2">
+                <label for="experience-date" class="form-label">Experience Date</label>
+                <input type="text" id="experience-date" name="experience-date"
+                    placeholder="e.g., Jan 20, 2020 - Present">
+            </div>
 
-        <!-- Experience Description Section -->
-        <div data-aos="fade-left" data-aos-delay="300"  class="mb-2">
-            <label for="experience-description" class="form-label">Experience Description</label>
-            <textarea id="experience-description" rows="4"
-                placeholder="Describe your responsibilities, achievements, and key contributions..."></textarea>
-        </div>
+            <!-- Experience Description Section -->
+            <div data-aos="fade-left" data-aos-delay="300" class="mb-2">
+                <label for="experience-description" class="form-label">Experience Description</label>
+                <textarea id="experience-description" name="experience-description" rows="4"
+                    placeholder="Describe your responsibilities, achievements, and key contributions..."></textarea>
+            </div>
 
-        <!-- Resume Upload Section -->
-        <div data-aos="fade-left" data-aos-delay="400"  class="mb-2">
-            <label for="resume" class="form-label">Upload Resume</label>
-            <input type="file" id="resume" accept=".pdf, .docx, .doc">
-        </div>
+            <!-- Resume Upload Section -->
+            <div data-aos="fade-left" data-aos-delay="400" class="mb-2">
+                <label for="resume" class="form-label">Upload Resume</label>
+                <input type="file" id="resume" name="resume" accept=".pdf, .docx, .doc .png .jpeg .jpg">
+            </div>
 
-        <label data-aos="fade-left" data-aos-delay="500" for="social-links" class="form-label">Social Links</label>
-        <div data-aos="fade-left" data-aos-delay="500"  class="mb-2">
-            <label for="linkedin" class="form-label">LinkedIn</label>
-            <input type="url" id="linkedin" placeholder="https://www.linkedin.com/in/your-profile">
-        </div>
+            <label data-aos="fade-left" data-aos-delay="500" for="social-links" class="form-label">Social Links</label>
+            <div data-aos="fade-left" data-aos-delay="500" class="mb-2">
+                <label for="linkedin" class="form-label">LinkedIn</label>
+                <input type="url" id="linkedin" name="linkedin" placeholder="https://www.linkedin.com/in/your-profile">
+            </div>
 
-        <div data-aos="fade-left" data-aos-delay="600"  class="mb-2">
-            <label for="github" class="form-label">GitHub</label>
-            <input type="url" id="github" placeholder="https://github.com/your-username">
-        </div>
+            <div data-aos="fade-left" data-aos-delay="600" class="mb-2">
+                <label for="github" class="form-label">GitHub</label>
+                <input type="url" id="github" name="github" placeholder="https://github.com/your-username">
+            </div>
 
-        <div data-aos="fade-left" data-aos-delay="700"  class="mb-2">
-            <label for="twitter" class="form-label">Twitter</label>
-            <input type="url" id="twitter" placeholder="https://twitter.com/your-handle">
-        </div>
+            <div data-aos="fade-left" data-aos-delay="700" class="mb-2">
+                <label for="twitter" class="form-label">Twitter</label>
+                <input type="url" id="twitter" name="twitter" placeholder="https://twitter.com/your-handle">
+            </div>
 
+            <!-- Submit Button -->
+            <div class="mt-4">
+                <button type="submit" class="btn-primary">Save Profile</button>
+            </div>
+        </form>
 
-        <!-- Submit Button -->
-        <div  class="mt-4">
-            <button type="submit" class=" btn-primary">Save Profile</button>
-        </div>
-    </form>
-</div>
+    </div>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
@@ -102,6 +110,78 @@
             duration: 800, // Animation duration (1000ms = 1s)
             once: true, // Run animation only once when scrolling
         });
+
+
+        function setupFormWithSweetAlert(formElement) {
+
+            formElement.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const formAction = this.getAttribute('action');
+                const formMethod = this.getAttribute('method') || 'POST';
+
+                // Show loading alert
+                Swal.fire({
+                    title: 'Processing...',
+                    html: 'Please wait while we process your request',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+
+                try {
+                    const response = await fetch(formAction, {
+                        method: formMethod,
+                        body: new FormData(this)
+                    });
+
+                    const result = await response.json();
+
+                    Swal.close();
+
+                    if (response.ok) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: result.message || 'Action completed successfully'
+                        }).then(() => {
+                            // Optional: Redirect if specified in response
+                          
+                                window.location.href = '/jobseeker'
+                            
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: result.message || 'Action failed'
+                        });
+                    }
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Network error occurred'
+                    });
+                }
+            });
+        }
+
+        // Apply to all forms on page load
+        function applyToAllForms() {
+
+
+            document.querySelectorAll('form').forEach(form => {
+
+                // Call the setup function for each form on page load
+                setupFormWithSweetAlert(form);
+                // setupFormWithSweetAlert(form);
+            });
+
+        }
+        applyToAllForms();
+
     </script>
 </body>
 

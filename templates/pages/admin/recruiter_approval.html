@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,21 +13,28 @@
     <link rel="stylesheet" href="/assets/animation.css">
 
     <link rel="stylesheet" href="/assets/admin.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
+
 <body>
     <header data-aos="fade-down" class="border-bottom p-2">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <h3>Admin Dashboard</h3>
-            <button class="btn d-md-none m-3" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" 
-                    aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="btn d-md-none m-3" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu"
+                aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fas fa-bars fa-lg"></i>
             </button>
         </div>
     </header>
-    
+
     <div class="d-flex">
         <!-- Sidebar (consistent with other pages) -->
-        <nav id="sidebarMenu" class="d-md-block sidebar collapse border-end" style="min-width: 250px; height: 100vh; position: sticky; top: 0;">
+        <nav id="sidebarMenu" class="d-md-block sidebar collapse border-end"
+            style="min-width: 250px; height: 100vh; position: sticky; top: 0;">
             <div class="position-sticky pt-3 px-3">
                 <ul class="nav flex-column">
                     <li class="nav-item mb-2">
@@ -59,9 +67,10 @@
                                 <!-- Search -->
                                 <div class="col-md-4">
                                     <label for="searchInput" class="form-label">Search Company</label>
-                                    <input type="text" class="form-control" id="searchInput" placeholder="e.g. TechCorp">
+                                    <input type="text" class="form-control" id="searchInput"
+                                        placeholder="e.g. TechCorp">
                                 </div>
-                
+
                                 <!-- Status Filter -->
                                 <div class="col-md-3">
                                     <label for="statusFilter" class="form-label">Status</label>
@@ -73,9 +82,9 @@
                                         <option value="rejected">Rejected</option>
                                     </select>
                                 </div>
-                
+
                                 <!-- Action Buttons -->
-                                <div class="col-md-2 d-grid gap-2 ms-auto">
+                                <div class="col-md-2 d-grid gap-2 ms-auto d-none">
                                     <button id="filterBtn" class="btn btn-primary">
                                         <i class="fas fa-filter me-1"></i> Filter
                                     </button>
@@ -92,158 +101,18 @@
             <!-- Recruiters Container -->
             <div class="row mt-4" id="recruitersContainer">
                 <!-- Recruiter Card 1 - Pending -->
-                <div class="col-12 col-md-6 col-lg-4 mb-4 recruiter-item" data-status="pending" data-company="TechSolutions Inc.">
-                    <div class="card recruiter-card pending h-100 shadow-sm">
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <span class="badge bg-primary bg-opacity-10 text-primary status-badge">
-                                    <i class="fas fa-clock me-1"></i> Pending Review
-                                </span>
-                                <small class="text-muted">ID: REC-1001</small>
-                            </div>
-                            
-                            <h5 class="card-title mb-2">TechSolutions Inc.</h5>
-                            <p class="text-muted mb-3"><i class="fas fa-envelope me-1"></i> hr@techsolutions.com</p>
-                            
-                            <div class="job-meta mb-3">
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fas fa-user-tie me-2"></i>
-                                    <span>Contact: John Smith</span>
-                                </div>
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fas fa-phone me-2"></i>
-                                    <span>+1 (555) 123-4567</span>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-clock me-2"></i>
-                                    <span>Registered 2 days ago</span>
-                                </div>
-                            </div>
-                            
-                            <div class="mt-auto">
-                                <a href="#viewRequirements" class="d-block mb-2 text-primary" 
-                                   data-bs-toggle="modal" data-bs-target="#requirementsModal"
-                                   onclick="loadRequirements('REC-1001')">
-                                    <i class="fas fa-file-alt me-1"></i> View Requirements
-                                </a>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-success btn-sm action-btn" onclick="approveRecruiter(this)">
-                                        <i class="fas fa-check me-1"></i> Approve
-                                    </button>
-                                    <button class="btn btn-outline-danger btn-sm action-btn" onclick="rejectRecruiter(this)">
-                                        <i class="fas fa-times me-1"></i> Reject
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Recruiter Card 2 - New -->
-                <div class="col-12 col-md-6 col-lg-4 mb-4 recruiter-item" data-status="new" data-company="DesignHub LLC">
-                    <div class="card recruiter-card new h-100 shadow-sm">
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <span class="badge bg-secondary bg-opacity-10 text-secondary status-badge">
-                                    <i class="fas fa-star me-1"></i> New Submission
-                                </span>
-                                <small class="text-muted">ID: REC-1002</small>
-                            </div>
-                            
-                            <h5 class="card-title mb-2">DesignHub LLC</h5>
-                            <p class="text-muted mb-3"><i class="fas fa-envelope me-1"></i> careers@designhub.com</p>
-                            
-                            <div class="job-meta mb-3">
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fas fa-user-tie me-2"></i>
-                                    <span>Contact: Sarah Johnson</span>
-                                </div>
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fas fa-phone me-2"></i>
-                                    <span>+1 (555) 987-6543</span>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-clock me-2"></i>
-                                    <span>Registered 1 day ago</span>
-                                </div>
-                            </div>
-                            
-                            <div class="mt-auto">
-                                <a href="#viewRequirements" class="d-block mb-2 text-primary" 
-                                   data-bs-toggle="modal" data-bs-target="#requirementsModal"
-                                   onclick="loadRequirements('REC-1002')">
-                                    <i class="fas fa-file-alt me-1"></i> View Requirements
-                                </a>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-success btn-sm action-btn" onclick="approveRecruiter(this)">
-                                        <i class="fas fa-check me-1"></i> Approve
-                                    </button>
-                                    <button class="btn btn-outline-danger btn-sm action-btn" onclick="rejectRecruiter(this)">
-                                        <i class="fas fa-times me-1"></i> Reject
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Recruiter Card 3 - Approved -->
-                <div class="col-12 col-md-6 col-lg-4 mb-4 recruiter-item" data-status="approved" data-company="DataSystems Corp">
-                    <div class="card recruiter-card approved h-100 shadow-sm">
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <span class="badge bg-success bg-opacity-10 text-success status-badge">
-                                    <i class="fas fa-check-circle me-1"></i> Approved
-                                </span>
-                                <small class="text-muted">ID: REC-1003</small>
-                            </div>
-                            
-                            <h5 class="card-title mb-2">DataSystems Corp</h5>
-                            <p class="text-muted mb-3"><i class="fas fa-envelope me-1"></i> talent@datasystems.com</p>
-                            
-                            <div class="job-meta mb-3">
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fas fa-user-tie me-2"></i>
-                                    <span>Contact: Michael Chen</span>
-                                </div>
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fas fa-phone me-2"></i>
-                                    <span>+1 (555) 456-7890</span>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-clock me-2"></i>
-                                    <span>Approved 1 week ago</span>
-                                </div>
-                            </div>
-                            
-                            <div class="mt-auto">
-                                <a href="#viewRequirements" class="d-block mb-2 text-primary" 
-                                   data-bs-toggle="modal" data-bs-target="#requirementsModal"
-                                   onclick="loadRequirements('REC-1003')">
-                                    <i class="fas fa-file-alt me-1"></i> View Documents
-                                </a>
-                                <button class="btn btn-success btn-sm action-btn disabled w-100">
-                                    <i class="fas fa-check me-1"></i> Approved
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- No Results Message -->
-            <div class="row no-results text-center py-5" id="noResults" style="display: none;">
-                <div class="col-12">
-                    <i class="fas fa-search fa-3x mb-3 text-muted"></i>
-                    <h4>No recruiters found</h4>
-                    <p class="text-muted">Try adjusting your search or filter criteria</p>
-                </div>
-            </div>
+
         </div>
     </div>
 
     <!-- Requirements Modal -->
-    <div class="modal fade" id="requirementsModal" tabindex="-1" aria-labelledby="requirementsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="requirementsModal" tabindex="-1" aria-labelledby="requirementsModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -264,11 +133,65 @@
             </div>
         </div>
     </div>
-
+    <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
     <!-- AOS JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="/assets/js/animation.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+        crossorigin="anonymous"></script>
     <script src="/assets/js/recruiter_approval.js"></script>
+    <script>
+
+        fetch('/admin/get_recruiter_by_status')
+            .then(response => response.json())
+            .then(data => {
+                const recruitersContainer = document.getElementById('recruitersContainer');
+                recruitersContainer.innerHTML = data.html;
+            });
+    </script>
+
+    <script>
+        function fetchRecruiters() {
+            const companyName = document.getElementById("searchInput").value.trim();
+            const status = document.getElementById("statusFilter").value;
+
+            let url = "/admin/search_recruiter_approval";
+            const params = [];
+
+            if (status) params.push(`status=${encodeURIComponent(status)}`);
+            if (companyName) params.push(`company_name=${encodeURIComponent(companyName)}`);
+
+            if (params.length > 0) {
+                url += "?" + params.join("&");
+            }
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Clear current recruiter items
+                        const recruitersContainer = document.getElementById('recruitersContainer');
+                        recruitersContainer.innerHTML = data.html;
+                    } else {
+                        console.error("Error fetching recruiters:", data.error);
+                    }
+                })
+                .catch(err => {
+                    console.error("AJAX Error:", err);
+                });
+        }
+
+        // Attach event listeners
+        document.getElementById("searchInput").addEventListener("keyup", fetchRecruiters);
+        document.getElementById("statusFilter").addEventListener("change", fetchRecruiters);
+
+        // Optionally, load initial data based on current filters
+        window.addEventListener("DOMContentLoaded", fetchRecruiters);
+
+        
+    </script>
+
 </body>
+
 </html>

@@ -1,16 +1,22 @@
 import os
-from datetime import datetime, timedelta
+from datetime import  timedelta
 
-from flask import Flask, request
+from flask import Flask
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from flask_sock import Sock
 from flask_wtf.csrf import CSRFProtect
+
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
 
-from routes import *
+
+from utils.mylogging import logger
+
+
+__builtins__.logging = logger
+__builtins__.logger = logger
+from routes import init_socketio, routes_bp
 
 socketio = init_socketio(app)
 # Configure session

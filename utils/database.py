@@ -64,8 +64,33 @@ class DatabaseManager:
         self.Session = sessionmaker(bind=self.engine)
         self.query_logger = QueryLogger()
 
-    def execute_query(self, query, params=None):
-        """Executes a SQL query and returns the results."""
+    def execute_query(self, query, params:dict={}):
+        
+        """
+        Execute a query on the database and return a dictionary
+        containing the execution result.
+
+        The returned dictionary will contain the following keys:
+
+        - success (bool): Whether the query was executed successfully
+        - message (str): A message summarizing the result of the query
+        - affected_rows (int): The number of rows affected by the query
+        - output (list): A list of dictionaries containing the query result
+
+        If the query is an INSERT, UPDATE, or DELETE query, the
+        "output" key will be empty.
+
+        If an exception occurs during the query execution, the
+        "success" key will be False and the "message" key will contain
+        the exception message.
+
+        :param query: The SQL query to execute
+        :type query: sqlalchemy.sql.expression.Executable
+        :param params: Optional dictionary of query parameters
+        :type params: dict
+        :return: A dictionary containing the query result
+        :rtype: dict
+        """
         start_time = datetime.now()
         try:
             with self.Session() as session:

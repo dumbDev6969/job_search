@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Approval Pending</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3498db',    // Light mode: Peter River blue
+                        secondary: '#2980b9',  // Light mode: Belize Hole blue
+                        accent: '#85c1e9',     // Light mode: Lighter Peter River blue
+                        // Dark text colors will primarily use Tailwind's gray scale, e.g., text-gray-700, text-gray-800
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f1f5f9; /* Tailwind slate-100, a light gray */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .card {
+            background: #ffffff; /* White card background */
+            border: 1px solid #e5e7eb; /* Tailwind gray-200 border */
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08); /* Softer shadow for light mode */
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #3498db 0%, #85c1e9 100%); /* Using new primary and accent */
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .status-indicator {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+        }
+        .status-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 8px solid rgba(0, 0, 0, 0.05); /* Light subtle border */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: status-pulse 2s infinite;
+        }
+        .status-inner {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(52, 152, 219, 0.1); /* Light primary with low opacity */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #3498db; /* New primary color */
+        }
+        @keyframes status-pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.4); /* Pulse with new primary color */
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(52, 152, 219, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+            }
+        }
+        .timeline {
+            position: relative;
+            max-width: 300px;
+            margin: 40px auto;
+        }
+        .timeline-step {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 25px;
+        }
+        
+        .timeline-step:last-child {
+            margin-bottom: 0;
+        }
+        .timeline-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #3498db; /* New primary color */
+        }
+        .timeline-step::after {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 12px;
+            height: calc(100% + 5px);
+            width: 2px;
+            background: #d1d5db; /* Tailwind gray-300 for the line */
+        }
+        .timeline-step:last-child::after {
+            display: none;
+        }
+        .timeline-step.complete::before {
+            background: #27ae60; /* Green for completed steps (Nephritis) */
+            box-shadow: 0 0 10px rgba(39, 174, 96, 0.4); /* Shadow for completed green */
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #3498db 0%, #2980b9 100%); /* New primary to secondary gradient */
+            color: #ffffff; /* White text for contrast */
+            border: none;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2); /* Lighter shadow for primary button */
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(52, 152, 219, 0.3);
+        }
+        .btn-outline {
+            border: 2px solid #d1d5db; /* Tailwind gray-300 border */
+            color: #4b5563; /* Tailwind gray-600 text */
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-outline:hover {
+            background: rgba(52, 152, 219, 0.05); /* Very light primary color tint on hover */
+            border-color: #3498db; /* Primary color border on hover */
+            color: #3498db; /* Primary color text on hover */
+            transform: translateY(-2px);
+        }
+        @media (max-width: 768px) {
+            .card {
+                width: 95%;
+            }
+            .status-indicator {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .status-inner {
+                width: 70px;
+                height: 70px;
+            }
+            .timeline {
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card w-full max-w-2xl">
+        <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-primary to-accent"></div>
+        <div class="p-8 sm:p-10">
+            <div class="text-center mb-8">
+                <div class="status-indicator mb-6">
+                    <div class="status-circle">
+                        <div class="status-inner">
+                            <i class="fas fa-user-clock"></i>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="text-4xl font-bold text-gray-800 mb-3">Account Approval <span class="gradient-text">Pending</span></h1>
+                <p class="text-gray-600 text-lg">Your account is currently being reviewed by our team. This process usually takes 24-48 hours.</p>
+            </div>
+            
+            <div class="bg-gray-50 rounded-xl p-6 mb-10 border border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-list-check mr-2 text-accent"></i>Approval Status
+                </h2>
+                
+                <div class="timeline">
+                    <div class="timeline-step complete">
+                        <h3 class="font-medium text-gray-700">Account Created</h3>
+                        <p class="text-sm text-gray-500">Your account was successfully created</p>
+                    </div>
+                    <div class="timeline-step">
+                        <h3 class="font-medium text-gray-700">Verification</h3>
+                        <p class="text-sm text-gray-500">We're reviewing your information</p>
+                    </div>
+                    <div class="timeline-step">
+                        <h3 class="font-medium text-gray-700">Approval</h3>
+                        <p class="text-sm text-gray-500">Finalizing account activation</p>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center mt-6">
+                    <div>
+                        <p class="text-sm text-gray-500">Current Step:</p>
+                        <p class="font-medium text-primary">Verification</p> <!-- Changed text-accent to text-primary for better contrast if accent is too light -->
+                    </div>
+                    <div class="w-1/2 bg-gray-300 rounded-full h-2.5">
+                        <div class="bg-primary h-2.5 rounded-full w-1/3"></div> <!-- Changed bg-accent to bg-primary -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-8 text-center">
+                <div class="bg-blue-50 border border-blue-300 rounded-lg py-4 px-6 inline-flex items-center mb-4">
+                    <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                    <p class="text-blue-700">We've sent a confirmation email to: <span class="font-medium">user@example.com</span></p>
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button class="btn-primary flex items-center justify-center">
+                    <i class="fas fa-envelope mr-2"></i> Resend Verification
+                </button>
+                <button class="btn-outline flex items-center justify-center">
+                    <i class="fas fa-headset mr-2"></i> Contact Support
+                </button>
+            </div>
+            
+            <div class="mt-8 border-t border-gray-200 pt-6">
+                <div class="flex flex-wrap justify-center gap-6">
+                    <div class="text-center">
+                        <i class="fas fa-shield-alt text-accent text-2xl mb-2"></i>
+                        <h3 class="text-gray-800 font-medium">Secure Verification</h3>
+                        <p class="text-gray-600 text-sm">Ensuring your account safety</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-bolt text-accent text-2xl mb-2"></i>
+                        <h3 class="text-gray-800 font-medium">Fast Processing</h3>
+                        <p class="text-gray-600 text-sm">24-48 hour turnaround</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-question-circle text-accent text-2xl mb-2"></i>
+                        <h3 class="text-gray-800 font-medium">Need Help?</h3>
+                        <p class="text-gray-600 text-sm">support@company.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gray-200 py-4 text-center text-gray-600 text-sm">
+            <p>© 2025 jxt. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

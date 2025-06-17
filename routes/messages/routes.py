@@ -69,8 +69,9 @@ def get_messages():
         sender_name = sender[1]['first_name'] + ' ' + sender[1]['last_name']
     sender_type = sender[0]
     sender_id = session.get('user_id')
+    is_job_seeker = True if session.get('user_type') == 'seeker' else False
     
-    return render_template('/pages/messaging/message.html',  sender_name=sender_name, sender_type=sender_type, sender_id=sender_id)
+    return render_template('/pages/messaging/message.html',  sender_name=sender_name, sender_type=sender_type, sender_id=sender_id, is_job_seeker=is_job_seeker)
 
 
 @messages.route('/smessages', methods=['GET'])
@@ -207,13 +208,13 @@ def search_users():
         html_items = []
         for user in result['output']:
             html_items.append(f"""
-                <li class=\"list-group-item d-flex align-items-center p-3\" onclick=\"window.location.href='/messages/{user['user_id']}'\">
-                    <img src=\"https://api.dicebear.com/7.x/initials/svg?seed={user['display_name'][0]}\" height=\"50\" class=\"rounded-circle me-3\" alt=\"Avatar\">
-                    <div class=\"flex-grow-1\">
-                        <div class=\"fw-bold\">{user['display_name']}</div>
-                        <small class=\"text-muted\">{user['email']}</small>
+                <li id=\"{user['user_id']}\" class=\"list-group-item d-flex align-items-center p-3\" onclick=\"window.location.href='/messages/{user['user_id']}'\">
+                    <img id=\"{user['user_id']}\" src=\"https://api.dicebear.com/7.x/initials/svg?seed={user['display_name'][0]}\" height=\"50\" class=\"rounded-circle me-3\" alt=\"Avatar\">
+                    <div id=\"{user['user_id']}\" class=\"flex-grow-1\">
+                        <div id=\"{user['user_id']}\" class=\"fw-bold\">{user['display_name']}</div>
+                        <small  id=\"{user['user_id']}\" class=\"text-muted\">{user['email']}</small>
                     </div>
-                    <small class=\"text-muted\">{user['user_type']}</small>
+                    <small  id=\"{user['user_id']}\" class=\"text-muted\">{user['user_type']}</small>
                 </li>
             """)
         return ''.join(html_items)

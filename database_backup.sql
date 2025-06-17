@@ -73,7 +73,7 @@ CREATE TABLE `employer_verification` (
 
 LOCK TABLES `employer_verification` WRITE;
 /*!40000 ALTER TABLE `employer_verification` DISABLE KEYS */;
-INSERT INTO `employer_verification` VALUES (6,3,'/files\\business_permits\\Screenshot 2025-06-01 201950.png','12312','/files\\supporting_docs\\Screenshot 2025-06-01 202726.png','https://fake.com','https://fake.com','2025-06-15 06:32:08','pending',NULL,NULL),(8,17,'/files\\business_permits\\Screenshot 2025-05-13 185447.png','123','/files\\supporting_docs\\Screenshot 2025-05-13 172553.png','https://fake.com','https://fake.com','2025-06-15 07:37:08','pending',NULL,NULL);
+INSERT INTO `employer_verification` VALUES (6,3,'/files\\business_permits\\Screenshot 2025-06-01 201950.png','12312','/files\\supporting_docs\\Screenshot 2025-06-01 202726.png','https://fake.com','https://fake.com','2025-06-15 06:32:08','rejected',NULL,'asdasd'),(8,17,'/files\\business_permits\\Screenshot 2025-05-13 185447.png','123','/files\\supporting_docs\\Screenshot 2025-05-13 172553.png','https://fake.com','https://fake.com','2025-06-15 07:37:08','approved','2025-06-16 17:36:32','hahaha');
 /*!40000 ALTER TABLE `employer_verification` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `employers`;
@@ -100,7 +100,7 @@ CREATE TABLE `employers` (
 
 LOCK TABLES `employers` WRITE;
 /*!40000 ALTER TABLE `employers` DISABLE KEYS */;
-INSERT INTO `employers` VALUES (2,'kamjijajajo@gmail.com','$2b$12$EmVDH7PYPLQSpKkBqN4Mterb9N5buSsJN9WvGOAWjFkscfIsryAA.','2025-03-21 09:01:05',NULL,'Innovatech','Programming',1,'','','0',''),(3,'kanjijajajo@gmail.com','$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm','2025-03-21 09:03:05','2025-06-15 06:20:21','company001','Programming',1,'','','0',''),(17,'test_employer@gmail.com','$2b$12$qKr1VuAdw7HuhfCcW9IrpeJ6/xek/qoolMwWpSnrix4NorqjMyHla','2025-06-15 07:36:53','2025-06-15 13:07:43','test_employer',NULL,51,'https:fake.com','/uploads/logos/Screenshot_2025-05-13_185459.png','616f99ef-9549-4078-a78d-5a7e21f7383c','we are a fucking morons');
+INSERT INTO `employers` VALUES (2,'kamjijajajo@gmail.com','$2b$12$EmVDH7PYPLQSpKkBqN4Mterb9N5buSsJN9WvGOAWjFkscfIsryAA.','2025-03-21 09:01:05',NULL,'Innovatech','Programming',1,'','','0',''),(3,'kanjijajajo@gmail.com','$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm','2025-03-21 09:03:05','2025-06-17 02:14:28','company001','Programming',1,'','','0',''),(17,'test_employer@gmail.com','$2b$12$qKr1VuAdw7HuhfCcW9IrpeJ6/xek/qoolMwWpSnrix4NorqjMyHla','2025-06-15 07:36:53','2025-06-17 01:52:17','test_employer',NULL,51,'https:fake.com','/uploads/logos/Screenshot_2025-05-13_185459.png','616f99ef-9549-4078-a78d-5a7e21f7383c','we are a fucking morons');
 /*!40000 ALTER TABLE `employers` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `interviews`;
@@ -167,7 +167,7 @@ CREATE TABLE `job_interest` (
 
 LOCK TABLES `job_interest` WRITE;
 /*!40000 ALTER TABLE `job_interest` DISABLE KEYS */;
-INSERT INTO `job_interest` VALUES (10,139,'programming','Freelance','Hybrid','20,000 - 35,000','2025-04-16 02:01:28');
+INSERT INTO `job_interest` VALUES (10,139,'programming','Freelance','On-site','20,000 - 35,000','2025-04-16 02:01:28');
 /*!40000 ALTER TABLE `job_interest` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `job_seekers`;
@@ -195,7 +195,7 @@ CREATE TABLE `job_seekers` (
 
 LOCK TABLES `job_seekers` WRITE;
 /*!40000 ALTER TABLE `job_seekers` DISABLE KEYS */;
-INSERT INTO `job_seekers` VALUES (139,'jemcarlo46@gmail.com','$2b$12$jJsAP1.XiA4IFyrGxSCW0eeHEPop1rxc2Gz8XnKcUjDkthM1iwjRC','2025-03-25 02:49:13','2025-06-15 12:58:29','Jemcarlo','Austria','09207766194','Pangasinan','','bsit','');
+INSERT INTO `job_seekers` VALUES (139,'jemcarlo46@gmail.com','$2b$12$jJsAP1.XiA4IFyrGxSCW0eeHEPop1rxc2Gz8XnKcUjDkthM1iwjRC','2025-03-25 02:49:13','2025-06-16 00:08:17','Jemcarlo','Austria','09207766194','Pangasinan','','bsit','');
 /*!40000 ALTER TABLE `job_seekers` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `job_skills`;
@@ -254,16 +254,17 @@ CREATE TABLE `jobs` (
   `posted_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `expires_at` timestamp NULL DEFAULT NULL,
   `status` enum('active','paused','closed') DEFAULT 'active',
+  `approved` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`job_id`),
   KEY `idx_employer_id` (`employer_id`),
   KEY `idx_status` (`status`),
   CONSTRAINT `jobs_ibfk_1` FOREIGN KEY (`employer_id`) REFERENCES `employers` (`employer_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `jobs` WRITE;
 /*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
-INSERT INTO `jobs` VALUES (1,3,'progamming','a programming job','manila','35,000 - 50,000','contract','2025-03-23 03:18:19','2025-04-22 16:00:00','active'),(2,3,'junior dev 1','  a programming job 1',' manila',' 35,000 - 50,000','contract','2025-03-23 03:18:19','2025-04-22 16:00:00','closed'),(3,2,'progamming','a programming job 1','manila','35,000 - 50,000','contract','2025-03-23 03:18:19','2025-04-22 16:00:00','active'),(4,3,'web dev','web dec with reactjs','manila',' 35,000 - 50,000','part_time','2025-06-15 05:53:50','2025-07-10 16:00:00','active'),(5,17,'backend deav','must have experience in backend for atlest 40years','Remote','20,000 - 35,000','','2025-06-15 13:13:19','2025-09-16 16:00:00','active');
+INSERT INTO `jobs` VALUES (1,3,'progamming','a programming job','manila','35,000 - 50,000','contract','2025-03-23 03:18:19','2025-04-22 16:00:00','active',0),(2,3,'junior dev 1','  a programming job 1',' manila',' 35,000 - 50,000','contract','2025-03-23 03:18:19','2025-04-22 16:00:00','closed',0),(3,2,'progamming','a programming job 1','manila','35,000 - 50,000','contract','2025-03-23 03:18:19','2025-04-22 16:00:00','active',0),(4,3,'web dev','web dec with reactjs','manila',' 35,000 - 50,000','part_time','2025-06-15 05:53:50','2025-07-10 16:00:00','active',0),(5,17,' backend deav','  must have experience in backend for atlest 40years','Hybrid','20,000 - 35,000','contract','2025-06-15 13:13:19','2025-09-16 16:00:00','active',0),(6,17,'designer','knowledge about figma and photoshop','Remote','20,000 - 35,000','part_time','2025-06-16 04:44:24','2025-06-30 16:00:00','active',2);
 /*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `messages`;
@@ -285,12 +286,12 @@ CREATE TABLE `messages` (
   PRIMARY KEY (`message_id`),
   KEY `idx_sender_id` (`sender_id`),
   KEY `idx_receiver_id` (`receiver_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `messages` WRITE;
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
-INSERT INTO `messages` VALUES (3,139,'575067013220190','job_seeker',3,'employer','hello','2025-05-05 02:06:30',0,'false','false','false'),(4,3,'575067013220190','employer',139,'employer','hey?','2025-05-05 02:06:41',0,'false','false','false');
+INSERT INTO `messages` VALUES (3,139,'575067013220190','job_seeker',3,'employer','hello','2025-05-05 02:06:30',0,'false','false','false'),(4,3,'575067013220190','employer',139,'employer','hey?','2025-05-05 02:06:41',0,'false','false','false'),(5,139,'975984132132786','job_seeker',17,'employer','hey','2025-06-15 22:06:41',0,'false','false','false');
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `notifications`;
@@ -373,7 +374,7 @@ CREATE TABLE `qualifications` (
 
 LOCK TABLES `qualifications` WRITE;
 /*!40000 ALTER TABLE `qualifications` DISABLE KEYS */;
-INSERT INTO `qualifications` VALUES (10,139,'asdasdasd','bcc','none','programming');
+INSERT INTO `qualifications` VALUES (10,139,'bsit','bcc','ssssss','programming');
 /*!40000 ALTER TABLE `qualifications` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `ratings`;
@@ -419,7 +420,7 @@ CREATE TABLE `saved_jobs` (
 
 LOCK TABLES `saved_jobs` WRITE;
 /*!40000 ALTER TABLE `saved_jobs` DISABLE KEYS */;
-INSERT INTO `saved_jobs` VALUES (1,139,4,'2025-06-15 13:07:07'),(2,139,5,'2025-06-15 13:15:27');
+INSERT INTO `saved_jobs` VALUES (2,139,5,'2025-06-15 13:15:27');
 /*!40000 ALTER TABLE `saved_jobs` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `seeker_profiles`;
@@ -440,11 +441,12 @@ CREATE TABLE `seeker_profiles` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `seeker_profiles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `job_seekers` (`seeker_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `seeker_profiles` WRITE;
 /*!40000 ALTER TABLE `seeker_profiles` DISABLE KEYS */;
+INSERT INTO `seeker_profiles` VALUES (3,139,'im a student with some knowledgge about programming','some programming ','none','2025','im currently studing ','/files\\files/resumes\\Screenshot_2025-05-12_060800.png','https://fake.com','https://fake.com','https://fake.com');
 /*!40000 ALTER TABLE `seeker_profiles` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `seeker_skills`;
