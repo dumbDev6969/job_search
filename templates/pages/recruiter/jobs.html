@@ -17,35 +17,33 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
+        </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/general.css">
     <style>
-        
-        
         .status-badge {
             font-size: 0.8rem;
             padding: 0.35em 0.65em;
         }
-        
+
         .pagination .page-item.active .page-link {
             background-color: var(--primary);
             border-color: var(--primary);
         }
-        
+
         .pagination .page-link {
             color: var(--primary);
         }
-        
+
         .search-box {
             position: relative;
         }
-        
+
         .search-box .form-control {
             padding-left: 2.5rem;
         }
-        
+
         .search-box i {
             position: absolute;
             left: 1rem;
@@ -57,10 +55,10 @@
 </head>
 
 <body>
-    
+
     {% include 'components/recruiter-nav.html' %}
-    
-    
+
+
 
 
 
@@ -100,28 +98,34 @@
                     <option value="alphabetical">Alphabetical</option>
                 </select>
             </div>
-            <div class="col-md-3 text-end">
-                <button class="btn btn-outline-secondary">
-                    <i class="fas fa-filter me-2"></i>More Filters
-                </button>
+            <div class="col-md-3">
+
+                <select class="form-select" id="statusFilter1" name="status_filter1">
+                    <option value="all">All Statuses</option>
+                    <option value="0">Pending Review</option>
+                    <option value="1">Approved</option>
+                    <option value="3">Rejected</option>
+                </select>
             </div>
+
         </div>
 
         <div class="row" id="jobsContainer">
-           
+
 
         </div>
     </div>
-<input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
+    <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" />
 
     <script>
         function fetchJobs() {
             const status = document.getElementById('statusFilter').value;
             const type = document.getElementById('typeFilter').value;
             const sort = document.getElementById('sortFilter').value;
-            
+            const statusFilter1 = document.getElementById('statusFilter1').value;
+
             const searchQuery = document.querySelector('.search-box input').value;
-            fetch(`/api/employer/get-job-cards?status=${status}&type=${type}&sort=${sort}&search=${encodeURIComponent(searchQuery)}`)
+            fetch(`/api/employer/get-job-cards?status=${status}&type=${type}&sort=${sort}&statusFilter=${statusFilter1}&search=${encodeURIComponent(searchQuery)}`)
                 .then(response => response.text())
                 .then(data => {
                     console.log(data);
@@ -147,12 +151,14 @@
 
         // Add event listeners to filters
         document.getElementById('statusFilter').addEventListener('change', fetchJobs);
+         document.getElementById('statusFilter1').addEventListener('change', fetchJobs);
         document.getElementById('typeFilter').addEventListener('change', fetchJobs);
         document.getElementById('sortFilter').addEventListener('change', fetchJobs);
         document.getElementById('searchInput').addEventListener('input', fetchJobs);
-       // Initial load
+      
+        // Initial load
         fetchJobs();
-function deleteJob(jobId) {
+        function deleteJob(jobId) {
             if (confirm('Are you sure you want to delete this job?')) {
                 fetch('/employer/api/delete-job', {
                     method: 'POST',
@@ -164,19 +170,19 @@ function deleteJob(jobId) {
                         'csrf_token': document.getElementById('csrf_token').value,
                     }),
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Job deleted successfully!');
-                        fetchJobs(); // Refresh the job list
-                    } else {
-                        alert('Failed to delete job: ' + data.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error deleting job:', error);
-                    alert('An error occurred while deleting the job.');
-                });
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Job deleted successfully!');
+                            fetchJobs(); // Refresh the job list
+                        } else {
+                            alert('Failed to delete job: ' + data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error deleting job:', error);
+                        alert('An error occurred while deleting the job.');
+                    });
             }
         }
         function deleteJob(jobId) {
@@ -200,35 +206,36 @@ function deleteJob(jobId) {
                             'csrf_token': document.getElementById('csrf_token').value,
                         }),
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            Swal.fire(
-                                'Deleted!',
-                                'The job has been deleted.',
-                                'success'
-                            );
-                            fetchJobs(); // Refresh the job list
-                        } else {
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire(
+                                    'Deleted!',
+                                    'The job has been deleted.',
+                                    'success'
+                                );
+                                fetchJobs(); // Refresh the job list
+                            } else {
+                                Swal.fire(
+                                    'Error!',
+                                    'Failed to delete job: ' + data.error,
+                                    'error'
+                                );
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error deleting job:', error);
                             Swal.fire(
                                 'Error!',
-                                'Failed to delete job: ' + data.error,
+                                'An error occurred while deleting the job.',
                                 'error'
                             );
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error deleting job:', error);
-                        Swal.fire(
-                            'Error!',
-                            'An error occurred while deleting the job.',
-                            'error'
-                        );
-                    });
+                        });
                 }
             });
         }
     </script>
 
 </body>
+
 </html>

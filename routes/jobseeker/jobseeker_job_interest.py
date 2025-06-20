@@ -13,7 +13,6 @@ from middlewares.skills_and_resume import is_skills_and_resume_done
 @verify_user
 @is_email_verified
 @interests_done
-@is_skills_and_resume_done
 def jobseeker_job_interest_():
     """Render the job seeker's job interest page.
 

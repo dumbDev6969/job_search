@@ -370,13 +370,24 @@
                         jobs = data.jobs;
                          getRecommendations();
                        
-                       
-                    } else {
+                    } else if (data.empty) {
+                        // When data is empty and server provides a message in data.jobs
+                        jobs = []; // Ensure jobs array is empty for consistency if view is toggled later
+                        // Use the existing jobCardsContainer const
+                        // Wrap the server-provided message in our standard .no-jobs div for consistent styling and centering
+                        jobCardsContainer.innerHTML = `<div class="no-jobs">${data.jobs}</div>`;
+                        // Remove grid/list view classes to prevent interference with centering the .no-jobs message
+                        jobCardsContainer.className = 'job-cards-container';
+                    }else {
                        alert("Failed to fetch job recommendations");
+                        jobs = []; // Ensure jobs is empty
+                        getRecommendations(); // Render the default "no jobs" message
                     }
                 })
                 .catch(error => {
                   alert("An error occurred while fetching job recommendations");
+                    jobs = []; // Ensure jobs is empty
+                    getRecommendations(); // Render the default "no jobs" message
                 });
         
         // DOM Elements

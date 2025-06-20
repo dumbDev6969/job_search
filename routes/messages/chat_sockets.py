@@ -84,6 +84,13 @@ def init_socketio(app):
     return socketio
 
 
+
+@socketio.on('location')
+def handle_location(data):
+    print(data,"*"*100000)
+    logging.debug(f"Received location data: {data}")
+    emit('update', data, broadcast=True)
+
 @socketio.on('send_message')
 def handle_send_message(message_content, receiver_id, conversation_id):
     sender_id = session.get('user_id')

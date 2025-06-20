@@ -15,6 +15,16 @@ schedule_dashboard = Blueprint('schedule_dashboard', __name__)
 @is_email_verified
 @is_requirements_done
 def schedule_dashboard_():
+    """Schedule Dashboard page
+    
+    This route renders the schedule dashboard page.
+    
+    It is accessed by the URL /employer/schedule_dashboard.
+    
+    It requires the user to be logged in, have their email verified, and have completed the employer requirements.
+    
+    It renders the schedule-dashboard.html template.
+    """
     return render_template('/pages/recruiter/schedule-dashboard.html')
 
 @schedule_dashboard.route('/api/employer/schedule-dashboard-no-filters', methods=['GET', 'POST'])
@@ -23,36 +33,30 @@ def schedule_dashboard_():
 @is_requirements_done
 def schedule_dashboard_api_no_filters():
     try:
+        logging.debug('Fetching schedule dashboard data without filters')
         db = get_db()
 
         # Base query for fetching records
+        # Changed to match the query from /api/employer/applicants
         query = """
-        SELECT
-    CONCAT(js.first_name, ' ', js.last_name) AS Name,
-    i.date AS InterviewDate,
-    i.time AS InterviewTime,
-    i.interview_type AS InterviewType,
-    i.location AS LocationOrMeetLink,
-    i.status AS Status,
-    i.gmeet_link AS GoogleMeetLink,
-    i.additional_notes AS AdditionalNotes
-FROM interviews i
-LEFT JOIN job_seekers js ON i.seeker_id = js.seeker_id
-INNER JOIN applications a ON i.seeker_id = a.seeker_id
-INNER JOIN jobs j ON a.job_id = j.job_id
-WHERE i.status != 'scheduled'
-  AND j.employer_id = :employer_id;
+            SELECT
+                CONCAT(js.first_name, ' ', js.last_name) AS Name,
+                j.title AS Position,
+                a.status AS Status
+            FROM applications a
+            LEFT JOIN job_seekers js ON a.seeker_id = js.seeker_id
+            LEFT JOIN jobs j ON a.job_id = j.job_id
+            WHERE j.employer_id = :employer_id;
         """
         
         # Execute main query
         result = db.execute_query(text(query),  {"employer_id": session.get('user_id')})
-        print(result['output'])
         if result['success']:
-           
+            logging.info('Successfully fetched schedule dashboard data')
             interviews_html = ""
             
-            if not result['output']:
-                print("no in candidates found")
+            if not result['output']: # No applicants found
+                logging.info('No candidates found')
                 return jsonify({
                     'interviews': """
             <tr>
@@ -67,37 +71,53 @@ WHERE i.status != 'scheduled'
         """
                 })
 
-            for interview in result['output']:
-                interview_html = f"""<tr>
+            for applicant in result['output']: # Changed loop variable name for clarity
+                # HTML structure adapted for Name, Position, Status, and Actions
+                # Uses applicant's actual position and application status
+                applicant_html = f"""<tr>
                     <td>
                         <div class="d-flex align-items-center">
                             <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle me-2" width="36" height="36">
                             <div>
-                                <h6 class="mb-0">{interview['Name']}</h6>
-                                <small class="text-muted">Senior Frontend Dev</small>
+                                <h6 class="mb-0">{applicant['Name']}</h6>
+                                <small class="text-muted">{applicant.get('Position', 'N/A')}</small>
                             </div>
                         </div>
                     </td>
-                    <td>Senior Frontend</td>
-                    <td><span class="badge bg-warning">Technical Review</span></td>
+                    <td>{applicant.get('Position', 'N/A')}</td>
+                    <td><span class="badge bg-info">{applicant.get('Status', 'N/A')}</span></td>
                     <td>
                         <button class="btn btn-sm btn-info">View</button>
                         <button class="btn btn-sm btn-primary">Schedule Interview</button>
                     </td>
                 </tr>"""
-                interviews_html += interview_html
+                interviews_html += applicant_html
 
             return jsonify({
                 'interviews': interviews_html
             })
         else:
+            logging.warning('Error fetching schedule dashboard data')
             return jsonify({
-                'interviews': ""
+                'interviews': """
+            <tr>
+                <td colspan="7" class="text-center py-4">
+                    <div class="d-flex flex-column align-items-center">
+                        <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                        <h5 class="text-muted">Error Fetching Data</h5>
+                        <p class="text-muted">Could not retrieve applicant information at this time.</p>
+                    </div>
+                </td>
+            </tr>
+        """
             })
 
     except Exception as e:
+        logging.error('An error occurred while fetching interviews.')
         print(e)
         return jsonify({'error': 'An error occurred while fetching interviews.'}), 500
+    
+    
 @schedule_dashboard.route('/api/employer/schedule-dashboard', methods=['GET', 'POST'])
 @verify_user
 @is_email_verified
@@ -231,7 +251,17 @@ WHERE j.employer_id = :employer_id;
             })
         else:
             return jsonify({
-                'interviews': "",
+                'interviews':  """
+            <tr>
+                <td colspan="7" class="text-center py-4">
+                    <div class="d-flex flex-column align-items-center">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No scheduled interviews found</h5>
+                        <p class="text-muted">There are currently no scheduled interviews to display.</p>
+                    </div>
+                </td>
+            </tr>
+        """,
                 'total_pages': 0,
                 'current_page': 1
             })

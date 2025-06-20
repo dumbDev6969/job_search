@@ -121,21 +121,15 @@
             </div>
             
             <!-- Pagination -->
-            <div class="card-footer bg-white">
+             <div class="card-footer bg-white">
                 <nav aria-label="Candidate pagination">
-                    <ul class="pagination justify-content-center mb-0">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Previous</a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
+                    <ul class="pagination justify-content-center mb-0" id="pagination">
+                        <!-- Pagination links will be dynamically loaded here -->
                     </ul>
                 </nav>
             </div>
+            
+            
         </div>
     </div>
     
@@ -157,27 +151,77 @@
         const selected_location = document.getElementById('location');
         const skills = document.getElementById('skills');
         const table =  document.getElementById('table-listing');
+        const pagination = document.getElementById('pagination');
+        const pageInfo = document.getElementById('page-info');
       document.addEventListener('DOMContentLoaded', () => {
       
-        fetch(`/employer/api/get_listing`)
-            .then(response => response.json())
-            .then(data => {
-                    table.innerHTML = data.html;
-                    document.getElementById('candidate-count').innerText = data.total;
-            })
+                 updateTbaelWithPage(1); // Load initial data for page 1
         });
-           search.addEventListener('keyup', updateTbael);
-           salary.addEventListener('change', updateTbael);
-           selected_location.addEventListener('change', updateTbael);
-           skills.addEventListener('change', updateTbael);
+           search.addEventListener('keyup', () => updateTbaelWithPage(1));
+           salary.addEventListener('change', () => updateTbaelWithPage(1));
+           selected_location.addEventListener('change', () => updateTbaelWithPage(1));
+           skills.addEventListener('change', () => updateTbaelWithPage(1));
+           
            
 
-           function updateTbael(){
-                const params = new URLSearchParams({
+          
+
+           function updatePagination(currentPage, totalPages, totalRecords) {
+                pagination.innerHTML = ''; // Clear existing pagination
+
+            
+
+                // Previous Button
+                const prevButton = createPaginationButton('Previous', currentPage > 1, currentPage - 1);
+                pagination.appendChild(prevButton);
+
+                // Page Numbers - Show all pages like in find_talent.html
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageButton = createPaginationButton(i, true, i, i === currentPage);
+                    pagination.appendChild(pageButton);
+                }
+
+                // Next Button
+                const nextButton = createPaginationButton('Next', currentPage < totalPages, currentPage + 1);
+                pagination.appendChild(nextButton);
+
+                // Update page info text
+                const startIndex = (currentPage - 1) * 10 + 1;  // Assuming per_page is 10
+                const endIndex = Math.min(currentPage * 10, totalRecords);
+                // pageInfo.textContent = `Page ${currentPage} of ${totalPages} (Showing ${startIndex} - ${endIndex} of ${totalRecords})`;
+           }
+
+           function createPaginationButton(text, enabled, pageNumber, isActive = false) {
+            const li = document.createElement('li');
+            li.classList.add('page-item');
+            if (!enabled) {
+                li.classList.add('disabled');
+            }
+            if (isActive) {
+                li.classList.add('active');
+            }
+
+            const a = document.createElement('a');
+            a.classList.add('page-link');
+            a.textContent = text;
+            if (enabled) {
+                a.href = '#';
+                a.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    updateTbaelWithPage(pageNumber);
+                });
+            }
+            li.appendChild(a);
+            return li;
+        }
+
+        function updateTbaelWithPage(page){
+            const params = new URLSearchParams({
                     search: search.value,
                     salary: salary.value,
                     location: selected_location.value,
                     skills: skills.value,
+                    page: page,
                 });     
 
                 fetch(`/employer/api/get_listing?${params}`)
@@ -185,12 +229,11 @@
                     .then(data => {
                         // alert(data);
                             table.innerHTML = data.html;
-                            document.getElementById('candidate-count').innerText = data.total;
+                            document.getElementById('candidate-count').innerText = data.total;                           
+                            updatePagination(data.current_page, data.total_pages, data.total);
                             console.log("data:",data);
                     })
-           }
-
-
+        }
     </script>
 </body>
 

@@ -24,11 +24,17 @@ signup = Blueprint('signup', __name__)
 @signup.route('/signup', methods=['GET', 'POST'])
 @signup.route('/auth/confirm-role.html', methods=['GET', 'POST'])
 def confirm_role():
+    """Confirm user role
+
+    Methods:
+        GET: Render confirm role form
+        POST: Set user role in session and redirect to registration page
+    """
     session.clear()
     return render_template('auth/confirm-role.html')
 
 @signup.route('/signup/employer', methods=['GET', 'POST'])
-def signup_employer() -> Union[Response, dict]:
+def signup_employer():
     """Handle employer registration
 
     Methods:
@@ -39,6 +45,8 @@ def signup_employer() -> Union[Response, dict]:
         GET: Rendered HTML template
         POST: JSON response with success status or error details
     """
+ 
+    
     if request.method == 'POST':
         form = request.form
         
@@ -47,11 +55,13 @@ def signup_employer() -> Union[Response, dict]:
         missing = [field for field in required_fields if not form.get(field)]
         
         if missing:
+            logger.warning(f"Missing required fields: {missing}")
             return jsonify({'success': False, 'error': 'Missing required fields', 'missing': missing}), 400
         
         # Check email existence
         email = form.get('email')
         if check_email_exists('employers', 'email', email) or check_email_exists('job_seekers', 'email', email):
+            logger.info(f"Email already exists: {email}")
             return jsonify({'success': False, 'error': 'Email already exists'}), 400
             
         password = form.get('password')
@@ -71,7 +81,9 @@ def signup_employer() -> Union[Response, dict]:
             try:
                 logo_file.save(os.path.join(upload_dir, filename))
                 logo_url = f'/uploads/logos/{filename}'
+                logger.debug(f"Logo file saved: {logo_url}")
             except Exception as e:
+                logger.error(f"File upload failed: {e}")
                 return jsonify({'success': False, 'error': 'File upload failed', 'details': str(e)}), 500
         
         # Hash the password
@@ -98,25 +110,27 @@ def signup_employer() -> Union[Response, dict]:
                 'company_size': company_size,
                 'website': website,
                 'logo_url': logo_url,
-                'register_id':uuid,
+                'register_id': uuid,
                 'field': field
             })
             
             if result['success']:
                 session['id_step_1_done'] = True
-                print("the results::::::::::::::::::::",result) 
+                logger.info(f"Registration successful for email: {email}")
                 return jsonify({'success': True, 'message': 'Registration successful'})
                 # return redirect("/login")
                 return redirect('/signup/requirements')
             else:
-                print(result)
+                logger.error(f"Registration failed: {result['message']}")
                 return jsonify({'success': False, 'error': 'Registration failed', 'details': result['message']}), 400
                 
         except Exception as e:
+            logger.exception(f"Registration failed due to an exception: {e}")
             return jsonify({'success': False, 'error': 'Registration failed', 'details': str(e)}), 500
             
     else:
         # Render the signup form
+        logger.debug("Rendering employer signup form")
         return render_template('auth/register_employers.html')
 
 @signup.route('/signup/jobseeker', methods=['GET', 'POST'])

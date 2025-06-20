@@ -1,18 +1,16 @@
 import os
-from datetime import  timedelta
+from datetime import timedelta
 
 from flask import Flask
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_wtf.csrf import CSRFProtect
 
-
 app = Flask(__name__)
 csrf = CSRFProtect(app)
 
 
 from utils.mylogging import logger
-
 
 __builtins__.logging = logger
 __builtins__.logger = logger
@@ -43,6 +41,7 @@ app.register_blueprint(routes_bp)
 
 if __name__ == "__main__":
     try:
+        os.system("backup_database.bat")
         socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
     except ImportError as e:
         print(f"ImportError: {e}")

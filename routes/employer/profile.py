@@ -134,13 +134,13 @@ def get_active_job_postings(id):
             (SELECT industry FROM company_profile) AS industry,
             (SELECT company_size FROM company_profile) AS company_size,
             (SELECT website FROM company_profile) AS company_website,
-            (SELECT GROUP_CONCAT(CONCAT_WS('|', job_id, title, posted_at, status)) FROM active_job_postings) AS active_job_postings,
+            (SELECT GROUP_CONCAT(CONCAT_WS('||||', job_id, title, posted_at, status) SEPARATOR ';;;;') FROM active_job_postings) AS active_job_postings,
             (SELECT email FROM contact_information) AS email,
             (SELECT website FROM contact_information) AS contact_website,
             (SELECT total_jobs_posted FROM job_statistics) AS total_jobs_posted,
             (SELECT currently_active_jobs FROM job_statistics) AS currently_active_jobs,
-            (SELECT GROUP_CONCAT(CONCAT_WS('|', status, count)) FROM chart_data) AS chart_data,
-            (SELECT GROUP_CONCAT(CONCAT_WS('|', first_name, last_name, position, status)) FROM recent_applications) AS recent_applications
+            (SELECT GROUP_CONCAT(CONCAT_WS('||||', status, count) SEPARATOR ';;;;') FROM chart_data) AS chart_data,
+            (SELECT GROUP_CONCAT(CONCAT_WS('||||', first_name, last_name, position, status) SEPARATOR ';;;;') FROM recent_applications) AS recent_applications
     """)
     
     result = db.execute_query(query, {"employer_id": employer_id})
@@ -148,25 +148,85 @@ def get_active_job_postings(id):
     if result["success"]:
        
         # Process active job postings data
-        if result["output"][0]['active_job_postings']:
-            splitted =result["output"][0]['active_job_postings'].split('|')
-            result["output"][0]['active_job_postings'] = []
-            result["output"][0]['active_job_postings'].append(
-                {
-                    'job_id': splitted[0],
-                    'title': splitted[1],
-                    'posted_at': splitted[2],
-                    'status': splitted[3]
-                }
-            )
+        if not result["output"]: # Handle case where query returns no data for the employer_id
+            # Return a structure with default/empty values if appropriate for your frontend
+            return jsonify({
+                'success': True,
+                'data': [{
+                    'total_candidates': 0,
+                    'total_job_posted': 0,
+                    'active_job_listings': 0,
+                    'successful_hires': 0,
+                    'company_name': None,
+                    'field': None,
+                    'logo_url': None,
+                    'industry': None,
+                    'company_size': None,
+                    'company_website': None,
+                    'active_job_postings': [],
+                    'email': None,
+                    'contact_website': None,
+                    'currently_active_jobs': 0,
+                    'chart_data': [],
+                    'recent_applications': []
+                }]
+            })
+
+        data_row = result["output"][0]
+
+        active_postings_str = data_row.get('active_job_postings')
+        processed_postings = []
+        if active_postings_str:
+            job_entries = active_postings_str.split(';;;;')
+            for entry in job_entries:
+                if not entry: continue
+                parts = entry.split('||||')
+                if len(parts) == 4:
+                    processed_postings.append({
+                        'job_id': parts[0],
+                        'title': parts[1],
+                        'posted_at': parts[2],
+                        'status': parts[3]
+                    })
+                else:
+                    print(f"Warning: Malformed active_job_posting entry: {entry}") # Add logging
+        data_row['active_job_postings'] = processed_postings
                
         # Process chart data
-        if result["output"][0]['chart_data']:
-            result["output"][0]['chart_data'] = result["output"][0]['chart_data'].split('|')
-        
+        chart_data_str = data_row.get('chart_data')
+        processed_chart_data = []
+        if chart_data_str:
+            chart_entries = chart_data_str.split(';;;;')
+            for entry in chart_entries:
+                if not entry: continue
+                parts = entry.split('||||')
+                if len(parts) == 2:
+                    processed_chart_data.append({
+                        'status': parts[0],
+                        'count': int(parts[1]) if parts[1].isdigit() else parts[1]
+                    })
+                else:
+                    print(f"Warning: Malformed chart_data entry: {entry}") # Add logging
+        data_row['chart_data'] = processed_chart_data
+
         # Process recent applications data
-        if result["output"][0]['recent_applications']:
-            result["output"][0]['recent_applications'] = result["output"][0]['recent_applications'].split('|')
+        recent_apps_str = data_row.get('recent_applications')
+        processed_recent_apps = []
+        if recent_apps_str:
+            app_entries = recent_apps_str.split(';;;;')
+            for entry in app_entries:
+                if not entry: continue
+                parts = entry.split('||||')
+                if len(parts) == 4:
+                    processed_recent_apps.append({
+                        'first_name': parts[0],
+                        'last_name': parts[1],
+                        'position': parts[2],
+                        'status': parts[3]
+                    })
+                else:
+                    print(f"Warning: Malformed recent_application entry: {entry}") # Add logging
+        data_row['recent_applications'] = processed_recent_apps
 
         print(result["output"])
         return jsonify({

@@ -7,6 +7,7 @@ from sqlalchemy import text
 from datetime import datetime
 from middlewares.is_requirements_done import is_requirements_done
 from utils.check_if_exists import check_column_exists
+
 # Create a Blueprint
 jobs = Blueprint("jobs", __name__)
 
@@ -59,7 +60,9 @@ def post_job_api():
             return jsonify({"message": "Job posted successfully", "success": True}), 201
         else:
             logging.error(f"Job posting failed: {result['message']}")
-            return jsonify({"error": "Job posting failed", "details": result["message"]}), 400
+            return jsonify(
+                {"error": "Job posting failed", "details": result["message"]}
+            ), 400
 
     except Exception as e:
         logging.error(f"Error: {str(e)}")
@@ -133,6 +136,7 @@ def get_job_cards():
         job_type = request.args.get("type", "all")
         sort_by = request.args.get("sort", "newest")
         search_query = request.args.get("search", "")
+        approved_status_filter = request.args.get("statusFilter", "all")
 
         # Base query
         query = """
@@ -147,6 +151,7 @@ def get_job_cards():
                 j.posted_at,
                 j.expires_at,
                 j.status,
+                j.approved,
                 COUNT(a.application_id) as applicant_count
             FROM jobs j
             LEFT JOIN applications a ON j.job_id = a.job_id
@@ -159,9 +164,9 @@ def get_job_cards():
         if job_type != "all":
             query += " AND j.employment_type = :job_type"
         if search_query:
-            query += (
-                " AND (j.title LIKE :search_query)"
-            )
+            query += " AND (j.title LIKE :search_query)"
+        if approved_status_filter != "all":
+            query += " AND j.approved = :approved_status_filter"
 
         query += " GROUP BY j.job_id"
 
@@ -183,6 +188,8 @@ def get_job_cards():
             params["job_type"] = job_type
         if search_query:
             params["search_query"] = f"%{search_query}%"
+        if approved_status_filter != "all":
+            params["approved_status_filter"] = int(approved_status_filter)
 
         result = db.execute_query(text(query), params)
 
@@ -206,6 +213,31 @@ def get_job_cards():
                 status_class = (
                     "bg-success" if job["status"] == "active" else "bg-secondary"
                 )
+                approved_status = job["approved"]
+              
+                badge_icon = "question-circle"
+                badge_text = "Unknown"
+                badge_theme_color = "secondary"  # Bootstrap theme color
+              
+                if approved_status == 0:  # Pending
+                   
+                    badge_icon = "clock"
+                    badge_text = "Pending Review"
+                    badge_theme_color = "primary"
+
+                elif approved_status == 1:  # Approved
+                  
+                    badge_icon = "check-circle"
+                    badge_text = "Approved"
+                    badge_theme_color = "success"
+
+                elif approved_status == 3:  # Rejected
+                  
+                    badge_icon = "times-circle"
+                    badge_text = "Rejected"
+                    badge_theme_color = "danger"
+
+                # Fallback for unknown status
 
                 job_card = f"""
                 <div class="col-12 col-md-6 col-lg-4 mb-4">
@@ -213,6 +245,9 @@ def get_job_cards():
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start mb-3">
                                 <span class="badge {status_class} status-badge">{job["status"].title()}</span>
+                                 <span class="badge bg-{badge_theme_color} bg-opacity-10 text-{badge_theme_color} status-badge">
+                                 <i class="fas fa-{badge_icon} me-1"></i> {badge_text}
+                    </span>
                                 <div class="dropdown">
                                     <button class="btn btn-sm btn-link shadow-none text-muted p-0" type="button" data-bs-toggle="dropdown">
                                         <i class="fas fa-ellipsis-v"></i>

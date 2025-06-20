@@ -100,7 +100,7 @@ CREATE TABLE `employers` (
 
 LOCK TABLES `employers` WRITE;
 /*!40000 ALTER TABLE `employers` DISABLE KEYS */;
-INSERT INTO `employers` VALUES (2,'kamjijajajo@gmail.com','$2b$12$EmVDH7PYPLQSpKkBqN4Mterb9N5buSsJN9WvGOAWjFkscfIsryAA.','2025-03-21 09:01:05',NULL,'Innovatech','Programming',1,'','','0',''),(3,'kanjijajajo@gmail.com','$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm','2025-03-21 09:03:05','2025-06-17 02:14:28','company001','Programming',1,'','','0',''),(17,'test_employer@gmail.com','$2b$12$qKr1VuAdw7HuhfCcW9IrpeJ6/xek/qoolMwWpSnrix4NorqjMyHla','2025-06-15 07:36:53','2025-06-17 01:52:17','test_employer',NULL,51,'https:fake.com','/uploads/logos/Screenshot_2025-05-13_185459.png','616f99ef-9549-4078-a78d-5a7e21f7383c','we are a fucking morons');
+INSERT INTO `employers` VALUES (2,'kamjijajajo@gmail.com','$2b$12$EmVDH7PYPLQSpKkBqN4Mterb9N5buSsJN9WvGOAWjFkscfIsryAA.','2025-03-21 09:01:05',NULL,'Innovatech','Programming',1,'','','0',''),(3,'kanjijajajo@gmail.com','$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm','2025-03-21 09:03:05','2025-06-20 03:26:13','company001','Programming',1,'','','0',''),(17,'test_employer@gmail.com','$2b$12$qKr1VuAdw7HuhfCcW9IrpeJ6/xek/qoolMwWpSnrix4NorqjMyHla','2025-06-15 07:36:53','2025-06-20 04:23:07','test_employer',NULL,51,'https:fake.com','/uploads/logos/Screenshot_2025-05-13_185459.png','616f99ef-9549-4078-a78d-5a7e21f7383c','we are a fucking morons');
 /*!40000 ALTER TABLE `employers` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `interviews`;
@@ -162,12 +162,12 @@ CREATE TABLE `job_interest` (
   PRIMARY KEY (`interest_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `job_interest_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `job_seekers` (`seeker_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `job_interest` WRITE;
 /*!40000 ALTER TABLE `job_interest` DISABLE KEYS */;
-INSERT INTO `job_interest` VALUES (10,139,'programming','Freelance','On-site','20,000 - 35,000','2025-04-16 02:01:28');
+INSERT INTO `job_interest` VALUES (10,139,'programming','Freelance','On-site','20,000 - 35,000','2025-04-16 02:01:28'),(11,140,'programming','Full-time','Remote','50,000 - 75,000','2025-06-20 02:50:21'),(12,141,'programming','Full-time','Hybrid','50,000 - 75,000','2025-06-20 04:14:31'),(13,142,'programming','Full-time','Hybrid','75,000+','2025-06-20 04:39:35');
 /*!40000 ALTER TABLE `job_interest` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `job_seekers`;
@@ -190,12 +190,12 @@ CREATE TABLE `job_seekers` (
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `phone` (`phone`),
   KEY `idx_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `job_seekers` WRITE;
 /*!40000 ALTER TABLE `job_seekers` DISABLE KEYS */;
-INSERT INTO `job_seekers` VALUES (139,'jemcarlo46@gmail.com','$2b$12$jJsAP1.XiA4IFyrGxSCW0eeHEPop1rxc2Gz8XnKcUjDkthM1iwjRC','2025-03-25 02:49:13','2025-06-16 00:08:17','Jemcarlo','Austria','09207766194','Pangasinan','','bsit','');
+INSERT INTO `job_seekers` VALUES (139,'jemcarlo46@gmail.com','$2b$12$jJsAP1.XiA4IFyrGxSCW0eeHEPop1rxc2Gz8XnKcUjDkthM1iwjRC','2025-03-25 02:49:13','2025-06-20 11:07:26','Jemcarlo','Austria','09207766194','Pangasinan','','bsit',''),(140,'jemcarlo49090@gmail.com','$2b$12$l12tcJ5fpMIfZHgS1WlkqOxYnwG.tPBOBvkTDSKZHQQade8v05x8m','2025-06-20 02:45:17','2025-06-20 03:47:31','Jemcarlo','Austria','0920776619455','Pangasinan','','bsit',''),(141,'test_jobseeker@gmail.com','$2b$12$PgRKyYYfQRJB6Hk2./027uwcduIt7kzNeEQrU1RvAzViLJHeYwiQq','2025-06-20 04:08:55','2025-06-20 04:09:10','Jem','Austria','09457323970','Pangasinan','','bsit','/uploads/portfolios/Screenshot_2025-05-12_060144.png'),(142,'maryjanedalas02@gmial.com','$2b$12$la1LTXRVnNrG/AR/JyW78uj91FXQoPG5Phcb8CGgyro8i/eR5YQNO','2025-06-20 04:34:39','2025-06-20 04:34:55','jjane','ali','090909027996','Pangasinan','Saaan carlos','bsit','/uploads/portfolios/Screenshot_2025-05-12_060144.png');
 /*!40000 ALTER TABLE `job_seekers` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `job_skills`;
@@ -259,12 +259,12 @@ CREATE TABLE `jobs` (
   KEY `idx_employer_id` (`employer_id`),
   KEY `idx_status` (`status`),
   CONSTRAINT `jobs_ibfk_1` FOREIGN KEY (`employer_id`) REFERENCES `employers` (`employer_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `jobs` WRITE;
 /*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
-INSERT INTO `jobs` VALUES (1,3,'progamming','a programming job','manila','35,000 - 50,000','contract','2025-03-23 03:18:19','2025-04-22 16:00:00','active',0),(2,3,'junior dev 1','  a programming job 1',' manila',' 35,000 - 50,000','contract','2025-03-23 03:18:19','2025-04-22 16:00:00','closed',0),(3,2,'progamming','a programming job 1','manila','35,000 - 50,000','contract','2025-03-23 03:18:19','2025-04-22 16:00:00','active',0),(4,3,'web dev','web dec with reactjs','manila',' 35,000 - 50,000','part_time','2025-06-15 05:53:50','2025-07-10 16:00:00','active',0),(5,17,' backend deav','  must have experience in backend for atlest 40years','Hybrid','20,000 - 35,000','contract','2025-06-15 13:13:19','2025-09-16 16:00:00','active',0),(6,17,'designer','knowledge about figma and photoshop','Remote','20,000 - 35,000','part_time','2025-06-16 04:44:24','2025-06-30 16:00:00','active',2);
+INSERT INTO `jobs` VALUES (1,3,'progamming','a programming job','manila','35,000 - 50,000','contract','2025-03-23 03:18:19','2025-04-22 16:00:00','active',1),(2,3,'junior dev 1','  a programming job 1',' manila',' 35,000 - 50,000','contract','2025-03-23 03:18:19','2025-04-22 16:00:00','closed',0),(3,2,'progamming','a programming job 1','manila','35,000 - 50,000','contract','2025-03-23 03:18:19','2025-04-22 16:00:00','active',3),(4,3,'web dev','web dec with reactjs','manila',' 35,000 - 50,000','part_time','2025-06-15 05:53:50','2025-07-10 16:00:00','active',0),(5,17,' backend deav','  must have experience in backend for atlest 40years','Hybrid','20,000 - 35,000','contract','2025-06-15 13:13:19','2025-09-16 16:00:00','active',0),(6,17,'designer','knowledge about figma and photoshop','Remote','20,000 - 35,000','part_time','2025-06-16 04:44:24','2025-06-30 16:00:00','active',3),(7,17,'java','proffesional pthon','On-site','75,000+','full_time','2025-06-20 03:43:17','2025-06-04 16:00:00','active',1),(8,17,'the city','jaaava','Hybrid','75,000+','full_time','2025-06-20 04:25:13','2025-06-19 16:00:00','active',1);
 /*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `messages`;
@@ -369,12 +369,12 @@ CREATE TABLE `qualifications` (
   PRIMARY KEY (`qualification_id`),
   KEY `idx_seeker_id` (`seeker_id`),
   CONSTRAINT `qualifications_ibfk_1` FOREIGN KEY (`seeker_id`) REFERENCES `job_seekers` (`seeker_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `qualifications` WRITE;
 /*!40000 ALTER TABLE `qualifications` DISABLE KEYS */;
-INSERT INTO `qualifications` VALUES (10,139,'bsit','bcc','ssssss','programming');
+INSERT INTO `qualifications` VALUES (10,139,'bsit','bcc','s','programming'),(12,141,'[\"Bachelor of Science in Information Technology\"]','bcc','none','programming'),(13,142,'[\"Bachelor of Science in Information Technology\"]','bcc','programming','programming');
 /*!40000 ALTER TABLE `qualifications` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `ratings`;
@@ -441,12 +441,12 @@ CREATE TABLE `seeker_profiles` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `seeker_profiles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `job_seekers` (`seeker_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `seeker_profiles` WRITE;
 /*!40000 ALTER TABLE `seeker_profiles` DISABLE KEYS */;
-INSERT INTO `seeker_profiles` VALUES (3,139,'im a student with some knowledgge about programming','some programming ','none','2025','im currently studing ','/files\\files/resumes\\Screenshot_2025-05-12_060800.png','https://fake.com','https://fake.com','https://fake.com');
+INSERT INTO `seeker_profiles` VALUES (3,139,'im a student with some knowledgge about programming','some programming ','none','2025','im currently studing ','/files\\files/resumes\\Screenshot_2025-05-12_060800.png','https://fake.com','https://fake.com','https://fake.com'),(4,141,'python','programming','mentos company','jan 1 2023','nothing',NULL,'https://fake.com','https://pornhub.com','https://pornhub.com'),(5,142,'i dont have skill and ssshy person','programming','mentos company','jan 1 2023','i can programing ',NULL,'https://com','https://com','https://com');
 /*!40000 ALTER TABLE `seeker_profiles` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `seeker_skills`;
@@ -494,7 +494,7 @@ CREATE TABLE `verified_users` (
 
 LOCK TABLES `verified_users` WRITE;
 /*!40000 ALTER TABLE `verified_users` DISABLE KEYS */;
-INSERT INTO `verified_users` VALUES ('jemcarlo46@gmail.com'),('kanjijajajo@gmail.com'),('test_employer@gmail.com');
+INSERT INTO `verified_users` VALUES ('jemcarlo46@gmail.com'),('kanjijajajo@gmail.com'),('maryjanedalas02@gmial.com'),('test_employer@gmail.com'),('test_jobseeker@gmail.com');
 /*!40000 ALTER TABLE `verified_users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

@@ -87,7 +87,8 @@ def handle_forgot_password():
     
     if request.method == 'POST':
         try:
-            data = request.get_json()
+            logging.error(request.form)
+            data = request.form
             email = data.get('email')
             
             if not email:

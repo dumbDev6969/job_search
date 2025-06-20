@@ -130,13 +130,15 @@ check_mysql_connection()
 # Before request hook to control access based on DB status
 @routes_bp.before_request
 def before_request():
+    logging.warning("="*100)
+    logging.error(session)
     global is_mysql_running
     session['is_database_running'] = True
     if not is_mysql_running:
         session['is_database_running'] = False
         if request.endpoint != 'routes.retry' and not request.path.startswith('/static'):
             return redirect(url_for('routes.retry'))
-    if 'user_id' in session:
+    if 'user_id' in session and request.path.startswith('/employer'):
             logging.info(f"Checking if user with id {session['user_id']} is verified")
             if  check_column_exists('employers', 'employer_id ', session['user_id']):
                 logging.info(f"Checking if employer with id {session['user_id']} is verified")

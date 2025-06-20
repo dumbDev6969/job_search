@@ -70,7 +70,7 @@ WHERE sj.seeker_id = :seeker_id and (:search_term = '' OR j.title LIKE CONCAT('%
                         </div>
                         <div class="d-flex flex-column gap-2">
                             <button type="button" class="btn-danger" onclick="removeSavedJob({job['saved_job_id']})">Remove</button>
-                            <button type="button" class="btn-primary" onclick="window.location.href='/jobseeker/view-job/{job['job_id']}'">View</button>
+                            <button type="button" class="btn-primary" onclick="window.location.href='/job/view/{job['job_id']}'">View</button>
                         </div>
                     </div>
     
@@ -115,7 +115,7 @@ def view_saved_job(job_id):
         SELECT j.*, e.*
         FROM jobs j
         JOIN employers e ON j.employer_id = e.employer_id
-        WHERE j.job_id = :job_id
+        WHERE j.job_id = :job_id AND j.status = 'active' AND j.approved = 1
     """)
     
     result = db.execute_query(query, {'job_id': job_id})

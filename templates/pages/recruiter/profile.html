@@ -100,7 +100,7 @@
                                 <small class="text-muted">Posted on: Jan 15, 2025</small><br />
                                 <span class="badge bg-success mt-2">Active</span>
                                 <a href="job-single.html" class="btn btn-sm btn-outline-primary float-end">View</a>
-                            </div>
+                            </div>Job Statistics
                         </div>
                     </div>
                 </div>
@@ -117,19 +117,7 @@
                     </div>
                 </div>
                 <!-- Stats -->
-                <div class="card" data-aos="fade-left" data-aos-delay="100">
-                    <div class="card-body">
-                        <h5 class="mb-3"><i class="fas fa-chart-line me-2 icon-blue"></i> Job Statistics</h5>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Total Jobs Posted</span>
-                            <span class="fw-bold" id="total-jobs-posted">8</span>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <span class="text-muted">Currently Active</span>
-                            <span class="fw-bold text-success" id="currently-active-jobs">3</span>
-                        </div>
-                    </div>
-                </div>
+               
             </div>
         </div>
 
@@ -246,7 +234,7 @@
       activeJobPostingsList.innerHTML = ''; // Clear existing content
       if (employerData.active_job_postings && Array.isArray(employerData.active_job_postings)) {
         employerData.active_job_postings.forEach(job => {
-          
+          console.log('Processing job:', employerData);
           const jobDiv = document.createElement('div');
           jobDiv.classList.add('mb-3', 'p-3', 'bg-light', 'rounded');
           jobDiv.innerHTML = `

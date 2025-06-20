@@ -14,6 +14,7 @@ login = Blueprint('login', __name__)
 @login.route('/login', methods=['GET', 'POST'])
 @is_user_logged_in
 def login_user():
+ 
     """
     Handle user login functionality.
     
@@ -187,5 +188,10 @@ def login_user():
             return jsonify({'error': 'Login failed', 'details': str(e)}), 500
             
     else:
-        logging.info("Rendering login form")
-        return render_template('auth/login.html')
+        logging.debug(f"Rendering login form {session}")
+        logging.debug(f"Session before redirect check: {session}")
+        if "user_id" in session:
+            logging.debug(f"User is logged in, redirecting to dashboard")
+            return redirect("/dashboard")
+        else:
+            return render_template('auth/login.html')

@@ -3,3 +3,14 @@ JObseeker:
   uploading/disaplaying photos resume/profile
   notifications
   message dashbpard
+
+Propmts:
+  logging - Implement detailed logging throughout the code using the `logging` module.  Do not import or initialize the logging module; instead, directly use `logging.info`, `logging.warning`, `logging.error`, etc., as needed.  Ensure log messages are informative and aid in debugging.
+
+
+  JObs:
+    profile
+    profile view
+    0 -pendinng
+    1-approved
+    3 - rejected

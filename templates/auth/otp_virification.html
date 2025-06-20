@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobxTech - Email Verification</title>
+    <title>TechSprint - Email Verification</title>
     <link rel="stylesheet" href="/assets/fonts.css">
     <link rel="stylesheet" href="/assets/otp.css">
         <link rel="stylesheet" href="/aos-master/dist/aos.css">
@@ -91,14 +91,12 @@
             <div class="container vh-100 d-flex align-items-center justify-content-center">
                 <div class="otp-container" data-aos="fade-up">
                     <div class="otp-header text-center">
-                        <img src="/assets/img/logo.svg" alt="JobxTech Logo" class="mb-4">
+                        <img src="/assets/img/logo.svg" alt="TechSprint Logo" class="mb-4">
                         <h2 class="mb-3">Email Verification</h2>
                         <p class="text-muted">We've sent a verification code to<br><strong>{{email}}</strong></p>
                     </div>
                     
-                    <form id="">
-                        <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
-
+                    <form id="otp-form">
                         <div class="d-flex gap-2 justify-content-center mb-4">
                             <input type="text" class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code">
                             <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
@@ -107,7 +105,7 @@
                             <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
                             <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
                         </div>
-                        
+                        <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
                         <div class="row g-2">
                             <div class="col-md-8">
                                 <button type="submit" class="btn-primary btn-verify w-100" id="verify-btn">
@@ -176,7 +174,7 @@
 
             const formData = new FormData();
             formData.append('email', email);
-            formData.append('csrf_token', document.getElementById('csrf_token').value);
+             formData.append('csrf_token', document.getElementById('csrf_token').value);
 
             Swal.fire({
                 title: 'Sending verification code',
@@ -314,7 +312,7 @@
 
                 const formData = new FormData();
                 formData.append('email', email);
-
+                formData.append('csrf_token', document.getElementById('csrf_token').value);
                 fetch('/generate', {
                     method: 'POST',
                     body: formData

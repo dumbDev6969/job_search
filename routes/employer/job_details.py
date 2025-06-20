@@ -25,7 +25,7 @@ def job_details_(job_id):
         A rendered template of the job details page.
     """
     db = get_db()
-    result = db.execute_query(text(f"SELECT * FROM jobs WHERE job_id = {job_id}"))
+    result = db.execute_query(text(f"SELECT * FROM jobs WHERE job_id = {job_id} AND status = 'active' AND approved = 1"))
     if result["success"]:
         if  result["output"]:
             logging.info(f"Fetching job details for job id {job_id}")
@@ -48,11 +48,11 @@ def job_details_public(job_id):
     If the job or employer details are not found, it renders the job_details.html template with an error message
     """
     db = get_db()
-    result = db.execute_query(text(f"SELECT * FROM jobs WHERE job_id = {job_id}"))
+    result = db.execute_query(text(f"SELECT * FROM jobs WHERE job_id = {job_id} AND status = 'active' AND approved = 1"))
     
     if result["success"]:
         if result["output"]:
-            logging.info(f"Fetching job details for job id {job_id}")
+            logging.info(f"Fetching job details for job id {job_id} ")
             employer_details = db.execute_query(text(f"SELECT * FROM employers WHERE employer_id = {result['output'][0]['employer_id']}"))
             
             if employer_details["success"]:

@@ -43,22 +43,7 @@
     <div class="container pt-5 mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Candidate Search</h2>
-            <div class="text-muted" id="candidateCount">Showing candidates</div>
-            <script>
-                function updateCandidateCount() {
-                    fetch('/api/employer/find-talent')
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log("data:", data);
-                            const totalRecords = data.total_records;
-                            document.getElementById('candidateCount').textContent = `Showing ${totalRecords} candidates`;
-                        })
-                        .catch(error => {
-                            document.getElementById('candidateCount').textContent = 'Error fetching candidate count';
-                        });
-                }
-                window.onload = updateCandidateCount;
-            </script>
+            <div class="text-muted" id="candidateCount">Loading candidates...</div>
         </div>
         <!-- Search and Filters -->
         <div class="card mb-4 border-0 shadow-sm" data-aos="fade-right">
@@ -128,16 +113,8 @@
             <!-- Pagination -->
             <div class="card-footer bg-white">
                 <nav aria-label="Candidate pagination">
-                    <ul class="pagination justify-content-center mb-0">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Previous</a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
+                    <ul class="pagination justify-content-center mb-0" id="pagination-links">
+                        <!-- Pagination links will be dynamically loaded here -->
                     </ul>
                 </nav>
             </div>
@@ -157,34 +134,103 @@
         const salary = document.getElementById('salary');
         const selected_location = document.getElementById('location');
         const skills = document.getElementById('skills');
-        const table = document.getElementById('table-listing');
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch(`/employer/api/get_listing`)
-                .then(response => response.json())
-                .then(data => {
-                    table.innerHTML = data.html;
-                });
-        });
-        search.addEventListener('keyup', updateTbael);
-        salary.addEventListener('change', updateTbael);
-        selected_location.addEventListener('change', updateTbael);
-        skills.addEventListener('change', updateTbael);
+        const tableListing = document.getElementById('table-listing');
+        const paginationLinks = document.getElementById('pagination-links');
+        const candidateCountEl = document.getElementById('candidateCount');
+        let currentPage = 1; // Keep track of the current page
+        
+        // Event listeners
+        search.addEventListener('keyup', () => updateTable(1)); // Reset to page 1 on new search/filter
+        salary.addEventListener('change', () => updateTable(1));
+        selected_location.addEventListener('change', () => updateTable(1));
+        skills.addEventListener('change', () => updateTable(1));
 
-        function updateTbael() {
+        function updateTable(page) {
+            currentPage = page;
             const params = new URLSearchParams({
                 search: search.value,
                 salary: salary.value,
                 location: selected_location.value,
                 skills: skills.value,
+                page: currentPage
             });
 
             fetch(`/api/employer/find-talent?${params}`)
                 .then(response => response.json())
                 .then(data => {
-                    table.innerHTML = data.html;
-                    console.log("data:", data);
+                    tableListing.innerHTML = data.html;
+                    const totalPages = data.total_pages;
+                    const currentPageFromApi = data.current_page;
+                    const totalRecords = data.total_records;
+
+                    if (candidateCountEl && totalRecords !== undefined) {
+                        candidateCountEl.textContent = `Showing ${totalRecords} candidates`;
+                    } else if (candidateCountEl) {
+                        candidateCountEl.textContent = 'Candidate count unavailable';
+                    }
+
+                    console.log("current_page from API:", currentPageFromApi);
+                    console.log("total_pages from API:", totalPages);
+                    
+                    renderPagination(totalPages, currentPageFromApi);
+                })
+                .catch(error => {
+                    console.error("Error fetching table data:", error);
+                    if (candidateCountEl) candidateCountEl.textContent = 'Error fetching candidates';
+                    tableListing.innerHTML = '<tr><td colspan="7" class="text-center">Error loading candidates. Please try again.</td></tr>';
+                    paginationLinks.innerHTML = ''; // Clear pagination on error
                 });
         }
+
+        function renderPagination(totalPages, currentPage) {
+            paginationLinks.innerHTML = ''; // Clear existing links
+
+            // Ensure totalPages is a valid number for pagination
+            if (typeof totalPages !== 'number' || isNaN(totalPages) || totalPages < 1) { // Allow totalPages = 1
+                console.log("Pagination not rendered: totalPages =", totalPages, "(must be a number >= 1)");
+                return; 
+            }
+            // Ensure currentPage is a valid number, default to 1 if not
+            if (typeof currentPage !== 'number' || isNaN(currentPage) || currentPage < 1) {
+                console.warn("Pagination: currentPage is not a valid number. Defaulting to 1. Received:", currentPage);
+                currentPage = 1;
+            }
+            if (currentPage > totalPages) {
+                console.warn("Pagination: currentPage is greater than totalPages. Setting to totalPages. Received:", currentPage, "Total:", totalPages);
+                currentPage = totalPages;
+            }
+
+            // Previous Button
+            let prevDisabled = currentPage === 1 ? 'disabled' : '';
+            const prevPage = Math.max(1, currentPage - 1);
+            paginationLinks.innerHTML += `
+                <li class="page-item ${prevDisabled}">
+                    <a class="page-link" href="#" tabindex="-1" onclick="event.preventDefault(); if (${currentPage !== 1}) updateTable(${prevPage});">Previous</a>
+                </li>
+            `;
+
+            // Page Number Links
+            for (let i = 1; i <= totalPages; i++) {
+                let activeClass = i === currentPage ? 'active' : '';
+                paginationLinks.innerHTML += `
+                    <li class="page-item ${activeClass}">
+                        <a class="page-link" href="#" onclick="event.preventDefault(); if (this.parentElement.classList.contains('active')) return; updateTable(${i});">${i}</a>
+                    </li>
+                `;
+            }
+
+            // Next Button
+            let nextDisabled = currentPage === totalPages ? 'disabled' : '';
+            const nextPage = Math.min(totalPages, currentPage + 1);
+            paginationLinks.innerHTML += `
+                <li class="page-item ${nextDisabled}">
+                    <a class="page-link" href="#" onclick="event.preventDefault(); if (${currentPage !== totalPages}) updateTable(${nextPage});">Next</a>
+                </li>
+            `;
+        }
+
+        // Initial load
+        updateTable(1);
     </script>
 </body>
 

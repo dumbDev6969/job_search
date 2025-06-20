@@ -1,6 +1,7 @@
 
 
 from flask import Blueprint, render_template, session, jsonify
+import logging
 from middlewares.is_email_verified import is_email_verified
 from middlewares.user_access import jobseeker as jobseeker, admin, emplyer
 from middlewares.is_setup_done import is_interests_done, is_qualification_done
@@ -24,6 +25,7 @@ def recomendations_():
     """
     Fetches recommended jobs and renders the recommendation page with the job listings.
     """
+    logging.info("Rendering job recommendations page.")
     jobs = get_recommended_jobs()
     return render_template("/pages/job_seeker/recommendation.html", jobs=jobs)
 
@@ -47,7 +49,9 @@ def get_recommended_jobs():
         keys 'title', 'location', 'salary_range', and 'employer'.
     """
     db = get_db()
+    logging.info("Attempting to fetch recommended jobs.")
     job_seeker_id = session.get("user_id")
+    logging.info("Fetching job recommendations for job seeker ID: %s", job_seeker_id)
 
     # Query the database for the job seeker's interests
     query = text("""
@@ -57,11 +61,11 @@ def get_recommended_jobs():
     """)
     params = {"job_seeker_id": job_seeker_id}
     job_seeker_interests = db.execute_query(query, params=params)
-    logging.info("Job seeker interests fetched: %s", job_seeker_interests)
+    logging.debug("Job seeker interests fetched: %s", job_seeker_interests)
 
     if not job_seeker_interests["output"]:
-        logging.info("No job seeker interests found")
-        return []
+        logging.warning("No job seeker interests found for ID: %s", job_seeker_id)
+        return jsonify({"success": False, "jobs": [], "message": "No job interests found for this user."}), 200
 
     job_seeker_interests = job_seeker_interests["output"][0]
     logging.info("Processed job seeker interests: %s", job_seeker_interests)
@@ -71,6 +75,8 @@ def get_recommended_jobs():
     job_seeker_job_type = job_seeker_interests["job_type"].lower()
     job_seeker_location = job_seeker_interests["preferred_location"].lower()
     job_seeker_salary_range = job_seeker_interests["expected_salary_range"]
+    logging.info("Job seeker preferences extracted: interest=%s, type=%s, location=%s, salary=%s",
+ job_seeker_interest, job_seeker_job_type, job_seeker_location, job_seeker_salary_range)
 
     # Query the database for jobs that match the job seeker's skills and job type
     query = text("""
@@ -78,13 +84,10 @@ def get_recommended_jobs():
         FROM jobs j
         JOIN employers e ON j.employer_id = e.employer_id
         WHERE 
-            j.employment_type LIKE :job_seeker_job_type OR 
+            (j.employment_type LIKE :job_seeker_job_type OR 
             j.location = :job_seeker_location OR 
-            j.salary_range = :job_seeker_salary_range
-    
+            j.salary_range = :job_seeker_salary_range) AND j.approved = 1 AND j.status = 'active'
     """)
-
-    # Prepare parameters with lowercased values for case-insensitive matching
     params = {
         "job_seeker_interest": job_seeker_interest,
         "job_seeker_job_type": job_seeker_job_type,
@@ -92,11 +95,11 @@ def get_recommended_jobs():
         "job_seeker_salary_range": job_seeker_salary_range
     }
     jobs = db.execute_query(query, params=params)
-    logging.info("Jobs fetched: %s", jobs)
+    logging.debug("Jobs fetched from database: %s", jobs)
 
     if not jobs["output"]:
-        logging.info("No matching jobs found")
-        return []
+        logging.warning("No matching jobs found for preferences: %s", params)
+        return jsonify({"success": False, "empty": True, "jobs": "<div class='col-12 text-center py-5'><h4>No jobs found matching your criteria</h4><p>Try adjusting your search filters</p></div>", "message": "No matching jobs found."}), 200
 
     # Format the jobs data
     recommended_jobs = []
@@ -109,7 +112,8 @@ def get_recommended_jobs():
             "salary_range": job["salary_range"],
             "employer": job["employer"],
         }
-        logging.info("Recommended job: %s", recommended_job)
+        logging.debug("Recommended job added: %s", recommended_job)
         recommended_jobs.append(recommended_job)
 
+    logging.info("Total recommended jobs: %d", len(recommended_jobs))
     return jsonify({"success": True, "jobs": recommended_jobs}), 200

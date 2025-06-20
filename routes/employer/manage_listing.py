@@ -4,6 +4,7 @@ from middlewares.is_email_verified import is_email_verified
 from utils.database import get_db
 from sqlalchemy import text
 from middlewares.is_requirements_done import is_requirements_done
+import logging
 
 
 # Create a Blueprint
@@ -19,25 +20,42 @@ def manage_listing_():
     return render_template('/pages/recruiter/manage_listing.html')
 
 
-import logging
+
 
 @manage_listing.route('/employer/api/get_listing', methods=['GET', 'POST'])
 @verify_user
 @is_email_verified
 @is_requirements_done
 def get_listing_api():
+    """
+    Returns a list of job applications filtered by search, salary, location, and skills.
+
+    GET Parameters:
+        search (str): Search for job applications by name, skills, job title, or job description.
+        salary (str): Filter job applications by salary range.
+        location (str): Filter job applications by job location.
+        skills (str): Filter job applications by job seeker skills.
+
+    Returns:
+        dict: A dictionary containing the HTML content of the job applications table and the total number of job applications.
+    """
     db = get_db()
     search = request.args.get('search', '')
     salary = request.args.get('salary', '')
     location = request.args.get('location', '')
     skills = request.args.get('skills', '')
 
-    logging.info(f"Requested job listing with search: {search}, salary: {salary},"
-                 f" location: {location}, skills: {skills}")
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 10)) # Default to 10 items per page
+    offset = (page - 1) * per_page
 
-    query = """
+    employer_id = session.get('user_id')
+    logging.info(f"Requested job listing with search: {search}, salary: {salary},"
+                 f" location: {location}, skills: {skills}, page: {page}, per_page: {per_page}")
+
+    base_query_cte = """
     WITH filtered_applications AS (
-        SELECT 
+        SELECT
             a.application_id,
             a.status as application_status,
             a.applied_at,
@@ -58,41 +76,63 @@ def get_listing_api():
         JOIN job_seekers js ON a.seeker_id = js.seeker_id
         LEFT JOIN qualifications q ON js.seeker_id = q.seeker_id
         LEFT JOIN job_interest ji ON js.seeker_id = ji.user_id
-    )
-    SELECT *
-    FROM filtered_applications
+        WHERE j.employer_id = :employer_id
     """
 
-    if search or salary or location or skills:
-        query += " WHERE "
-        conditions = []
+    count_query_sql = base_query_cte + ") SELECT COUNT(DISTINCT application_id) as total FROM filtered_applications"
+    main_query_sql = base_query_cte + ") SELECT * FROM filtered_applications"
 
+    params = {'employer_id': employer_id}
+    conditions = []
+
+    if search or salary or location or skills:
         if search:
-            conditions.append(f"(LOWER(applicant_name) LIKE LOWER('%{search}%')) OR "
-                              f"(LOWER(skills) LIKE LOWER('%{search}%'))")
+            conditions.append(f"(LOWER(applicant_name) LIKE LOWER(:search_term) OR LOWER(skills) LIKE LOWER(:search_term))")
+            params['search_term'] = f'%{search}%'
 
         if salary:
-            conditions.append(f"salary_range LIKE '%{salary}%'")
+            conditions.append(f"salary_range LIKE :salary_term")
+            params['salary_term'] = f'%{salary}%'
 
         if location:
-            conditions.append(f"job_location LIKE '%{location}%'")
+            conditions.append(f"job_location LIKE :location_term")
+            params['location_term'] = f'%{location}%'
 
         if skills:
-            conditions.append(f"skills LIKE '%{skills}%'")
+            conditions.append(f"skills LIKE :skills_term")
+            params['skills_term'] = f'%{skills}%'
 
-        query += " AND ".join(conditions)
-        query += " ORDER BY applied_at DESC"
-    else:
-        query += " ORDER BY applied_at DESC"
+    if conditions:
+        filter_clause = " WHERE " + " AND ".join(conditions)
+        count_query_sql += filter_clause
+        main_query_sql += filter_clause
 
-    logging.info(f"Constructed query: {query}")
-
-    result = db.execute_query(text(query))
+    # Execute count query first
+    logging.info(f"Constructed count query: {count_query_sql}")
+    logging.info(f"Count query params: {params}")
+    count_result = db.execute_query(text(count_query_sql), params)
     total_candidates = 0
+    if count_result['success'] and count_result['output']:
+        total_candidates = count_result['output'][0]['total']
+    else:
+        logging.error(f"Count query failed: {count_result.get('error', 'Unknown error')}")
+
+    total_pages = (total_candidates + per_page - 1) // per_page
+
+    # Add ordering and pagination to the main query
+    main_query_sql += " ORDER BY applied_at DESC LIMIT :limit OFFSET :offset"
+    params['limit'] = per_page
+    params['offset'] = offset
+
+    logging.info(f"Constructed main query: {main_query_sql}")
+    logging.info(f"Main query params: {params}")
+
+    result = db.execute_query(text(main_query_sql), params)
+
     html_content = ""
     if result['success'] and result['output']:
         jobs = result['output']
-        total_candidates = len(jobs)
+        # total_candidates is already set from the count query
         logging.info(f"Found {total_candidates} job applications")
         for job in jobs:
             html_content += f"""<tr>
@@ -103,7 +143,7 @@ def get_listing_api():
                              class="rounded-circle me-2" width="36" height="36">
                         <div>
                             <div class="fw-bold">{job['applicant_name']}</div>
-                            <small class="text-muted">Senior Frontend Developer</small>
+                            <small class="text-muted">{job.get('job_title', 'N/A')}</small> 
                         </div>
                     </div>
                 </td>
@@ -119,7 +159,14 @@ def get_listing_api():
                     </button>
                 </td>
             </tr>"""
-        return {'html': html_content, 'total': total_candidates}
+        logging.info("Fetched job applications successfully")
+        
+        return {
+            'html': html_content,
+            'total': total_candidates,
+            'total_pages': total_pages,
+            'current_page': page
+        }
     else:
         logging.info("No job applications found")
         return {'html': """
@@ -132,7 +179,12 @@ def get_listing_api():
                     </div>
                 </td>
             </tr>
-        """, 'total': 0}
+        """,
+        'total': 0,
+        'total_pages': 0,
+        'current_page': 1
+        }
+
 
 @manage_listing.route('/employer/api/dashboard_data')
 @verify_user

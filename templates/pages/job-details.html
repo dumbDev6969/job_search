@@ -175,9 +175,9 @@
             document.querySelector('.fa-users').parentElement.textContent = job.company_size || '51-200 employees';
             
             // Update salary, experience and deadline
-            document.querySelectorAll('.fw-bold')[0].textContent = job.salary || 'Not specified';
+            document.querySelectorAll('.fw-bold')[0].textContent = job.salary_range || 'Not specified';
             document.querySelectorAll('.fw-bold')[1].textContent = job.experience || 'Not specified';
-            document.querySelectorAll('.fw-bold')[2].textContent = job.deadline ? new Date(job.deadline).toLocaleDateString() : 'Not specified';
+            document.querySelectorAll('.fw-bold')[2].textContent = job.expires_at ? new Date(job.expires_at).toLocaleDateString() : 'Not specified';
             
             // Update job description and requirements
             document.querySelector('.card-body > p').textContent = job.description || 'Job description';

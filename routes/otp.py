@@ -16,20 +16,24 @@ def verify_account():
     email =  request.form.get('email')
     
     if not email:
+        logging.error("Email is required")
         return jsonify({'error': 'Email is required'}), 400
         
+    logging.info(f"Generating OTP for {email}")
     # Generate OTP and get UUID
     data = {'email': email}
     response = generate()
     if response[1] != 200:
+        logging.error(f"Error generating OTP for {email}")
         return response
         
     uuid = response[0].get_json()['uuid']
+    logging.info(f"Generated OTP for {email} with UUID {uuid}")
     return render_template('/auth/otp_virification.html', email=email, uuid=uuid)
 
 # Define your routes using the Blueprint
 @otp.route('/verify', methods=['POST'])
-def verify() -> dict:
+def verify():
     try:
         # Get UUID and OTP from form data
         uuid = request.form.get('uuid')
@@ -71,8 +75,9 @@ def verify() -> dict:
         return jsonify({'error': str(e), 'verified': False}), 400
 
 @otp.route('/generate', methods=['POST'])
-def generate() -> dict:
+def generate():
     try:
+        logging.debug("Generating OTP")
         # Get email from request
         email = request.form.get("email")
         if not email:
@@ -123,10 +128,13 @@ def generate() -> dict:
         """
         
         try:
+            logging.info(f"Sending OTP to {email}")
             my_send_email(subject, body, [email])
             return jsonify({'success': True, 'uuid': unique_id}), 200
         except Exception as e:
+            logging.error(f"Failed to send OTP: {str(e)}")
             return jsonify({'error': f'Failed to send OTP: {str(e)}'}), 500
             
     except Exception as e:
+        logging.error(f"Failed to generate OTP: {str(e)}")
         return jsonify({'error': str(e)}), 400

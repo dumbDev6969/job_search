@@ -16,7 +16,6 @@ jobseeker_qualification = Blueprint('jobseeker_qualification', __name__)
 @verify_user
 @is_email_verified
 @qualification_done
-@is_skills_and_resume_done
 def jobseeker_qualification_():
     """Render the job seeker's qualification page.
 
@@ -48,7 +47,7 @@ def add_qualification():
     try:
         data = request.form
         seeker_id =session['user_id'] 
-        degree = data.get('degree') or data.get('degreeInput')
+        degree = data.get('degrees') or data.get('degreeInput')
         print("degree:",degree)
         
         if check_column_exists('qualifications','seeker_id',seeker_id):
