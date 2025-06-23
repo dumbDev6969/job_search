@@ -66,7 +66,7 @@ def upload_skills_and_resume():
     linkedin = form.get('linkedin')
     github = form.get('github')
     twitter = form.get('twitter')
-    if not all([about, experience_title, company, experience_date, experience_description, linkedin, github, twitter]):
+    if not all([about]):
         return jsonify({'error': 'Missing required fields'}), 400
 
     seeker_id = session.get('user_id')

@@ -258,6 +258,7 @@
                 formData.append('uuid', uuid);
                 formData.append('otp', otp);
                 formData.append('email', email);
+                formData.append('csrf_token', document.getElementById("csrf_token").value)
 
                 fetch('/verify', {
                     method: 'POST',
@@ -265,6 +266,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+                
                     if (data.verified) {
                         Swal.fire({
                             icon: 'success',
