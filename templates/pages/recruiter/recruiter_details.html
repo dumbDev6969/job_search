@@ -97,10 +97,10 @@
         function fetchJobs() {
           
             fetch(`/api/employer/get-job-cards-v1?employer_id={{employer.employer_id}}`)
-                .then(response => response.text())
+                .then(response => response.json())
                 .then(data => {
-                    console.log(data);
-                    if (data.trim() === '') {
+                    data = data.data[0]
+                    if (!data.active_job_postings) {
                         document.getElementById('job-cards').innerHTML = `<div class="col-12 text-center py-5">
                     <div class="no-data-found">
                         <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
@@ -113,12 +113,26 @@
                 </div>`;
                         return;
                     }
-                    document.getElementById('job-cards').innerHTML = data;
-                })
-                .catch(error => {
-                    console.error('Error fetching jobs:', error);
-                });
-        }
+                    const activeJobPostingsList = document.getElementById('job-cards');
+                    activeJobPostingsList.innerHTML = ''; // Clear the list
+                    data.active_job_postings.forEach(job => {
+                        const jobDiv = document.createElement('div');
+                        jobDiv.classList.add('mb-3', 'p-3', 'bg-light', 'rounded');
+                        jobDiv.innerHTML = `
+                            <h6 class="mb-1">${job.title}</h6>
+                            <small class="text-muted">Posted on: ${job.posted_at} </small><br />
+                            <span class="badge bg-success mt-2"> ${job.status}</span>
+                            <form class="form-inline mt-2" action='/api/jobseeker/save-job' method='POST'>
+                             <input type="hidden" name="csrf_token" value="{{csrf_token()}}"/>
+                                <input type="hidden" name='job_id' value='${job.job_id}'>
+                               <button class="btn-outline-secondary rounded w-100 h-100" type='submit'>Save</button>
+                            </form>
+                             <button type="button" class="btn-primary" onclick="window.location.href='/job/view/${job.job_id}'">View</button>
+                        `;
+                        activeJobPostingsList.appendChild(jobDiv);
+                    });
+        });
+    }
         fetchJobs();
     </script>
 </body>

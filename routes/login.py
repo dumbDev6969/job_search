@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, jsonify, session, redirect
+from flask import Blueprint, request, render_template, jsonify, session, redirect, url_for
 from utils.database import get_db
 from utils.pasword_hash import verify_password
 from utils.email_utils import check_email_exists
@@ -9,6 +9,9 @@ from middlewares.is_user_logged_in import is_user_logged_in
 
 # Create a Blueprint
 login = Blueprint('login', __name__)
+
+# Apply rate limiting to the login route
+limiter.limit("5/minute")(login)
 
 # Define your routes using the Blueprint
 @login.route('/login', methods=['GET', 'POST'])
@@ -176,6 +179,7 @@ def login_user():
                         session['email'] = user['email']
                         session['username'] = user['username']
                         session['user_type'] = 'admin'
+                        session['is_admin'] = True
                         session.permanent = True
                         logging.info('Redirecting to admin index')
                         return redirect("/admin/index")
@@ -195,3 +199,6 @@ def login_user():
             return redirect("/dashboard")
         else:
             return render_template('auth/login.html')
+        
+
+

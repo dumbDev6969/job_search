@@ -7,11 +7,11 @@ from middlewares.is_requirements_done import is_requirements_done
 
 # Create a Blueprint
 edit_job = Blueprint('edit_job', __name__)
-
 # Define your routes using the Blueprint
 @edit_job.route('/employer/edit_job')
 @verify_user
 @is_email_verified
 @is_requirements_done
 def edit_job_():
-    return render_template('/pages/recruiter/edit-job..html')
+ logging.info("Accessing edit_job route")
+ return render_template('/pages/recruiter/edit-job..html')

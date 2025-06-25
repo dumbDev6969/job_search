@@ -62,7 +62,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
       <h2>Scheduled Interviews</h2>
       <div class="w-25">
-        <input type="text"  placeholder="Search by candidate or date" style="min-width: 250px">
+        <input type="text" id="search-input" class="form-control"" placeholder="Search by candidate or date" style="min-width: 250px">
       </div>
     </div>
 
@@ -169,7 +169,8 @@
     function updateTbael(page = 1) {
         const table = document.getElementById('table-listing');
         const pagination = document.querySelector('.pagination');
-        const apiUrl = `/api/employer/schedule-dashboard?page=${page}`;
+        const search_term = document.getElementById('search-input').value;
+        const apiUrl = `/api/employer/schedule-dashboard?page=${page}&search=${search_term}`;
 
         fetch(apiUrl)
             .then(response => response.json())
@@ -237,6 +238,10 @@
     }
 
     updateTbael(1);
+    document.getElementById('search-input').addEventListener('input', (e) => {
+      updateTbael(1);
+    });
+    
 
 
 </script>

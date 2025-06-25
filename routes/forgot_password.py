@@ -1,6 +1,7 @@
 from flask import Blueprint, request, render_template, jsonify, url_for, session
 from utils.database import get_db
 from utils.email_utils import send_reset_password_email
+from middlewares.is_user_logged_in import is_user_logged_in
 from sqlalchemy import text
 from datetime import datetime, timedelta
 import secrets
@@ -81,6 +82,7 @@ def handle_reset_password():
         return jsonify({'error': str(e)}), 500
 
 @forgot_password.route('/forgot-password', methods=['GET', 'POST'])
+@is_user_logged_in
 def handle_forgot_password():
     if request.method == 'GET':
         return render_template('auth/forgot_password.html')

@@ -4,21 +4,25 @@ import uuid
 from utils.database import get_db
 from utils.email_utils import check_email_exists
 from datetime import datetime, timedelta, timezone
-
+from middlewares.is_user_logged_in import is_user_logged_in
 
 # Create a Blueprint
 otp = Blueprint('otp', __name__)
 
+# Apply rate limiting to the OTP route
+limiter.limit("3/minute")(otp)
 
 @otp.route('/verify-account', methods=['POST'])
+@is_user_logged_in
 def verify_account():
+
     # Get email from either query parameters (GET) or form data (POST)
     email =  request.form.get('email')
-    
+
     if not email:
         logging.error("Email is required")
         return jsonify({'error': 'Email is required'}), 400
-        
+
     logging.info(f"Generating OTP for {email}")
     # Generate OTP and get UUID
     data = {'email': email}
@@ -26,7 +30,7 @@ def verify_account():
     if response[1] != 200:
         logging.error(f"Error generating OTP for {email}")
         return response
-        
+
     uuid = response[0].get_json()['uuid']
     logging.info(f"Generated OTP for {email} with UUID {uuid}")
     return render_template('/auth/otp_virification.html', email=email, uuid=uuid)
@@ -40,25 +44,25 @@ def verify():
         user_otp = request.form.get('otp')
         email = request.form.get('email')
         print(f"UUID: {uuid}, OTP: {user_otp}")
-       
+
         # Validate required fields
         if not user_otp:
             return jsonify({'error': 'Missing required fields', 'verified': False}), 400
-        
+
         # Check if UUID exists and OTP matches
         otp_data = session.get('otp', {})
         stored_otp = otp_data.get('code')
         expiry_time = otp_data.get('expiry')
-        
+
         if not stored_otp or not expiry_time:
             return jsonify({'verified': False}), 200
-            
+
         # Check if OTP has expired
         current_time = datetime.now(timezone.utc)
         if current_time > expiry_time:
             session.pop('otp', None)
             return jsonify({'error': 'OTP has expired', 'verified': False}), 400
-            
+
         if stored_otp == user_otp:
             session.pop('otp', None)
             db = get_db()
@@ -69,7 +73,7 @@ def verify():
                 return jsonify({'error': f'Failed to verify user: {result["message"]}'}), 500
             print(f"Successfully verified user {email}")
             return jsonify({'verified': True}), 200
-        
+
         return jsonify({'verified': False}), 200
     except Exception as e:
         return jsonify({'error': str(e), 'verified': False}), 400
@@ -82,7 +86,7 @@ def generate():
         email = request.form.get("email")
         if not email:
             return jsonify({'error': 'Email is required'}), 400
-            
+
         # Rate limiting check
         last_request = session.get('last_otp_request', {})
         # print(last_request)
@@ -95,25 +99,25 @@ def generate():
 
         # Generate 6 random numbers
         code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
-        
+
         # Store OTP data with timezone-aware datetime
         session['otp'] = {
             'email': email,
             'code': code,
             'expiry': datetime.now(timezone.utc) + timedelta(minutes=5)
         }
-        
+
         # Update rate limiting with timezone-aware datetime
         if 'last_otp_request' not in session:
             session['last_otp_request'] = {}
         session['last_otp_request'][email] = datetime.now(timezone.utc)
-        
+
         # Generate unique UUID
         unique_id = str(uuid.uuid4())
-        
+
         # Send OTP via email
         from utils.email_sender import my_send_email
-        
+
         subject = "Your OTP Verification Code"
         body = f"""
         <html>
@@ -126,7 +130,7 @@ def generate():
         </body>
         </html>
         """
-        
+
         try:
             logging.info(f"Sending OTP to {email}")
             my_send_email(subject, body, [email])
@@ -134,7 +138,7 @@ def generate():
         except Exception as e:
             logging.error(f"Failed to send OTP: {str(e)}")
             return jsonify({'error': f'Failed to send OTP: {str(e)}'}), 500
-            
+
     except Exception as e:
         logging.error(f"Failed to generate OTP: {str(e)}")
         return jsonify({'error': str(e)}), 400

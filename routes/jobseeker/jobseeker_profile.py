@@ -117,8 +117,7 @@ def jobseeker_profile_data():
         return json.dumps({"message": "Error fetching profile data"}), 500
 
 
-@jobseeker_profile.route("/jobseeker/<int:seeker_id>")
-@verify_user
+@jobseeker_profile.route("/view-profile/jobseeker/<int:seeker_id>")
 @is_email_verified
 def jobseeker_details(seeker_id):
     """
@@ -147,7 +146,10 @@ def jobseeker_details(seeker_id):
             ji.job_interest,
             ji.job_type,
             ji.preferred_location,
-            ji.expected_salary_range
+            ji.expected_salary_range,
+            js.*,
+            q.*,
+               ji.*
         FROM job_seekers js
         LEFT JOIN qualifications q ON js.seeker_id = q.seeker_id
         LEFT JOIN job_interest ji ON js.seeker_id = ji.user_id

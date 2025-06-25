@@ -58,10 +58,7 @@
                         <input class="form-check-input" type="checkbox" id="partTime">
                         <label class="form-check-label" for="partTime">Part-Time</label>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="freelance">
-                        <label class="form-check-label" for="freelance">Freelance</label>
-                    </div>
+                   
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="internship">
                         <label class="form-check-label" for="internship">Internship</label>
@@ -202,11 +199,10 @@
         // Collect filter values and fetch jobs with filters
         function getSelectedJobTypes() {
             const types = [];
-            if (document.getElementById('fullTime').checked) types.push('Full-Time');
-            if (document.getElementById('partTime').checked) types.push('Part-Time');
-            if (document.getElementById('freelance').checked) types.push('Freelance');
-            if (document.getElementById('internship').checked) types.push('Internship');
-            if (document.getElementById('contract').checked) types.push('Contract');
+            if (document.getElementById('fullTime').checked) types.push('full_time');
+            if (document.getElementById('partTime').checked) types.push('part_time');
+            if (document.getElementById('internship').checked) types.push('internship');
+            if (document.getElementById('contract').checked) types.push('contract');
             return types;
         }
 
@@ -234,7 +230,7 @@
         }
 
         // Add event listeners to filters
-        ['fullTime', 'partTime', 'freelance', 'internship', 'contract'].forEach(id => {
+        ['fullTime', 'partTime', 'internship', 'contract'].forEach(id => {
 
             document.getElementById(id).addEventListener('change', fetchFilteredJobs);
         });

@@ -37,7 +37,8 @@ def job_details_(job_id):
             return render_template('/pages/recruiter/job_details.html', job=result["output"][0], is_job_seeker=is_job_seeker, back=['/employer/jobs','jobs'])
         else:
             logging.error(f"Job id {job_id} not found")
-    return render_template('/pages/recruiter/job_details.html')
+            return render_template('/pages/job_not_found.html')
+    return render_template('/pages/job_not_found.html')
 
 @job_details.route('/job/view/<int:job_id>')
 def job_details_public(job_id):
@@ -64,8 +65,8 @@ def job_details_public(job_id):
             else:
                 logging.error(f"Failed to fetch employer details for employer id {result['output'][0]['employer_id']}")
         else:
+            return render_template('/pages/job_not_found.html')
             logging.error(f"Job id {job_id} not found")
     else:
         logging.error(f"Failed to fetch job details for job id {job_id}")
-    
-    return render_template('/pages/recruiter/job_details.html', error="Job or Employer not found")
+        return render_template('/pages/job_not_found.html')

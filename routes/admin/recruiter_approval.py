@@ -97,17 +97,11 @@ def get_recruiter():
                         <p class="text-muted mb-3"><i class="fas fa-envelope me-1"></i> {row['email']}</p>
                         
                         <div class="job-meta mb-3">
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="fas fa-user-tie me-2"></i>
-                                <span>Contact: nonevar</span>
-                            </div>
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="fas fa-phone me-2"></i>
-                                <span>+1 nonvar</span>
-                            </div>
+                            
+                            
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-clock me-2"></i>
-                                <span>Registered nonevar ago</span>
+                                <span>Registered at {row['created_at']}</span>
                             </div>
                         </div>
                         
@@ -249,17 +243,11 @@ def search_recruiter():
                         <p class="text-muted mb-3"><i class="fas fa-envelope me-1"></i> {row['email']}</p>
 
                         <div class="job-meta mb-3">
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="fas fa-user-tie me-2"></i>
-                                <span>Contact: nonevar</span>
-                            </div>
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="fas fa-phone me-2"></i>
-                                <span>+1 nonvar</span>
-                            </div>
+                           
+                            
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-clock me-2"></i>
-                                <span>Registered nonevar ago</span>
+  <span>Registered at {row['created_at']}</span>
                             </div>
                         </div>
 

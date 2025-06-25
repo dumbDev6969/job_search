@@ -91,18 +91,20 @@
     <div class="container-fluid">
       <div class="row g-0 vh-100">
         <div class="col-md-12 mb-5 sticky-top">
-            {% if not is_job_seeker%}
-          {% include 'components/recruiter-nav.html' %}
+        
+            {% if  is_job_seeker %}
+         
+           {% include 'components/job-seeker-nav.html' %}
         {%else%}
-          {% include 'components/job-seeker-nav.html' %}
+          {% include 'components/recruiter-nav.html' %}
         {%endif%}
         </div>
-      
+      <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
         <!-- Sidebar -->
         <div class="col-md-4  border-end sidebar bg-white">
           <div class="d-flex align-items-center p-3 border-bottom">
             <img class="me-3 rounded-circle" alt="Avatar" src="https://api.dicebear.com/7.x/initials/svg?seed={{sender_name}}" height="50" onclick="window.location.href='/{{sender_type}}/{{sender_id}}'">
-            <h4 class="mb-0 text-center">{{sender_name}}</h4>
+            <h4 class="mb-0 text-center">{{sender_name}}  {{is_job_seeker}}</h4>
            
           </div>
           <div class="d-flex align-items-center p-3 border-bottom">
@@ -146,7 +148,7 @@
                 <i class="fas fa-info-circle text-primary fs-4"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item text-danger" href="#" id="delete-convo">Delete Conversation</a></li>
+                <li><a class="dropdown-item text-danger" href="#" id="delete-convo" onclick="delete_conversation('{{coversation_id}}')">Delete Conversation</a></li>
                 <li><a class="dropdown-item" href="/{{user_type}}/{{user_id}}" id="view-profile">View Profile</a></li>
               </ul>
             </div>
@@ -156,26 +158,6 @@
       
            <div class="chat-body p-3" id="render-conversation">
            </div>
-         
-          <!-- <div class="chat-body p-3"  hx-get="/messages/conversation/{{coversation_id}}" hx-trigger="every 0.1s"> -->
-            <!-- <div class="message received mb-3">
-              <div class="bubble d-inline-block p-3 rounded-4 bg-light">
-                Lorem ipsum dolor sit amet...
-                <div class="small text-muted mt-1">3 Oct 2019 10:24 am</div>
-              </div>
-            </div>
-
-            <div class="message sent mb-3 text-end">
-              <div
-                class="bubble d-inline-block p-3 rounded-4 bg-primary text-white"
-              >
-                Lorem ipsum dolor sit amet...
-                <div class="small text-white-50 mt-1">3 Oct 2019 10:30 am</div>
-              </div>
-            </div> -->
-
-            <!-- Add more messages -->
-          <!-- </div> -->
     
           <input type="hidden" name="" id="conversation_id" value="{{coversation_id}}">
           <input type="hidden" name="" id="user_id" value="{{user_id}}">
@@ -324,6 +306,40 @@
 
 
       });
+    
+      function delete_conversation(conversation_id) {
+    const csrfToken = document.getElementById('csrf_token').value;
+
+    fetch('/messages/delete-conversation', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'x-csrftoken': csrfToken
+        },
+        body: new URLSearchParams({
+            conversation_id: conversation_id,
+            csrf_token: csrfToken
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            socket.emit('get_conversation_list');
+        } else {
+            alert("Failed to delete conversation");
+        }
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error.message);
+    });
+}
+
+    
     </script>
   </body>
 </html>

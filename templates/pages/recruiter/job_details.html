@@ -32,11 +32,13 @@
     
         <div class="row">
             <!-- Back Button -->
+             {%if back%}
             <div class="col-12 mb-4" data-aos="fade-right">
                 <a href="{{back[0]}}" class="btn btn-outline-secondary">
                     <i class="fas fa-arrow-left me-2"></i> Back to {{back[1]}}
                 </a>
             </div>
+            {%endif%}
             
             <!-- Job Details Column -->
             <div class="col-lg-8">

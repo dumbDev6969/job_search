@@ -124,50 +124,78 @@ async function rejectRecruiter(button) {
     });
 }
 // Load requirements into modal (mock implementation)
-function loadRequirements(recruiterId) {
-  const modalContent = document.getElementById("requirementsContent");
+async function loadRequirements(recruiterId) {
+  let business_permit = '';
+  let supporting_docs = '';
+  const modalContent = document.getElementById('requirementsContent');
 
-  // Simulate API call delay
-  setTimeout(() => {
+  try {
+    const response = await fetch(`/api/employer/${recruiterId}/links`);
+    const data = await response.json();
+    business_permit = data.business_permit;
+    supporting_docs = data.supporting_docs;
+
+    console.log(business_permit); // Log the business permit for debugging
+
+    const businessPermitElement = business_permit ? `
+      <div class="mb-4">
+          <h6><i class="fas fa-file-contract me-2"></i> Business Permit</h6>
+          <div class="border p-3 rounded bg-light">
+              <img src="${business_permit}" alt="Business Permit" class="img-fluid mb-2">
+              <div class="d-flex gap-2">
+                  <a href="${business_permit}" target="_blank" class="btn btn-sm btn-outline-primary">
+                      <i class="fas fa-expand me-1"></i> Fullscreen
+                  </a>
+                  
+              </div>
+          </div>
+      </div>
+    ` : `
+      <div class="mb-4 text-center">
+          <h6><i class="fas fa-file-contract me-2"></i> Business Permit</h6>
+          <div class="alert alert-secondary p-3 rounded">
+            No business permit uploaded.
+          </div>
+      </div>
+    `;
+
+    const supportingDocsElement = supporting_docs ? `
+      <div class="mb-4">
+          <h6><i class="fas fa-id-card me-2"></i> Recruiter ID</h6>
+          <div class="border p-3 rounded bg-light">
+              <img src="${supporting_docs}" alt="Recruiter ID" class="img-fluid mb-2">
+              <div class="d-flex gap-2">
+                   <a href="${business_permit}" target="_blank" class="btn btn-sm btn-outline-primary">
+                      <i class="fas fa-expand me-1"></i> Fullscreen
+                  </a>
+              </div>
+          </div>
+      </div>
+    ` : `
+      <div class="mb-4 text-center">
+          <h6><i class="fas fa-id-card me-2"></i> Supporting Documents</h6>
+          <div class="alert alert-secondary p-3 rounded">
+            <i class="fas fa-info-circle me-2"></i> No supporting documents uploaded.
+          </div>
+      </div>
+    `;
+
     modalContent.innerHTML = `
-<h6 class="mb-3">Submitted Documents for ${recruiterId}</h6>
-<div class="mb-4">
-    <h6><i class="fas fa-file-contract me-2"></i> Business Permit</h6>
-    <div class="border p-3 rounded bg-light">
-        <img src="https://via.placeholder.com/800x500?text=Business+Permit" alt="Business Permit"
-            class="img-fluid mb-2">
-        <div class="d-flex gap-2">
-            <button class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-download me-1"></i> Download
-            </button>
-            <button class="btn btn-sm btn-outline-success">
-                <i class="fas fa-expand me-1"></i> Fullscreen
-            </button>
-        </div>
-    </div>
-</div>
+      <h6 class="mb-3">Submitted Documents for employer ID: ${recruiterId}</h6>
+      ${businessPermitElement}
 
-<div class="mb-4">
-    <h6><i class="fas fa-id-card me-2"></i> Recruiter ID</h6>
-    <div class="border p-3 rounded bg-light">
-        <img src="https://via.placeholder.com/800x500?text=Recruiter+ID" alt="Recruiter ID" class="img-fluid mb-2">
-        <div class="d-flex gap-2">
-            <button class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-download me-1"></i> Download
-            </button>
-            <button class="btn btn-sm btn-outline-success">
-                <i class="fas fa-expand me-1"></i> Fullscreen
-            </button>
-        </div>
-    </div>
-</div>
+      ${supportingDocsElement}
 
-<div class="alert alert-info">
-    <i class="fas fa-info-circle me-2"></i>
-    Verified on ${new Date().toLocaleDateString()} by admin@example.com
-</div>
-`;
-  }, 500);
+
+     
+    `;
+    //  <div class="alert alert-info">
+    //       <i class="fas fa-info-circle me-2"></i>
+    //       Verified on ${new Date().toLocaleDateString()} by admin@example.com
+    //   </div>
+  } catch (error) {
+    console.error('Error fetching requirements:', error);
+  }
 }
 
 // Filter Functionality (same as job approval)

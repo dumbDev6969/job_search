@@ -68,6 +68,7 @@
 #         return render_template('pages/db_not_active.html'), 404
 #     return redirect('/')
 
+import logging
 from flask import Blueprint, render_template, redirect, request, url_for,session
 from utils.database import test_mysql
 
@@ -92,6 +93,9 @@ from routes.jobseeker import jobseeker_bp
 from routes.employer import employer_bp
 from routes.admin import admin_bp
 from routes.messages import *
+from routes.employer_logo import employer_logo
+from routes.employer_links import employer_links
+from routes.seeker_links import seeker_links
 
 
 
@@ -118,6 +122,11 @@ routes_bp.register_blueprint(jobseeker_bp)
 routes_bp.register_blueprint(employer_bp)
 routes_bp.register_blueprint(admin_bp)
 routes_bp.register_blueprint(messages_bp)
+
+
+routes_bp.register_blueprint(employer_logo)
+routes_bp.register_blueprint(employer_links)
+routes_bp.register_blueprint(seeker_links)
 routes_bp.register_blueprint(db_not_active)  # Always register this for fallback
 
 # Check database status at startup
@@ -127,17 +136,22 @@ def check_mysql_connection():
   
 check_mysql_connection()
 
+
+# def blocked_path_while_logged_in():
+#     if 'user_id' in session and request.path.startswith('/employer'):
 # Before request hook to control access based on DB status
 @routes_bp.before_request
 def before_request():
     logging.warning("="*100)
-    logging.error(session)
+    
     global is_mysql_running
     session['is_database_running'] = True
     if not is_mysql_running:
         session['is_database_running'] = False
         if request.endpoint != 'routes.retry' and not request.path.startswith('/static'):
             return redirect(url_for('routes.retry'))
+   
+        
     if 'user_id' in session and request.path.startswith('/employer'):
             logging.info(f"Checking if user with id {session['user_id']} is verified")
             if  check_column_exists('employers', 'employer_id ', session['user_id']):

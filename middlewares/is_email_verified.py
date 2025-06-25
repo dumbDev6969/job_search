@@ -13,7 +13,7 @@ def is_email_verified(f):
         verify_result = db.execute_query(verify_query, {'email': email})
         db.close()
 
-        if not verify_result['success'] or verify_result['output'][0]['count'] == 0:
+        if not verify_result['success'] or verify_result['output'][0]['count'] == 0 and not session.get('is_admin'):
             return render_template("/auth/otp_virification.html",email=email),200
         
         return f(*args, **kwargs)

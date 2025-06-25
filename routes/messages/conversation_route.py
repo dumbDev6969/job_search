@@ -9,6 +9,8 @@ from utils.check_if_exists import check_column_exists
 from utils.database import get_db
 conversation_route = Blueprint('conversation_route', __name__)
 
+
+
 def get_conversation_by_receiver(user1_id, user2_id):
     db = get_db()
     query = text("""
@@ -63,6 +65,31 @@ def get_user_type_and_info(user_id):
         return 'employer', info, name, email
     return None, None, '', ''
 
+
+@conversation_route.route('/messages/delete-conversation', methods=['POST'])
+@verify_user
+@is_email_verified
+def delete_conversation_route():
+    db = get_db()
+    conversation_id = request.form.get('conversation_id')
+    is_deleted = check_column_exists('deleted_messages', 'conversatio_id ', conversation_id)
+    if is_deleted:
+        return jsonify(success=False, message='Conversation already deleted'), 400
+    sender_id = session.get('user_id')
+    print(f"Deleting conversation with ID: {conversation_id} user id: {sender_id}", request.form)
+    if not conversation_id:
+        return jsonify(success=False, error='Invalid request'), 400
+    
+    query = text("""
+        INSERT INTO deleted_messages (conversatio_id, sender_id)
+        VALUES (:conversation_id, :sender_id)
+    """)
+    result = db.execute_query(query, {"conversation_id": conversation_id, "sender_id": sender_id})
+    if result['success']:
+        return jsonify(success=True, message='Conversation deleted successfully'), 200
+    else:
+        return jsonify(success=False, error='Failed to delete conversation'), 500
+
 @conversation_route.route('/messages/<int:user_id>/<string:coversation_id>', methods=['GET'])
 @conversation_route.route('/messages/<int:user_id>', methods=['GET'])
 @verify_user
@@ -90,9 +117,9 @@ def get_conversation_route(user_id=None, coversation_id=None):
 
 
     if user_type == 'employer':
-        return render_template('/pages/messaging/message.html', coversation_id=coversation_id, info=info, name=name, email=email, user_id=user_id, user_type=user_type, sender_name=sender_name, sender_type=sender_type, sender_id=sender_id)
+        return render_template('/pages/messaging/message.html', coversation_id=coversation_id, info=info, name=name, email=email, user_id=user_id, user_type=user_type, sender_name=sender_name, sender_type=sender_type, sender_id=sender_id,is_job_seeker=True)
     elif user_type == 'jobseeker':
-        return render_template('/pages/messaging/message.html', coversation_id=coversation_id, info=info, name=name, email=email, user_id=user_id, user_type=user_type, sender_name=sender_name, sender_type=sender_type, sender_id=sender_id)
+        return render_template('/pages/messaging/message.html', coversation_id=coversation_id, info=info, name=name, email=email, user_id=user_id, user_type=user_type, sender_name=sender_name, sender_type=sender_type, sender_id=sender_id, is_job_seeker=False)
     return redirect('messages')
 
 @conversation_route.route('/api/messages/chat-partners', methods=['GET'])

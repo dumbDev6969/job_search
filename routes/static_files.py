@@ -41,9 +41,15 @@ def serve_static_files(filepath):
         return abort(403)
 
     try:
-        # Get the base static directory
+        # # Get the base static directory
+        # if filepath.startswith('files'):
+        #     filepath.replace("%20", " ")
+        #     logging.error(filepath)
+        #     logger.info("Serving file from files directory")
+        #     static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'files')
+        # else:
+        #     static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static')
         static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static')
-        
         # Ensure the requested file is within the static directory
         requested_path = os.path.join(static_dir, filepath)
         if not os.path.commonpath([requested_path, static_dir]) == static_dir:

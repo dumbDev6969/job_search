@@ -14,3 +14,10 @@ Propmts:
     0 -pendinng
     1-approved
     3 - rejected
+
+
+todo:
+  remove radio  button in find-talent
+  make the delete and radio button work in manage candidates
+  jobseeker image disalying in find talent , mnaage listing , companydashboard,schedules and messages ,jobseeker profile
+  

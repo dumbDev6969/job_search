@@ -123,7 +123,7 @@ def save_file(file, upload_folder):
 
     try:
         # Ensure the upload directory exists
-        upload_path = os.path.join("files", upload_folder)
+        upload_path = os.path.join("static", upload_folder)
         os.makedirs(upload_path, exist_ok=True)
 
         # Generate a unique filename

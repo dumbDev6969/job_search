@@ -8,6 +8,9 @@ from typing import Union
 import os
 import uuid
 
+# Apply rate limiting to the signup route
+
+
 def generate_uuid():
     return str(uuid.uuid4())
 
@@ -19,7 +22,7 @@ def allowed_file(filename):
 
 # Create a Blueprint
 signup = Blueprint('signup', __name__)
-
+limiter.limit("5/minute")(signup)
 # Define your routes using the Blueprint
 @signup.route('/signup', methods=['GET', 'POST'])
 @signup.route('/auth/confirm-role.html', methods=['GET', 'POST'])

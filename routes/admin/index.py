@@ -7,7 +7,7 @@ from middlewares.verify_user import verify_user
 index = Blueprint('index', __name__)
 
 # Define your routes using the Blueprint
-@index.route('/admin/')
+@index.route('/admin')
 @index.route('/admin/')
 @index.route('/admin/index')
 @index.route('/admin/dashboard.html')

@@ -268,7 +268,7 @@
             fetch('/api/employer/upcoming-interviews')
                 .then(response => response.json())
                 .then(data => {
-                   
+                  
                     upcoming_interviews_table.innerHTML = data.interviews
                 })
 
