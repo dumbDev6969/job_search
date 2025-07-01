@@ -58,11 +58,12 @@ CREATE TABLE `deleted_messages` (
   `conversatio_id` varchar(255) NOT NULL,
   `sender_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `deleted_messages` WRITE;
 /*!40000 ALTER TABLE `deleted_messages` DISABLE KEYS */;
+INSERT INTO `deleted_messages` VALUES (1,'575067013220190',139);
 /*!40000 ALTER TABLE `deleted_messages` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `employer_verification`;
@@ -115,7 +116,7 @@ CREATE TABLE `employers` (
 
 LOCK TABLES `employers` WRITE;
 /*!40000 ALTER TABLE `employers` DISABLE KEYS */;
-INSERT INTO `employers` VALUES (2,'kamjijajajo@gmail.com','$2b$12$EmVDH7PYPLQSpKkBqN4Mterb9N5buSsJN9WvGOAWjFkscfIsryAA.','2025-03-21 09:01:05',NULL,'Innovatech','Programming',1,'','','0',''),(3,'kanjijajajo@gmail.com','$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm','2025-03-21 09:03:05','2025-06-20 03:26:13','company001','Programming',1,'','','0',''),(17,'test_employer@gmail.com','$2b$12$qKr1VuAdw7HuhfCcW9IrpeJ6/xek/qoolMwWpSnrix4NorqjMyHla','2025-06-15 07:36:53','2025-06-24 13:42:33','test_employer',NULL,51,'https:fake.com','/uploads/logos/Screenshot_2025-05-13_185459.png','616f99ef-9549-4078-a78d-5a7e21f7383c','we are a fucking morons'),(18,'joshuacabuang0@gmail.com','$2b$12$2dVZWstZw3L0qS843vSvGOoN1blagggoqnFBtI62F8VoOS4LekKGu','2025-06-23 12:58:02','2025-06-23 13:15:55','BBCcmopany',NULL,11,'','','1f0b3f23-e1e5-4c81-beae-fdf2f5f00d98','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor i'),(19,'Jim_022123@binalatongan.edu.ph','$2b$12$HHuecBMrnLWBhnTlqk7yPOogxjAF3gjK9TSXaMH0IXyTtfX7P1yIC','2025-06-24 03:11:25','2025-06-24 03:25:36','Nexora Systems ',NULL,11,'','','e8013cd8-31d0-4562-b04e-e70965630660','full stock , front end , back end developer'),(20,'molerajomar19@gmail.com','$2b$12$Q2cKEcJ3X1b4S2LCHR0la.5VBXb3P7m.Z5xC3g2PDMDUy7CZgIFNG','2025-06-24 03:53:00',NULL,'Razer Corp.',NULL,11,'','','417fbcdc-433b-4706-9236-23e342c087a4','E-Commerce');
+INSERT INTO `employers` VALUES (2,'kamjijajajo@gmail.com','$2b$12$EmVDH7PYPLQSpKkBqN4Mterb9N5buSsJN9WvGOAWjFkscfIsryAA.','2025-03-21 09:01:05',NULL,'Innovatech','Programming',1,'','','0',''),(3,'kanjijajajo@gmail.com','$2b$12$hpw1pAYj1C96f4gtXtuhb.N3B/kVTbbNZLK4/zSJjohueFsuHV4Xm','2025-03-21 09:03:05','2025-06-20 03:26:13','company001','Programming',1,'','','0',''),(17,'test_employer@gmail.com','$2b$12$qKr1VuAdw7HuhfCcW9IrpeJ6/xek/qoolMwWpSnrix4NorqjMyHla','2025-06-15 07:36:53','2025-06-25 10:05:58','test_employer',NULL,51,'https:fake.com','/uploads/logos/Screenshot_2025-05-13_185459.png','616f99ef-9549-4078-a78d-5a7e21f7383c','we are a fucking morons'),(18,'joshuacabuang0@gmail.com','$2b$12$2dVZWstZw3L0qS843vSvGOoN1blagggoqnFBtI62F8VoOS4LekKGu','2025-06-23 12:58:02','2025-06-23 13:15:55','BBCcmopany',NULL,11,'','','1f0b3f23-e1e5-4c81-beae-fdf2f5f00d98','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor i'),(19,'Jim_022123@binalatongan.edu.ph','$2b$12$HHuecBMrnLWBhnTlqk7yPOogxjAF3gjK9TSXaMH0IXyTtfX7P1yIC','2025-06-24 03:11:25','2025-06-24 03:25:36','Nexora Systems ',NULL,11,'','','e8013cd8-31d0-4562-b04e-e70965630660','full stock , front end , back end developer'),(20,'molerajomar19@gmail.com','$2b$12$Q2cKEcJ3X1b4S2LCHR0la.5VBXb3P7m.Z5xC3g2PDMDUy7CZgIFNG','2025-06-24 03:53:00',NULL,'Razer Corp.',NULL,11,'','','417fbcdc-433b-4706-9236-23e342c087a4','E-Commerce');
 /*!40000 ALTER TABLE `employers` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `interviews`;
@@ -143,25 +144,6 @@ LOCK TABLES `interviews` WRITE;
 /*!40000 ALTER TABLE `interviews` DISABLE KEYS */;
 INSERT INTO `interviews` VALUES (4,139,'scheduled','2025-06-18','04:56:00','in-person','building 100',NULL,'find me',3),(5,144,'scheduled','2025-06-26','21:31:00','remote','Any',NULL,'Dont be  late',0),(6,139,'scheduled','2025-06-26','02:12:00','remote','building 100',NULL,'dadasdadasdasdasd',0);
 /*!40000 ALTER TABLE `interviews` ENABLE KEYS */;
-UNLOCK TABLES;
-DROP TABLE IF EXISTS `job_alerts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `job_alerts` (
-  `alert_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `seeker_id` bigint(20) unsigned NOT NULL,
-  `search_terms` varchar(255) DEFAULT NULL,
-  `location` varchar(100) DEFAULT NULL,
-  `frequency` enum('daily','weekly','instant') DEFAULT NULL,
-  PRIMARY KEY (`alert_id`),
-  KEY `idx_seeker_id` (`seeker_id`),
-  CONSTRAINT `job_alerts_ibfk_1` FOREIGN KEY (`seeker_id`) REFERENCES `job_seekers` (`seeker_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-LOCK TABLES `job_alerts` WRITE;
-/*!40000 ALTER TABLE `job_alerts` DISABLE KEYS */;
-/*!40000 ALTER TABLE `job_alerts` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `job_interest`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -210,50 +192,8 @@ CREATE TABLE `job_seekers` (
 
 LOCK TABLES `job_seekers` WRITE;
 /*!40000 ALTER TABLE `job_seekers` DISABLE KEYS */;
-INSERT INTO `job_seekers` VALUES (139,'jemcarlo46@gmail.com','$2b$12$jJsAP1.XiA4IFyrGxSCW0eeHEPop1rxc2Gz8XnKcUjDkthM1iwjRC','2025-03-25 02:49:13','2025-06-24 13:38:04','Jemcarlo','Austria','09207766194','Pangasinan','','bsit',''),(140,'jemcarlo49090@gmail.com','$2b$12$l12tcJ5fpMIfZHgS1WlkqOxYnwG.tPBOBvkTDSKZHQQade8v05x8m','2025-06-20 02:45:17','2025-06-20 03:47:31','Jemcarlo','Austria','0920776619455','Pangasinan','','bsit',''),(141,'test_jobseeker@gmail.com','$2b$12$PgRKyYYfQRJB6Hk2./027uwcduIt7kzNeEQrU1RvAzViLJHeYwiQq','2025-06-20 04:08:55','2025-06-20 04:09:10','Jem','Austria','09457323970','Pangasinan','','bsit','/uploads/portfolios/Screenshot_2025-05-12_060144.png'),(142,'maryjanedalas02@gmial.com','$2b$12$la1LTXRVnNrG/AR/JyW78uj91FXQoPG5Phcb8CGgyro8i/eR5YQNO','2025-06-20 04:34:39','2025-06-20 04:34:55','jjane','ali','090909027996','Pangasinan','Saaan carlos','bsit','/uploads/portfolios/Screenshot_2025-05-12_060144.png'),(143,'jaclaryan17@gmail.com','$2b$12$qKcAtgxm9k6NrzybdO/6EebhOgbU2.B1OpImFjdllGnT3B5tTfaWe','2025-06-23 13:04:07','2025-06-24 12:46:14','Ryan','Jacla','09770587826','Pangasinan','San Carlos City','Bachelor of Science Information Technology',''),(144,'joshua_022140@binalatongan.edu.ph','$2b$12$BMfa/IlGpztKciCVIwGM.e8QTPqrFypSLEMsp4aWJEoFB1YCPnrL2','2025-06-23 13:21:06','2025-06-23 13:21:18','Joshua','Cabuang','09361498100','Pangasinan','San Carlos City','Bachelor of Science in Information Technology',''),(145,'jimspencerleecarloscasay@gmail.com','$2b$12$.u4y.cNwtTY9FbSPuoPtRuaEJV5JmvNohX6cakwzw6ZF2ePVboXeu','2025-06-24 02:44:40','2025-06-24 13:29:09','spencer','casay','09458145165','Pangasinan','san carlos','bsit',''),(146,'maryjanedalas02@gmail.com','$2b$12$bqIW.ROLWakCsQUGe5YEH.CoknfttVEDcvzH1fWid0GdVkwdsPwpq','2025-06-24 12:41:08',NULL,'Mary jane','Dalas','09090902796','Pangasinan','San Carlos city','Bachelor of science ','');
+INSERT INTO `job_seekers` VALUES (139,'jemcarlo46@gmail.com','$2b$12$jJsAP1.XiA4IFyrGxSCW0eeHEPop1rxc2Gz8XnKcUjDkthM1iwjRC','2025-03-25 02:49:13','2025-06-25 10:10:43','Jemcarlo','Austria','09207766194','Pangasinan','','bsit',''),(140,'jemcarlo49090@gmail.com','$2b$12$l12tcJ5fpMIfZHgS1WlkqOxYnwG.tPBOBvkTDSKZHQQade8v05x8m','2025-06-20 02:45:17','2025-06-20 03:47:31','Jemcarlo','Austria','0920776619455','Pangasinan','','bsit',''),(141,'test_jobseeker@gmail.com','$2b$12$PgRKyYYfQRJB6Hk2./027uwcduIt7kzNeEQrU1RvAzViLJHeYwiQq','2025-06-20 04:08:55','2025-06-20 04:09:10','Jem','Austria','09457323970','Pangasinan','','bsit','/uploads/portfolios/Screenshot_2025-05-12_060144.png'),(142,'maryjanedalas02@gmial.com','$2b$12$la1LTXRVnNrG/AR/JyW78uj91FXQoPG5Phcb8CGgyro8i/eR5YQNO','2025-06-20 04:34:39','2025-06-20 04:34:55','jjane','ali','090909027996','Pangasinan','Saaan carlos','bsit','/uploads/portfolios/Screenshot_2025-05-12_060144.png'),(143,'jaclaryan17@gmail.com','$2b$12$qKcAtgxm9k6NrzybdO/6EebhOgbU2.B1OpImFjdllGnT3B5tTfaWe','2025-06-23 13:04:07','2025-06-24 12:46:14','Ryan','Jacla','09770587826','Pangasinan','San Carlos City','Bachelor of Science Information Technology',''),(144,'joshua_022140@binalatongan.edu.ph','$2b$12$BMfa/IlGpztKciCVIwGM.e8QTPqrFypSLEMsp4aWJEoFB1YCPnrL2','2025-06-23 13:21:06','2025-06-23 13:21:18','Joshua','Cabuang','09361498100','Pangasinan','San Carlos City','Bachelor of Science in Information Technology',''),(145,'jimspencerleecarloscasay@gmail.com','$2b$12$.u4y.cNwtTY9FbSPuoPtRuaEJV5JmvNohX6cakwzw6ZF2ePVboXeu','2025-06-24 02:44:40','2025-06-24 13:29:09','spencer','casay','09458145165','Pangasinan','san carlos','bsit',''),(146,'maryjanedalas02@gmail.com','$2b$12$bqIW.ROLWakCsQUGe5YEH.CoknfttVEDcvzH1fWid0GdVkwdsPwpq','2025-06-24 12:41:08',NULL,'Mary jane','Dalas','09090902796','Pangasinan','San Carlos city','Bachelor of science ','');
 /*!40000 ALTER TABLE `job_seekers` ENABLE KEYS */;
-UNLOCK TABLES;
-DROP TABLE IF EXISTS `job_skills`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `job_skills` (
-  `job_id` bigint(20) unsigned NOT NULL,
-  `skill_id` bigint(20) unsigned NOT NULL,
-  PRIMARY KEY (`job_id`,`skill_id`),
-  KEY `idx_job_id` (`job_id`),
-  KEY `idx_skill_id` (`skill_id`),
-  CONSTRAINT `job_skills_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE,
-  CONSTRAINT `job_skills_ibfk_2` FOREIGN KEY (`skill_id`) REFERENCES `skills` (`skill_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-LOCK TABLES `job_skills` WRITE;
-/*!40000 ALTER TABLE `job_skills` DISABLE KEYS */;
-/*!40000 ALTER TABLE `job_skills` ENABLE KEYS */;
-UNLOCK TABLES;
-DROP TABLE IF EXISTS `job_submissions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `job_submissions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `recruiter_id` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  `type` enum('full-time','part-time','contract','freelance') NOT NULL,
-  `status` enum('new','pending','approved','rejected') NOT NULL DEFAULT 'new',
-  `location` varchar(255) DEFAULT NULL,
-  `salary_range` varchar(100) DEFAULT NULL,
-  `submission_date` datetime DEFAULT current_timestamp(),
-  `applicant_count` int(11) DEFAULT 0,
-  `approved_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `recruiter_id` (`recruiter_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-LOCK TABLES `job_submissions` WRITE;
-/*!40000 ALTER TABLE `job_submissions` DISABLE KEYS */;
-/*!40000 ALTER TABLE `job_submissions` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `jobs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -390,31 +330,6 @@ LOCK TABLES `qualifications` WRITE;
 INSERT INTO `qualifications` VALUES (10,139,'bsit','bcc','s','programming'),(12,141,'[\"Bachelor of Science in Information Technology\"]','bcc','none','programming'),(13,142,'[\"Bachelor of Science in Information Technology\"]','bcc','programming','programming'),(14,143,'[]','Bcc','Google Cert.','Tesda'),(15,144,'Bachelor of Science in Information Technology','BCC','Linkedin','Boostrap'),(16,145,'[\"Bachelor of Science in Information Technology\"]','University of Philippines','NC2 ','TESDA');
 /*!40000 ALTER TABLE `qualifications` ENABLE KEYS */;
 UNLOCK TABLES;
-DROP TABLE IF EXISTS `ratings`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ratings` (
-  `rating_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `rater_id` bigint(20) unsigned NOT NULL,
-  `rater_type` enum('employer','job_seeker') NOT NULL,
-  `ratee_id` bigint(20) unsigned NOT NULL,
-  `ratee_type` enum('employer','job_seeker') NOT NULL,
-  `job_id` bigint(20) unsigned NOT NULL,
-  `score` tinyint(4) DEFAULT NULL CHECK (`score` between 1 and 5),
-  `review` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`rating_id`),
-  KEY `idx_rater_id` (`rater_id`),
-  KEY `idx_ratee_id` (`ratee_id`),
-  KEY `idx_job_id` (`job_id`),
-  CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-LOCK TABLES `ratings` WRITE;
-/*!40000 ALTER TABLE `ratings` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ratings` ENABLE KEYS */;
-UNLOCK TABLES;
 DROP TABLE IF EXISTS `saved_jobs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -428,12 +343,12 @@ CREATE TABLE `saved_jobs` (
   KEY `job_id` (`job_id`),
   CONSTRAINT `saved_jobs_ibfk_1` FOREIGN KEY (`seeker_id`) REFERENCES `job_seekers` (`seeker_id`) ON DELETE CASCADE,
   CONSTRAINT `saved_jobs_ibfk_2` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `saved_jobs` WRITE;
 /*!40000 ALTER TABLE `saved_jobs` DISABLE KEYS */;
-INSERT INTO `saved_jobs` VALUES (2,139,5,'2025-06-15 13:15:27'),(7,145,10,'2025-06-24 13:32:07'),(8,145,9,'2025-06-24 13:32:14');
+INSERT INTO `saved_jobs` VALUES (2,139,5,'2025-06-15 13:15:27'),(7,145,10,'2025-06-24 13:32:07'),(8,145,9,'2025-06-24 13:32:14'),(10,139,1,'2025-06-25 10:35:15');
 /*!40000 ALTER TABLE `saved_jobs` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `seeker_profiles`;
@@ -461,40 +376,6 @@ LOCK TABLES `seeker_profiles` WRITE;
 /*!40000 ALTER TABLE `seeker_profiles` DISABLE KEYS */;
 INSERT INTO `seeker_profiles` VALUES (3,139,'im a student with some knowledgge about programming','some programming ','none','2025','im currently studing ','/files\\files/resumes\\Screenshot_2025-05-12_060800.png','https://fake.com','https://fake.com','https://fake.com'),(4,141,'python','programming','mentos company','jan 1 2023','nothing',NULL,'https://fake.com','https://pornhub.com','https://pornhub.com'),(5,142,'i dont have skill and ssshy person','programming','mentos company','jan 1 2023','i can programing ',NULL,'https://com','https://com','https://com'),(6,143,'No exprience but willing to learn anything. ','','','','',NULL,'','',''),(7,144,'I am experienced in bootstrap. i crated a lot of projects. please hire me','','','','',NULL,'','',''),(8,145,'I\'m are seeking a passionate and skilled Full Stock Developer to join our team and help shape the future of our digital products. In this role, you’ll work closely with designers, backend developers, and product managers to bring our web interfaces to life. You’ll be responsible for translating beautiful designs into interactive experiences that delight users and drive business outcomes.','Senior Frontend Developer','XYZ Tech Solutions – Manila, Philippines','June 2021 ','Designed and architected frontend systems for complex applications using modern JavaScript frameworks.\r\nLed the development of reusable component libraries and contributed to the establishment of a design system.\r\nEnsured frontend code quality and performance through unit testing, E2E testing, and CI/CD pipelines.\r\nActed as the technical lead for frontend projects, making architectural decisions and coordinating cross-team efforts.\r\nDrove improvements in accessibility (WCAG compliance), SEO, and frontend infrastructure.',NULL,'','','');
 /*!40000 ALTER TABLE `seeker_profiles` ENABLE KEYS */;
-UNLOCK TABLES;
-DROP TABLE IF EXISTS `seeker_skills`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `seeker_skills` (
-  `seeker_id` bigint(20) unsigned NOT NULL,
-  `skill_id` bigint(20) unsigned NOT NULL,
-  `proficiency` enum('beginner','intermediate','expert') DEFAULT NULL,
-  PRIMARY KEY (`seeker_id`,`skill_id`),
-  KEY `idx_seeker_id` (`seeker_id`),
-  KEY `idx_skill_id` (`skill_id`),
-  CONSTRAINT `seeker_skills_ibfk_1` FOREIGN KEY (`seeker_id`) REFERENCES `job_seekers` (`seeker_id`) ON DELETE CASCADE,
-  CONSTRAINT `seeker_skills_ibfk_2` FOREIGN KEY (`skill_id`) REFERENCES `skills` (`skill_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-LOCK TABLES `seeker_skills` WRITE;
-/*!40000 ALTER TABLE `seeker_skills` DISABLE KEYS */;
-/*!40000 ALTER TABLE `seeker_skills` ENABLE KEYS */;
-UNLOCK TABLES;
-DROP TABLE IF EXISTS `skills`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `skills` (
-  `skill_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
-  PRIMARY KEY (`skill_id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-LOCK TABLES `skills` WRITE;
-/*!40000 ALTER TABLE `skills` DISABLE KEYS */;
-/*!40000 ALTER TABLE `skills` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `verified_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

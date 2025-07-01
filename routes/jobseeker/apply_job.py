@@ -39,3 +39,29 @@ VALUES (
         return results
     else:
         return results
+
+
+@apply_job.route('/api/jobseeker/get-applied-jobs', methods=['GET'])
+@verify_user
+def get_applied_jobs():
+    user_id = session['user_id']
+
+    db = get_db()
+    sql = 'SELECT application_id,job_id,seeker_id,resume_url,cover_letter,status,applied_at FROM applications WHERE seeker_id=:seeker_id;'
+    results = db.execute_query(sql,{
+        'seeker_id' : user_id
+    })
+
+    if results['success'] and results['output']:
+        return jsonify(
+            {
+                'sucess':True,
+                 'output':results['output']
+            }
+        )
+    return jsonify(
+        {
+            'sucess':False,
+            'message':f'there was an error getting apllied jobs of jobseeker id:{user_id}'
+        }
+    )
