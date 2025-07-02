@@ -76,7 +76,7 @@
                                     <option>Hybrid</option>
                                 </select>
                             </div>
-                            <div class="col-md">
+                            <!-- <div class="col-md">
                                 <select name="skills" title="Select a skill" id="skills">
                                     <option value="" selected>All Skills</option>
                                     <option>JavaScript</option>
@@ -84,12 +84,12 @@
                                     <option>UI/UX</option>
                                     <option>AI/ML</option>
                                 </select>
-                            </div>
-                            <div class="col-md-auto">
+                            </div> -->
+                            <!-- <div class="col-md-auto">
                                 <button class="btn btn-outline-danger w-100">
                                     <i class="fas fa-trash-alt me-1"></i> Remove
                                 </button>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -149,7 +149,7 @@
         const search = document.getElementById('search');
         const salary = document.getElementById('salary');
         const selected_location = document.getElementById('location');
-        const skills = document.getElementById('skills');
+        // const skills = document.getElementById('skills');
         const table =  document.getElementById('table-listing');
         const pagination = document.getElementById('pagination');
         const pageInfo = document.getElementById('page-info');
@@ -160,7 +160,7 @@
            search.addEventListener('keyup', () => updateTbaelWithPage(1));
            salary.addEventListener('change', () => updateTbaelWithPage(1));
            selected_location.addEventListener('change', () => updateTbaelWithPage(1));
-           skills.addEventListener('change', () => updateTbaelWithPage(1));
+        //    skills.addEventListener('change', () => updateTbaelWithPage(1));
            
            
 
@@ -220,7 +220,6 @@
                     search: search.value,
                     salary: salary.value,
                     location: selected_location.value,
-                    skills: skills.value,
                     page: page,
                 });     
 

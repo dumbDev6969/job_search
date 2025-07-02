@@ -70,6 +70,7 @@ def get_listing_api():
             js.email as applicant_email,
             js.phone as applicant_phone,
             js.province as applicant_province,
+            js.seeker_id as applicant_id,
             q.specialized_training as skills
         FROM applications a
         JOIN jobs j ON a.job_id = j.job_id
@@ -154,8 +155,8 @@ def get_listing_api():
                 <td>{job['salary_range']}</td>
                 <td>{job['job_location'] or 'N/A'}</td>
                 <td>
-                    <button class="btn btn-sm btn-outline-primary">
-                        <i class="fas fa-eye"></i>
+                    <button class="btn btn-sm btn-outline-primary" onclick='window.location.href="/view-profile/jobseeker/{job["applicant_id"]}"'>
+                        <i class="fas fa-eye"><a href="/view-profile/jobseeker/{job['applicant_id']}" ></i>
                     </button>
                 </td>
             </tr>"""
@@ -225,7 +226,7 @@ def get_dashboard_data():
     active_jobs_query = text("""
         SELECT COUNT(job_id) 
         FROM jobs 
-        WHERE employer_id = :employer_id AND expires_at > NOW() AND status = 'active'
+        WHERE employer_id = :employer_id AND expires_at > NOW()
     """)
     active_jobs_result = db.execute_query(active_jobs_query, {'employer_id': employer_id})
     if active_jobs_result['success'] and active_jobs_result['output']:
@@ -328,3 +329,4 @@ def get_dashboard_tables():
         'recent_applications': recent_applications_data,
         'upcoming_interviews': upcoming_interviews_data
     }
+

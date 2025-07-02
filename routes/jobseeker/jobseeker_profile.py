@@ -149,10 +149,12 @@ def jobseeker_details(seeker_id):
             ji.expected_salary_range,
             js.*,
             q.*,
-               ji.*
+               ji.*,
+               sp.*
         FROM job_seekers js
         LEFT JOIN qualifications q ON js.seeker_id = q.seeker_id
         LEFT JOIN job_interest ji ON js.seeker_id = ji.user_id
+        LEFT JOIN seeker_profiles sp ON js.seeker_id = sp.user_id
         WHERE js.seeker_id = :seeker_id
     """)
     result = db.execute_query(sql, {"seeker_id": seeker_id})

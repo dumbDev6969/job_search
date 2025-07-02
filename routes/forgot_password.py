@@ -17,10 +17,11 @@ def reset_password(token):
 @forgot_password.route('/reset-password', methods=['POST'])
 def handle_reset_password():
     try:
-        data = request.get_json()
-        token = data.get('token')
+        data = request.form
+        token = data.get('token').replace('=', '')
+
         new_password = data.get('password')
-        
+        logging.error(f"Data: {data}")
         if not token or not new_password:
             return jsonify({'error': 'Token and new password are required'}), 400
             
@@ -38,6 +39,7 @@ def handle_reset_password():
         result = db.execute_query(verify_token_query, {'token': token})
         
         if not result['success'] or not result['output']:
+            logging.error(f"Failed to verify token: {result}")
             return jsonify({'error': 'Invalid or expired reset token'}), 400
             
         token_data = result['output'][0]
@@ -89,7 +91,6 @@ def handle_forgot_password():
     
     if request.method == 'POST':
         try:
-            logging.error(request.form)
             data = request.form
             email = data.get('email')
             
@@ -135,7 +136,7 @@ def handle_forgot_password():
                 return jsonify({'error': 'Failed to generate reset token'}), 500
 
             # Send reset password email
-            reset_link ="http://127.0.0.1:5000/reset-password/="+reset_token
+            reset_link ="http://localhost:5000/reset-password/="+reset_token
            
             try:
                 is_email_sent = send_reset_password_email(email, reset_link)

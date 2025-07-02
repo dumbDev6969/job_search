@@ -78,7 +78,7 @@ def get_active_job_postings(id):
         active_job_listings AS (
             SELECT COUNT(*) AS active_job_listings
             FROM jobs
-            WHERE employer_id = :employer_id AND status = 'active'
+            WHERE employer_id = :employer_id AND status = 'active'  AND expires_at > NOW()
         ),
         successful_hires AS (
             SELECT COUNT(*) AS successful_hires
@@ -94,7 +94,7 @@ def get_active_job_postings(id):
         active_job_postings AS (
             SELECT job_id, title, posted_at, status
             FROM jobs
-            WHERE employer_id = :employer_id AND status = 'active'
+            WHERE employer_id = :employer_id AND status = 'active'  AND expires_at > NOW()
             ORDER BY posted_at DESC
         ),
         contact_information AS (

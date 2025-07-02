@@ -100,7 +100,7 @@ def jobseeker_find_job_api():
                 LOWER(j.title) LIKE :search 
                 OR LOWER(j.description) LIKE :search
                 OR LOWER(e.company_name) LIKE :search
-            )
+            ) and j.expires_at > now()
         """)
 
         params = {"search": f"%{search_term.lower()}%", "job_types": job_types}

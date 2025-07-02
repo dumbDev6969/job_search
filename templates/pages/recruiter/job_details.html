@@ -26,19 +26,24 @@
 </head>
 
 <body>
-    {% include 'components/recruiter-nav.html' %}
+   {% if  is_job_seeker %}
+         
+           {% include 'components/job-seeker-nav.html' %}
+        {%else%}
+          {% include 'components/recruiter-nav.html' %}
+        {%endif%}
 
     <div class="container mb-5 mt-5 py-3">
     
         <div class="row">
             <!-- Back Button -->
-             {%if back%}
+             <!-- {%if back%}
             <div class="col-12 mb-4" data-aos="fade-right">
                 <a href="{{back[0]}}" class="btn btn-outline-secondary">
                     <i class="fas fa-arrow-left me-2"></i> Back to {{back[1]}}
                 </a>
             </div>
-            {%endif%}
+            {%endif%} -->
             
             <!-- Job Details Column -->
             <div class="col-lg-8">

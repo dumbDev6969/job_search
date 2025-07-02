@@ -156,7 +156,7 @@ def get_job_cards():
                 COUNT(a.application_id) as applicant_count
             FROM jobs j
             LEFT JOIN applications a ON j.job_id = a.job_id
-            WHERE j.employer_id = :employer_id
+            WHERE j.employer_id = :employer_id 
         """
 
         # Add filters
@@ -211,9 +211,23 @@ def get_job_cards():
                     job["employment_type"] = "Intern"
 
                 # Determine status badge color
-                status_class = (
-                    "bg-success" if job["status"] == "active" else "bg-secondary"
-                )
+                status_classes = {
+                    "active": "bg-success",
+                    "paused": "bg-warning",
+                    "closed": "bg-danger",
+                    "expired": "bg-danger",
+                }
+
+                expiry_date = job.get("expires_at")
+                if expiry_date and expiry_date < datetime.now():
+                    job["status"] = "expired"
+                    sql = f"UPDATE jobs SET status = 'closed' WHERE job_id = {job['job_id']}"
+                    try:
+                        db.execute_query(text(sql),{"job_id": job["job_id"]})
+                    except Exception as e:
+                        logging.error('error updating expired status')
+
+                status_class = status_classes.get(job["status"], "bg-secondary")
                 approved_status = job["approved"]
               
                 badge_icon = "question-circle"

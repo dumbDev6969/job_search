@@ -144,8 +144,8 @@ def find_talent_api():
                     <td>{talent['Salary Expectation']}</td>
                     <td>{talent['Location'] or 'N/A'}</td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-eye"></i>
+                        <button class="btn btn-sm btn-outline-primary" onclick='window.location.href="/view-profile/jobseeker/{talent["seeker_id"]}"    '>
+                            <i  class="fas fa-eye"></i>
                         </button>
                     </td>
                 </tr>"""
